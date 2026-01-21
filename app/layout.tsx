@@ -34,7 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased select-none`}
       >
-          <GoogleOAuthProvider clientId={process.env.CLIENT_ID!}>
+          <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
         <Navbar/>
         <div className="pt-15">
             {children}
