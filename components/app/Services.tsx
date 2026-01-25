@@ -17,6 +17,7 @@ import { Spinner } from "@/components/ui/spinner";
 import Script from "next/script";
 import { FileData } from "@/lib/interface";
 import drive from "@/public/drive.png";
+import { formatDateTime } from "@/lib/utils";
 
 interface UserData {
   email: string;
@@ -35,7 +36,12 @@ export function Services({ user }: ServicesProps) {
   const folderInputRef = useRef<HTMLInputElement>(null);
   const [isPickerLoaded, setIsPickerLoaded] = useState(false);
   const [extractedData, setExtractedData] = useState<FileData[]>([]);
-
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentFileIndex, setCurrentFileIndex] = useState(0);
+  const [totalFiles, setTotalFiles] = useState(0);
+  const [processingStatus, setProcessingStatus] = useState("");
+  const progress =
+    totalFiles > 0 ? Math.round((currentFileIndex / totalFiles) * 100) : 0;
   const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
   const ALLOWED_MIME_TYPES = [
     "application/pdf",
@@ -51,6 +57,7 @@ export function Services({ user }: ServicesProps) {
 
   useEffect(() => {
     const fetchHistory = async () => {
+      setIsLoading(true);
       const token = localStorage.getItem("token");
       if (!token || !user) return;
 
@@ -67,7 +74,6 @@ export function Services({ user }: ServicesProps) {
 
         if (res.ok) {
           const history = await res.json();
-          // Only update if history actually exists
           if (history && history.length > 0) {
             setExtractedData(history);
           }
@@ -75,10 +81,23 @@ export function Services({ user }: ServicesProps) {
       } catch (err) {
         console.error("Failed to load history:", err);
       }
+      setIsLoading(false);
     };
 
     fetchHistory();
   }, [user]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isProcessing) {
+        e.preventDefault();
+        e.returnValue =
+          "Processing is in progress. Are you sure you want to leave?";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isProcessing]);
 
   const actions = [
     {
@@ -113,37 +132,32 @@ export function Services({ user }: ServicesProps) {
     },
   ];
 
-  const exportToCSV = () => {
-    if (extractedData.length === 0) return;
+const exportToCSV = () => {
+  if (extractedData.length === 0) return;
 
-    // Define Headers
-    const headers = ["Filename", "Match Score (%)", "Status"];
+  const date = new Date().toISOString().split('T')[0];
 
-    // Map data to rows
-    const rows = extractedData.map((file) => [
-      file.filename,
-      file.ml_analysis ? Math.round(file.ml_analysis.match_score * 100) : "N/A",
-      file.ml_analysis ? file.ml_analysis.status : "N/A",
-    ]);
+  const fileName = `${extractedData.length} ${extractedData.length >= 2 ? "files" : "file" } @${date}.csv`;
 
-    // Combine into CSV string
-    const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+  const headers = ["Filename", "Match Score (%)", "Status"];
+  const rows = extractedData.map((file) => [
+    file.filename,
+    file.ml_analysis ? Math.round(file.ml_analysis.match_score * 100) : "N/A",
+    file.ml_analysis ? file.ml_analysis.status : "N/A",
+  ]);
 
-    // Create download link
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute(
-      "download",
-      `biasbreaker_results_${new Date().getTime()}.csv`,
-    );
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success("Results exported as CSV");
-  };
+  const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", fileName); 
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast.success(`Exported: ${fileName}`);
+};
 
   const handleSelection = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -155,66 +169,55 @@ export function Services({ user }: ServicesProps) {
       return;
     }
 
-    const formData = new FormData();
-    let validFilesCount = 0;
-
-    if (user?.id && description) {
-      formData.append("userId", user.id);
-      formData.append("description", description);
-    }
-
-    Array.from(files).forEach((file) => {
+    const validFiles = Array.from(files).filter((file) => {
       const isAllowedType = ALLOWED_MIME_TYPES.includes(file.type);
       const isUnderSizeLimit = file.size <= MAX_FILE_SIZE_BYTES;
-
-      if (!isAllowedType) {
-        toast.warning(`${file.name}: Type not allowed`);
-        return;
-      }
-      if (!isUnderSizeLimit) {
-        toast.warning(`${file.name} too large`);
-        return;
-      }
-
-      formData.append("files", file, file.webkitRelativePath || file.name);
-      validFilesCount++;
+      if (!isAllowedType) toast.warning(`${file.name}: Type not allowed`);
+      if (!isUnderSizeLimit) toast.warning(`${file.name} too large`);
+      return isAllowedType && isUnderSizeLimit;
     });
 
-    if (validFilesCount === 0) return;
+    if (validFiles.length === 0) return;
 
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
+    setIsProcessing(true);
+    setTotalFiles(validFiles.length);
+    setCurrentFileIndex(0);
+
+    for (let i = 0; i < validFiles.length; i++) {
+      const file = validFiles[i];
+      setCurrentFileIndex(i + 1);
+      setProcessingStatus(`Analyzing ${file.name}...`);
+
+      const formData = new FormData();
+      formData.append("files", file, file.webkitRelativePath || file.name);
+      if (user?.id) formData.append("userId", user.id);
+      if (description) formData.append("description", description);
+
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
           },
-          body: formData,
-        },
-      );
+        );
 
-      if (response.ok) {
-        const rawData = await response.json();
-        const normalizedData = Array.isArray(rawData) ? rawData : [rawData];
-
-        setExtractedData(normalizedData);
-        toast.success("Analysis Complete");
-      } else if (response.status === 401) {
-        toast.error("Session expired. Please log in again.");
-      } else {
-        toast.error("Upload failed on the server.");
+        if (response.ok) {
+          const rawData = await response.json();
+          const normalizedData = Array.isArray(rawData) ? rawData : [rawData];
+          setExtractedData((prev) => [...normalizedData, ...prev]);
+        }
+      } catch (error) {
+        console.error("Upload error:", error);
       }
-    } catch (error) {
-      console.error("Upload error:", error);
-      toast.warning("Could not connect to the backend server");
-    } finally {
-      setIsLoading(false);
-      e.target.value = "";
     }
-  };
 
+    setIsProcessing(false);
+    setProcessingStatus("");
+    e.target.value = "";
+    toast.success("Analysis Complete");
+  };
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       openPicker(tokenResponse.access_token);
@@ -231,6 +234,9 @@ export function Services({ user }: ServicesProps) {
       folderId: string,
       userAccessToken: string,
     ) => {
+      setIsProcessing(true);
+      setProcessingStatus("Connecting to Google Drive...");
+
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-folder`,
@@ -241,8 +247,8 @@ export function Services({ user }: ServicesProps) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              folderId: folderId,
-              description: description,
+              folderId,
+              description,
               userId: user?.id,
               googleToken: userAccessToken,
               email: user?.email,
@@ -251,20 +257,14 @@ export function Services({ user }: ServicesProps) {
         );
 
         const data = await response.json();
-
         if (response.ok) {
-          const normalizedData = Array.isArray(data) ? data : [data];
-          setExtractedData(normalizedData);
-          toast.success("Folder processed and analyzed successfully");
-        } else {
-          console.error("Backend Error:", data.detail || data.error);
-          toast.error(data.detail || "Failed to process folder");
+          setExtractedData(Array.isArray(data) ? data : [data]);
+          toast.success("Folder processed successfully");
         }
       } catch (error) {
-        console.error("Network Error:", error);
-        toast.error("Could not reach analysis server");
+        toast.error("Failed to process folder");
       } finally {
-        setIsLoading(false);
+        setIsProcessing(false);
       }
     };
 
@@ -301,10 +301,10 @@ export function Services({ user }: ServicesProps) {
     setIsLoading(true);
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading && extractedData.length === 0) return <Spinner />;
 
   return (
-    <div className="flex flex-col items-center justify-start p-4 sm:p-6">
+    <div className="flex flex-col items-center justify-start mt-20 p-4 sm:p-6">
       <input
         type="file"
         ref={fileInputRef}
@@ -350,7 +350,14 @@ export function Services({ user }: ServicesProps) {
             <Button
               key={idx}
               variant="outline"
-              onClick={item.handler}
+              onClick={()=>{
+                if(description){
+                  item.handler()
+                }else{
+                  toast.info("Provide a description")
+                }
+              }
+              }
               className="
           group relative flex flex-col items-start justify-between 
           h-35 w-full max-w-45
@@ -393,7 +400,7 @@ export function Services({ user }: ServicesProps) {
         </nav>
         {extractedData.length > 0 && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex items-center justify-between border-b border-b-slate-300 pb-2">
+            <div className="flex items-center justify-between border-b border-b-slate-300 pb-4">
               <h2 className="text-lg sm:text-xl font-bold text-slate-800">
                 Processing Results
               </h2>
@@ -422,9 +429,9 @@ export function Services({ user }: ServicesProps) {
               {extractedData.map((file, fileIdx) => (
                 <div
                   key={fileIdx}
-                  className="rounded-2xl sm:rounded-4xl px-2 sm:px-4 pb-3 bg-white/5 border border-white/5 sm:border-0"
+                  className="rounded-2xl sm:rounded-4xl px-2 sm:px-4 bg-white/5 border border-white/5 sm:border-0"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 px-2 py-2">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 px-2 pb-2">
                     <h3 className="font-semibold text-main flex items-center gap-2 text-sm sm:text-base break-all">
                       <File className="w-4 h-4 shrink-0" /> {file.filename}
                     </h3>
@@ -455,6 +462,33 @@ export function Services({ user }: ServicesProps) {
           </div>
         )}
       </div>
+      {isProcessing && (
+        <div className="fixed inset-0 z-70 flex flex-col items-center justify-center bg-main/10 backdrop-blur-md p-6 text-white">
+          <div className="w-full max-w-md bg-white rounded-[3rem] p-8 shadow-2xl text-slate-800">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-xl text-main">Processing </h3>
+              <span className="text-sm font-medium text-slate-500">
+                {currentFileIndex} / {totalFiles}
+              </span>
+            </div>
+
+            <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden mb-4">
+              <div
+                className="h-full bg-main transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <p className="text-sm text-center text-slate-600 animate-pulse">
+              {processingStatus}
+            </p>
+
+            <p className="mt-6 text-[10px] text-center text-slate-400 uppercase tracking-widest">
+              Please do not close this tab
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

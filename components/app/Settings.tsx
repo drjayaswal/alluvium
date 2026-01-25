@@ -51,7 +51,7 @@ export function Settings({ user }: SettingsProps) {
             <Button
               onClick={() => router.push("/services")}
               title="services"
-              className="flex-1 sm:flex-none shadow-inner cursor-pointer bg-indigo-500/10 hover:bg-indigo-500 text-indigo-500 hover:text-white rounded-2xl sm:rounded-4xl transition-all duration-200 active:scale-95 py-6 sm:py-2"
+              className="flex-1 sm:flex-none shadow-inner cursor-pointer hover:rotate-12 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-500 hover:text-white rounded-2xl sm:rounded-4xl transition-all duration-300 active:scale-95 py-6 sm:py-2"
             >
               <Hammer size={20} />
             </Button>
