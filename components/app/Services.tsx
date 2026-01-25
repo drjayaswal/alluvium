@@ -3,9 +3,16 @@
 import Image from "next/image";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
-import { File, Files, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  File,
+  Files,
+  Trash2,
+  CheckCircle2,
+  AlertCircle,
+  Download,
+} from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import Script from "next/script";
 import { FileData } from "@/lib/interface";
@@ -42,6 +49,37 @@ export function Services({ user }: ServicesProps) {
   const openFolderPicker = () => folderInputRef.current?.click();
   const openFilePicker = () => fileInputRef.current?.click();
 
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const token = localStorage.getItem("token");
+      if (!token || !user) return;
+
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/history`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        if (res.ok) {
+          const history = await res.json();
+          // Only update if history actually exists
+          if (history && history.length > 0) {
+            setExtractedData(history);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load history:", err);
+      }
+    };
+
+    fetchHistory();
+  }, [user]);
+
   const actions = [
     {
       label: "Google Drive",
@@ -59,7 +97,7 @@ export function Services({ user }: ServicesProps) {
       label: "Upload",
       action: "Folder",
       icon: (
-        <Files className="scale-180 m-2 text-slate-500 group-hover:text-emerald-600 transition-colors" />
+        <Files className="scale-180 m-2 text-slate-500 group-hover:text-main transition-colors" />
       ),
       isImage: false,
       handler: openFolderPicker,
@@ -68,12 +106,44 @@ export function Services({ user }: ServicesProps) {
       label: "Upload",
       action: "File",
       icon: (
-        <File className="scale-180 m-2 text-slate-500 group-hover:text-amber-600 transition-colors" />
+        <File className="scale-180 m-2 text-slate-500 group-hover:text-main transition-colors" />
       ),
       isImage: false,
       handler: openFilePicker,
     },
   ];
+
+  const exportToCSV = () => {
+    if (extractedData.length === 0) return;
+
+    // Define Headers
+    const headers = ["Filename", "Match Score (%)", "Status"];
+
+    // Map data to rows
+    const rows = extractedData.map((file) => [
+      file.filename,
+      file.ml_analysis ? Math.round(file.ml_analysis.match_score * 100) : "N/A",
+      file.ml_analysis ? file.ml_analysis.status : "N/A",
+    ]);
+
+    // Combine into CSV string
+    const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+
+    // Create download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `biasbreaker_results_${new Date().getTime()}.csv`,
+    );
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Results exported as CSV");
+  };
 
   const handleSelection = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -285,8 +355,8 @@ export function Services({ user }: ServicesProps) {
           group relative flex flex-col items-start justify-between 
           h-35 w-full max-w-45
           p-5 border-0 shadow-md hover:shadow-2xl 
-          bg-white hover:bg-main/5 
-          transition-all duration-300 rounded-3xl rounded-t-none hover:rounded-t-3xl hover:rounded-b-none overflow-hidden
+          bg-white hover:bg-gray-50
+          transition-all duration-300 rounded-3xl rounded-t-none hover:rounded-t-3xl  overflow-hidden
         "
             >
               <div className="shrink-0">
@@ -313,8 +383,11 @@ export function Services({ user }: ServicesProps) {
                   {item.action}
                 </span>
               </div>
-
-              <div className="absolute bottom-0 left-0 w-full h-1.5 bg-main scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              {item.isImage ? (
+                <div className="absolute bottom-0 left-0 w-full h-2.5 bg-linear-to-r from-emerald-500 via-amber-300 to-main scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left hover:rounded-none rounded-r-full" />
+              ) : (
+                <div className="absolute bottom-0 left-0 w-full h-2.5 bg-linear-to-r from-main/10 via-main/30  to-main scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-r-full" />
+              )}
             </Button>
           ))}
         </nav>
@@ -324,14 +397,25 @@ export function Services({ user }: ServicesProps) {
               <h2 className="text-lg sm:text-xl font-bold text-slate-800">
                 Processing Results
               </h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setExtractedData([])}
-                className="text-slate-400 hover:text-rose-500 hover:bg-rose-50"
-              >
-                <Trash2 className="w-4 h-4 mr-2" /> Clear
-              </Button>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={exportToCSV}
+                  className="text-emerald-500 hover:text-white hover:bg-emerald-500 bg-emerald-500/10 rounded-lg"
+                >
+                  <Download className="w-4 h-4 mr-2" /> Export CSV
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExtractedData([])}
+                  className="text-slate-400 hover:text-rose-500 hover:bg-rose-50"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" /> Clear
+                </Button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4">
