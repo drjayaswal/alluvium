@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
 import { Settings } from "@/components/app/Settings";
+import { getBaseUrl } from "@/lib/utils";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<{ email: string; id: string } | null>(null);
@@ -19,7 +20,7 @@ export default function ProfilePage() {
 
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`,
+          `${getBaseUrl()}/auth/me`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

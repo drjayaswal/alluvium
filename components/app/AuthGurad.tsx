@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Spinner } from "../ui/spinner";
+import { getBaseUrl } from "@/lib/utils";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`, {
+    fetch(`${getBaseUrl()}/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {

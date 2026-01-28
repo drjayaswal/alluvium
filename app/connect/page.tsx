@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getBaseUrl } from "@/lib/utils";
 
 export default function Login() {
   const router = useRouter();
@@ -17,8 +18,10 @@ export default function Login() {
     setLoading(true);
 
     try {
+      console.log(getBaseUrl());
+      
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/connect`,
+        `${getBaseUrl()}/connect`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

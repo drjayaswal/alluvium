@@ -27,6 +27,7 @@ import Script from "next/script";
 import { FileData } from "@/lib/interface";
 import drive from "@/public/drive.png";
 import { AnalysisChart } from "../ui/radar";
+import { getBaseUrl } from "@/lib/utils";
 
 export function Services({ user }: { user: any }) {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -55,7 +56,7 @@ export function Services({ user }: { user: any }) {
     if (!token || !user) return;
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/history`,
+        `${getBaseUrl()}/history`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -120,7 +121,7 @@ export function Services({ user }: { user: any }) {
         `Uploading ${validFiles.length} files...`,
       );
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
+        `${getBaseUrl()}/upload`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
@@ -243,7 +244,7 @@ export function Services({ user }: { user: any }) {
 
           try {
             const response = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-folder`,
+              `${getBaseUrl()}/get-folder`,
               {
                 method: "POST",
                 headers: {
@@ -307,7 +308,7 @@ export function Services({ user }: { user: any }) {
           try {
             const toastId = toast.loading("Erasing history...");
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset-history`,
+              `${getBaseUrl()}/reset-history`,
               {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },

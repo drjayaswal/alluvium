@@ -6,7 +6,13 @@ export type FormatType = 'full' | 'date' | 'time' | 'relative';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
+export const getBaseUrl = () => {
+  if (typeof window === 'undefined') {
+    return process.env.BACKEND_URL || 'http://backend:8000'; 
+  }
+  
+  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+};
 export function formatDateTime(
   input: string | Date | undefined, 
   type: FormatType = 'full'
