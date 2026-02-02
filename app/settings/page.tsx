@@ -7,13 +7,10 @@ import { Settings } from "@/components/app/Settings";
 import { getBaseUrl } from "@/lib/utils";
 import { Loader } from "lucide-react";
 import Loading from "@/components/ui/loading";
+import { UserData } from "@/lib/interface";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<{
-    email: string;
-    id: string;
-    updated_at: string;
-  } | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
