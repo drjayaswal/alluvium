@@ -1,10 +1,16 @@
 "use client";
 
-import { toPng } from "html-to-image";
 import { toast } from "sonner";
+import Script from "next/script";
+import Loading from "../ui/loading";
+import { toPng } from "html-to-image";
+import { AnalysisChart } from "../ui/radar";
+import { useRouter } from "next/navigation";
+import { cn, getBaseUrl } from "@/lib/utils";
+import { FileData, UserData } from "@/lib/interface";
+import { useGoogleLogin } from "@react-oauth/google";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
-import { useGoogleLogin } from "@react-oauth/google";
 import {
   File,
   Trash2,
@@ -21,21 +27,15 @@ import {
   DownloadCloud,
   Cloud,
   BadgeIndianRupee,
-  ApertureIcon,
-  InboxIcon,
   Binary,
   NonBinary,
+  MessageCircle,
 } from "lucide-react";
-import Script from "next/script";
-import { FileData, UserData } from "@/lib/interface";
-import { AnalysisChart } from "../ui/radar";
-import { cn, getBaseUrl } from "@/lib/utils";
-import Loading from "../ui/loading";
-import { useRouter } from "next/navigation";
 
 export function Services({ user }: { user: UserData }) {
   const id = user;
   const router = useRouter();
+  const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
   const reportRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
@@ -47,13 +47,22 @@ export function Services({ user }: { user: UserData }) {
   const [selectedFileData, setSelectedFileData] = useState<FileData | null>(
     null,
   );
-  const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
   const ALLOWED_MIME_TYPES = [
     "application/pdf",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "text/plain",
   ];
-
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isProcessing) {
+      interval = setInterval(fetchHistory, 5 * 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isProcessing, user]);
+  useEffect(() => {
+    setIsLoading(true);
+    fetchHistory().finally(() => setIsLoading(false));
+  }, [user]);
   const fetchHistory = async () => {
     setIsProcessing(true);
     const token = localStorage.getItem("token");
@@ -75,17 +84,6 @@ export function Services({ user }: { user: UserData }) {
       console.error("History fetch error:", err);
     }
   };
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isProcessing) {
-      interval = setInterval(fetchHistory, 5 * 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isProcessing, user]);
-  useEffect(() => {
-    setIsLoading(true);
-    fetchHistory().finally(() => setIsLoading(false));
-  }, [user]);
   const handleSelection = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -176,8 +174,8 @@ export function Services({ user }: { user: UserData }) {
       return;
     }
 
-    toast.success("Save CSV?", {
-      description: `Download report for ${completedFiles.length} completed files`,
+    toast.success("Download Report", {
+      description: `Save report for ${completedFiles.length} files`,
       action: {
         label: "Download",
         onClick: () => {
@@ -313,7 +311,7 @@ export function Services({ user }: { user: UserData }) {
       toast.error("Nothing to Erase...");
       return;
     }
-    toast.info("Erase History?", {
+    toast.info("Clear History", {
       description: "This action cannot be undone",
       action: {
         label: "Clear All",
@@ -366,7 +364,7 @@ export function Services({ user }: { user: UserData }) {
   };
   const getDescription = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (user.credits == 0) {
-      toast.info("Upgrade to use services", {
+      toast.info("Insufficient credits", {
         action: {
           label: "Upgrade",
           onClick: () => {
@@ -422,44 +420,6 @@ export function Services({ user }: { user: UserData }) {
       e.target.value = "";
     }
   };
-  const renderSkillSection = (
-    title: string,
-    skills: string[],
-    total: number,
-    dotColor: string,
-  ) => (
-    <section>
-      <div className="flex justify-between items-center mb-4">
-        <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
-          <div
-            className={`w-1.5 h-1.5 rounded-full flex gap-4 items-center ${dotColor}`}
-          />
-          {title}
-          <div>
-            {skills.length}({total})
-          </div>
-        </h4>
-      </div>
-      <div className="flex flex-wrap gap-1.5">
-        {skills.map((kw, i) => (
-          <span
-            key={i}
-            className="px-2.5 py-1 bg-white/5 border border-white/10 text-white/50 text-[11px] rounded-md"
-          >
-            {kw}
-          </span>
-        ))}
-        {total > skills.length && (
-          <span className="px-2.5 py-1 text-white/30 text-[11px] tracking-tighter">
-            + {total - skills.length} more
-          </span>
-        )}
-        {total === 0 && (
-          <span className="text-[11px] text-white/20">No skills</span>
-        )}
-      </div>
-    </section>
-  );
   const downloadReport = async () => {
     if (reportRef.current === null) return;
 
@@ -620,7 +580,7 @@ export function Services({ user }: { user: UserData }) {
                   key={i}
                   onClick={() => {
                     if (user.credits == 0) {
-                      toast.info("Credits Exausted", {
+                      toast.info("Insufficient credits", {
                         action: {
                           label: "Upgrade",
                           onClick: () => {
@@ -675,12 +635,11 @@ export function Services({ user }: { user: UserData }) {
             <div className="flex items-center border border-white/13 p-0.5">
               <div
                 className={`flex items-center gap-2 px-3 py-1.5 transition-colors duration-300 ${
-                  user.credits < 10
-                    && "bg-red-500/20"
+                  user.credits < 10 && "bg-red-500/20"
                 }`}
               >
                 <BadgeIndianRupee
-                  className={`w-4 h-4 ${user.credits < 10 ? "text-red-400" : "text-white"}`}
+                  className={`w-4 h-5 ${user.credits < 10 ? "text-red-400" : "text-white"}`}
                 />
                 <span
                   className={`text-[11px] font-medium ${user.credits < 10 ? "text-red-400" : "text-white"}`}
@@ -690,7 +649,7 @@ export function Services({ user }: { user: UserData }) {
               </div>
               <button
                 onClick={() => {
-                  toast.info("Get more credits?", {
+                  toast.info("Want to Upgrade", {
                     action: {
                       label: "Upgrade",
                       onClick: () => {
@@ -703,7 +662,7 @@ export function Services({ user }: { user: UserData }) {
                     },
                   });
                 }}
-                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-pink-600"
+                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-pink-800"
               >
                 <span className="text-[12px]">Upgrade</span>
               </button>
@@ -719,15 +678,34 @@ export function Services({ user }: { user: UserData }) {
                   className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-teal-700"
                 >
                   <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-teal-700 via-teal-500 to-teal-700" />
-                  <span className="text-[12px] relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-2">
-                    Ingest
-                  </span>
                   <div className="relative flex items-center justify-center h-6 w-6 scale-75 overflow-hidden">
                     <div className="absolute transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
                       <NonBinary />
                     </div>
                     <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
                       <Binary />
+                    </div>
+                  </div>
+                </button>
+              </div>
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => {
+                    const toastId = toast.loading("Redirecting...");
+                    setTimeout(() => {
+                      toast.dismiss(toastId);
+                      router.push("/conversations");
+                    }, 1500);
+                  }}
+                  className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-rose-800"
+                >
+                  <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-rose-900 via-rose-500 to-rose-900" />
+                  <div className="relative flex items-center justify-center h-6 w-6 scale-75 overflow-hidden">
+                    <div className="absolute transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
+                      <MessageCircle />
+                    </div>
+                    <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
+                      <MessageCircle />
                     </div>
                   </div>
                 </button>
@@ -985,3 +963,42 @@ export function Services({ user }: { user: UserData }) {
     </div>
   );
 }
+
+const renderSkillSection = (
+  title: string,
+  skills: string[],
+  total: number,
+  dotColor: string,
+) => (
+  <section>
+    <div className="flex justify-between items-center mb-4">
+      <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
+        <div
+          className={`w-1.5 h-1.5 rounded-full flex gap-4 items-center ${dotColor}`}
+        />
+        {title}
+        <div>
+          {skills.length}({total})
+        </div>
+      </h4>
+    </div>
+    <div className="flex flex-wrap gap-1.5">
+      {skills.map((kw, i) => (
+        <span
+          key={i}
+          className="px-2.5 py-1 bg-white/5 border border-white/10 text-white/50 text-[11px] rounded-md"
+        >
+          {kw}
+        </span>
+      ))}
+      {total > skills.length && (
+        <span className="px-2.5 py-1 text-white/30 text-[11px] tracking-tighter">
+          + {total - skills.length} more
+        </span>
+      )}
+      {total === 0 && (
+        <span className="text-[11px] text-white/20">No skills</span>
+      )}
+    </div>
+  </section>
+);

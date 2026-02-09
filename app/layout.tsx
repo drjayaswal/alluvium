@@ -34,8 +34,13 @@ export default function RootLayout({
           position="bottom-right"
           theme="dark"
           toastOptions={{
-            className:
-              "bg-main text-black border-none font-bold rounded-2xl shadow-2xl",
+           style: { 
+              border: '0.15px solid rgba(255, 255, 255, 0.3)', 
+              borderRadius: '0px',
+              backgroundColor: '#000000',
+              color: '#ffffff'
+            },
+            className: "bg-white text-black font-bold shadow-2xl broder border-white",
           }}
         />
         <GoogleOAuthProvider

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
+import Image from "next/image";
 
 export default function FeedbackPage() {
   const router = useRouter();
@@ -60,8 +61,7 @@ export default function FeedbackPage() {
   };
   return (
     <div className="min-h-screen text-white font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)] bg-size-[71px_71px] opacity-50" />
-      <div className="relative z-10 w-full max-w-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="relative bg-black p-6.5 px-10 z-10 w-full max-w-160 border border-white/15 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <button
           onClick={() => router.back()}
           className="cursor-pointer flex items-center gap-2 text-white/40 hover:text-white transition-colors mb-8 group"
@@ -76,16 +76,23 @@ export default function FeedbackPage() {
         </button>
 
         <div className="mb-3 text-center md:text-left">
-          <h1 className="text-3xl font-bold tracking-tighter uppercase mb-2">
-            Feedback<span className="text-sky-600">•</span>
+          <h1 className="flex items-center gap-2 mb-2">
+          <Image
+            className="invert"
+            src="/logo.png"
+            alt="logo"
+            width={40}
+            height={40}
+          />
+            <span className="underline text-3xl font-bold tracking-tighter uppercase underline-offset-4 decoration-sky-600">Feedback</span><span className="text-3xl font-bold text-sky-600 -ml-3 mb-1.25 decoration-none decoration-transparent">•</span>
           </h1>
           <p className="text-white/40 text-xs font-medium uppercase tracking-widest">
-            Help us bridge the gap in AI utility
+            Help us bridge the gap
           </p>
         </div>
         <form
           onSubmit={handleFeedback}
-          className="space-y-6 bg-black backdrop-blur-xl border border-white/10 -mr-1 p-8"
+          className="space-y-6 -mr-1 p-8"
         >
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
@@ -124,7 +131,7 @@ export default function FeedbackPage() {
                   </option>
                 ))}
               </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/20">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white">
                 ▼
               </div>
             </div>
@@ -151,9 +158,9 @@ export default function FeedbackPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-5 py-2 font-bold text-white transition-colors duration-500 hover:bg-linear-to-r hover:from-sky-900 hover:via-sky-700 hover:to-sky-900 disabled:opacity-30 disabled:cursor-not-allowed"
+            className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-5 py-2 font-bold text-black transition-colors duration-500 bg-white hover:bg-sky-700 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            <span className="relative text-sm flex items-center justify-center gap-2 z-10 transition-all duration-500 group-hover/btn:tracking-widest">
+            <span className="relative text-sm flex items-center justify-center gap-2 z-10 transition-all duration-500">
               {isLoading ? (
                 <>
                   Submiting... <Loader2 className="animate-spin" size={16} />

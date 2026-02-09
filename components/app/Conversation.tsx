@@ -34,7 +34,9 @@ export default function Conversation({ user }: { user: UserData }) {
   const [sources, setSources] = useState<Source[]>([]);
   const [conversations, setConversations] = useState<ConversationI[]>([]);
   const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeConversationId, setActiveConversationId] = useState<
+    string | null
+  >(null);
   const [isFlying, setIsFlying] = useState(false);
   const hasInitialized = useRef(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -66,8 +68,12 @@ export default function Conversation({ user }: { user: UserData }) {
       const token = localStorage.getItem("token");
       try {
         const [srcRes, convRes] = await Promise.all([
-          fetch(`${getBaseUrl()}/get-sources`, { headers: { Authorization: `Bearer ${token}` } }),
-          fetch(`${getBaseUrl()}/conversations`, { headers: { Authorization: `Bearer ${token}` } }),
+          fetch(`${getBaseUrl()}/get-sources`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${getBaseUrl()}/conversations`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
 
         const sourcesData = await srcRes.json();
@@ -111,6 +117,10 @@ export default function Conversation({ user }: { user: UserData }) {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(user.credits == 0){
+      toast.info("Insufficient credits. Please top up your account")
+      return
+    }
     if (!input.trim() || !selectedSourceId) return;
     const userMsg = input.trim();
     setInput("");
@@ -120,7 +130,10 @@ export default function Conversation({ user }: { user: UserData }) {
     try {
       const response = await fetch(`${getBaseUrl()}/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           question: userMsg,
           source_id: selectedSourceId,
@@ -128,6 +141,10 @@ export default function Conversation({ user }: { user: UserData }) {
         }),
       });
       const data = await response.json();
+      if (data.status_code=402) {
+        toast.info(data.detail);
+        return;
+      }
       if (!activeConversationId && data.conversation_id) {
         setActiveConversationId(data.conversation_id);
         const convRes = await fetch(`${getBaseUrl()}/conversations`, {
@@ -135,7 +152,10 @@ export default function Conversation({ user }: { user: UserData }) {
         });
         setConversations(await convRes.json());
       }
-      setMessages((prev) => [...prev, { role: "assistant", content: data.answer }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.answer },
+      ]);
     } catch (error) {
       toast.error("Bridge Connection Failed.");
     } finally {
@@ -155,17 +175,28 @@ export default function Conversation({ user }: { user: UserData }) {
           </span>
           <div className="mt-4">
             {isSidebarLoading ? (
-              [1, 2].map((i) => <div key={i} className="h-9 w-full bg-white/10 animate-pulse mb-px" />)
+              [1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="h-9 w-full bg-white/10 animate-pulse mb-px"
+                />
+              ))
             ) : sources.length > 0 ? (
               sources.map((s) => (
                 <button
                   key={s.id}
                   onClick={() => setSelectedSourceId(s.id)}
                   className={`w-full cursor-pointer flex items-center gap-3 pr-3 py-1.5 text-xs transition-all duration-200 ${
-                    selectedSourceId === s.id ? "text-white bg-rose-700 border-l pl-3 border-white" : "text-white/40 pl-2 hover:bg-white/10"
+                    selectedSourceId === s.id
+                      ? "text-white bg-rose-700 border-l pl-3 border-white"
+                      : "text-white/40 pl-2 hover:bg-white/10"
                   }`}
                 >
-                  {s.source_type === "video" ? <PlayCircle className="scale-140" size={16} /> : <FileText size={16} />}
+                  {s.source_type === "video" ? (
+                    <PlayCircle className="scale-140" size={16} />
+                  ) : (
+                    <FileText size={16} />
+                  )}
                   <span className="truncate font-medium">{s.source_name}</span>
                 </button>
               ))
@@ -179,24 +210,37 @@ export default function Conversation({ user }: { user: UserData }) {
             Conversation(s) [{conversations.length.toString().padStart(2, "0")}]
           </span>
           <div className="mt-4">
-            {conversations.length > 0 ? conversations.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => loadConversation(c.id)}
-                className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2.5 text-xs transition-all ${
-                  activeConversationId === c.id ? "text-white bg-rose-700 border-l border-white" : "text-white/40 hover:bg-white/10"
-                }`}
-              >
-                <MessageSquare size={14} className="shrink-0" />
-                <span className="truncate text-left">{c.title || "Untitled Conversations"}</span>
-              </button>
-            )) : <ConversationsEmptyState/>}
+            {conversations.length > 0 ? (
+              conversations.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => loadConversation(c.id)}
+                  className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2.5 text-xs transition-all ${
+                    activeConversationId === c.id
+                      ? "text-white bg-rose-700 border-l border-white"
+                      : "text-white/40 hover:bg-white/10"
+                  }`}
+                >
+                  <MessageSquare size={14} className="shrink-0" />
+                  <span className="truncate text-left">
+                    {c.title || "Untitled Conversations"}
+                  </span>
+                </button>
+              ))
+            ) : (
+              <ConversationsEmptyState />
+            )}
           </div>
         </div>
-        <div className={`pt-2 pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/20"}`}>
+        <div
+          className={`pt-2 pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/20"}`}
+        >
           {sources.length > 0 && (
             <button
-              onClick={() => { setActiveConversationId(null); setMessages([]); }}
+              onClick={() => {
+                setActiveConversationId(null);
+                setMessages([]);
+              }}
               className="w-full cursor-pointer py-3 text-[11px] text-white uppercase tracking-widest font-bold flex items-center justify-center gap-2 hover:bg-rose-700 transition-all duration-300"
             >
               <Plus size={14} /> New Conversation
@@ -212,7 +256,9 @@ export default function Conversation({ user }: { user: UserData }) {
           {isSidebarLoading && messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center">
               <Loader2 className="animate-spin text-white/20" size={40} />
-              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/20">Synchronizing...</p>
+              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/20">
+                Synchronizing...
+              </p>
             </div>
           ) : (
             <>
@@ -227,7 +273,9 @@ export default function Conversation({ user }: { user: UserData }) {
                   key={i}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-3 duration-500`}
                 >
-                  <div className={`flex max-w-[90%] md:max-w-[75%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                  <div
+                    className={`flex max-w-[90%] md:max-w-[75%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
+                  >
                     <MessageItem
                       msg={msg}
                       index={i}
@@ -249,7 +297,7 @@ export default function Conversation({ user }: { user: UserData }) {
           <div className="absolute bottom-5 bg-white/10 backdrop-blur-md border-t border-white/15 w-full pt-1.25 px-2 pb-5 md:pb-10">
             <form
               onSubmit={handleSendMessage}
-              className="group relative flex items-center bg-black focus-within:border-white/30 pl-6 py-0.5 pr-1.5 transition-all duration-300"
+              className="group relative flex items-center focus-within:border-white/30 pl-6 py-0.5 pr-1.5 transition-all duration-300"
             >
               <input
                 value={input}

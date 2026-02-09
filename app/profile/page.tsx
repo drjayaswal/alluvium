@@ -3,7 +3,7 @@
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Settings } from "@/components/app/Settings";
+import { Profile } from "@/components/app/Profile";
 import { getBaseUrl } from "@/lib/utils";
 import Loading from "@/components/ui/loading";
 import { UserData } from "@/lib/interface";
@@ -45,7 +45,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Settings user={user} />
+      <Profile user={user} />
     </div>
   );
 }

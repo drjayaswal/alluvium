@@ -52,7 +52,7 @@ export interface Conversation {
   created_at: string;
 }
 
-export interface SettingsProps {
+export interface ProfileProps {
   user: UserData | null;
 }
 

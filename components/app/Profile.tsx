@@ -8,16 +8,13 @@ import {
   Home,
   Wrench,
   Clock,
-  BadgeIndianRupee,
   MessageSquare,
-  IndianRupee,
   Wallet,
-  ArrowRight,
   ArrowUpRightFromSquare,
 } from "lucide-react";
-import { SettingsProps } from "@/lib/interface";
+import { ProfileProps } from "@/lib/interface";
 
-export function Settings({ user }: SettingsProps) {
+export function Profile({ user }: ProfileProps) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -37,35 +34,34 @@ export function Settings({ user }: SettingsProps) {
 
   if (!user) return null;
 
-  // Logic for low credits styling
   const isLowCredits = user.credits < 10;
 
   return (
     <div className="w-full text-white bg-black border-y border-white/12 py-14 mt-4.25 flex-col">
       <div className="max-w-2xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter uppercase">
-            Settings
+          <h1 className="text-3xl sm:text-4xl font-black text-white">
+            Account Profile
           </h1>
 
           <div className="flex items-center w-full sm:w-auto border border-white/12 px-1 py-0.5">
             <button
               onClick={() => router.push("/")}
-              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-teal-600"
+              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-teal-700"
             >
               <Home className="w-5 h-5" />
             </button>
             <div className="h-12 bg-white/12 w-px mx-1" />
             <button
               onClick={() => router.push("/services")}
-              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-indigo-600"
+              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-indigo-700"
             >
               <Wrench className="w-5 h-5" />
             </button>
             <div className="h-12 bg-white/12 w-px mx-1" />
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-rose-600"
+              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-rose-700"
             >
               <Power className="w-5 h-5" />
             </button>
@@ -75,7 +71,7 @@ export function Settings({ user }: SettingsProps) {
         <div className="space-y-6 pt-6">
           <section className="space-y-0.5">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
+              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
                 <User size={24} />
               </div>
               <p className="text-sm sm:text-lg font-medium text-white/30 truncate italic">
@@ -84,13 +80,13 @@ export function Settings({ user }: SettingsProps) {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
-                <Wallet size={24} className="text-white" />
+              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
+                <Wallet size={24} />
               </div>
               <div
                 className={`px-3 py-1 transition-all ${
                   isLowCredits
-                    ? "bg-rose-600/20 text-rose-700"
+                    ? "bg-rose-700/20 text-rose-700"
                     : "bg-white/5  text-white"
                 }`}
               >
@@ -100,7 +96,7 @@ export function Settings({ user }: SettingsProps) {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0 relative">
+              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0 relative">
                 <MessageSquare size={24} />
                 {user.total_conversations > 0 && (
                   <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black text-black ring-2 ring-black">
@@ -115,7 +111,7 @@ export function Settings({ user }: SettingsProps) {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
+              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
                 <Clock size={24} />
               </div>
               <p className="text-sm sm:text-lg font-medium text-white/30 truncate">
