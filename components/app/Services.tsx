@@ -249,7 +249,7 @@ export function Services({ user }: { user: UserData }) {
     const picker = new google.picker.PickerBuilder()
       .addView(view)
       .setOAuthToken(token)
-      .setDeveloperKey(process.env.NEXT_PUBLIC_PICKER_KEY)
+      .setDeveloperKey(process.env.PICKER_KEY)
       .setAppId(process.env.NEXT_PUBLIC_APP_ID)
       .setTitle("Select Google Drive Folder")
       .setCallback(async (data: any) => {
