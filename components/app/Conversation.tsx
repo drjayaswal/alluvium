@@ -6,12 +6,15 @@ import {
   Loader2,
   Send,
   FileText,
-  PlayCircle,
   Plus,
   MessageSquare,
   Check,
   Copy,
   CircleX,
+  Play,
+  FileBarChart,
+  SquareEqual,
+  Binary,
 } from "lucide-react";
 import {
   UserData,
@@ -24,6 +27,7 @@ import { getBaseUrl } from "@/lib/utils";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Link from "next/link";
 
 export default function Conversation({ user }: { user: UserData }) {
   const router = useRouter();
@@ -84,7 +88,10 @@ export default function Conversation({ user }: { user: UserData }) {
 
         if (sourcesData && sourcesData.length > 0) {
           setSelectedSourceId(sourcesData[0].id);
-          toast.success(`${sourcesData.length} source(s) available`);
+
+          if (convData && convData.length > 0) {
+            loadConversation(convData[0].id);
+          }
         } else {
           toast.info("No Source Available");
         }
@@ -117,8 +124,13 @@ export default function Conversation({ user }: { user: UserData }) {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (user.credits == 0) {
-      toast.info("Insufficient credits. Please top up your account");
+    if (user.credits <= 0) {
+      toast.error("Insufficient credits!", {
+        action: {
+          label: "Upgrade",
+          onClick: () => router.push("/upgrade"),
+        },
+      });
       return;
     }
     if (!input.trim() || !selectedSourceId) return;
@@ -136,15 +148,25 @@ export default function Conversation({ user }: { user: UserData }) {
         },
         body: JSON.stringify({
           question: userMsg,
-          source_id: selectedSourceId,
           conversation_id: activeConversationId,
         }),
       });
-      const data = await response.json();
-      if ((data.status_code = 402)) {
-        toast.info(data.detail);
+      if (response.status === 402) {
+        setMessages((prev) => prev.slice(0, -1));
+        setInput(userMsg);
+
+        toast.error("Insufficient credits!", {
+          action: {
+            label: "Upgrade",
+            onClick: () => router.push("/upgrade"),
+          },
+        });
         return;
       }
+      if (!response.ok) {
+        throw new Error("Server Error");
+      }
+      const data = await response.json();
       if (!activeConversationId && data.conversation_id) {
         setActiveConversationId(data.conversation_id);
         const convRes = await fetch(`${getBaseUrl()}/conversations`, {
@@ -165,7 +187,7 @@ export default function Conversation({ user }: { user: UserData }) {
 
   return (
     <div
-      className="flex w-full text-slate-200 bg-black font-sans overflow-hidden"
+      className="flex w-full bg-black font-sans overflow-hidden"
       style={{ height: `calc(100vh - ${NAV_HEIGHT})`, marginTop: NAV_HEIGHT }}
     >
       <aside className="w-70 mb-12 hidden md:flex flex-col border-r border-white/15 bg-transparent">
@@ -183,22 +205,31 @@ export default function Conversation({ user }: { user: UserData }) {
               ))
             ) : sources.length > 0 ? (
               sources.map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => setSelectedSourceId(s.id)}
-                  className={`w-full cursor-pointer flex items-center gap-3 pr-3 py-1.5 text-xs transition-all duration-200 ${
-                    selectedSourceId === s.id
-                      ? "text-white bg-rose-700 border-l pl-3 border-white"
-                      : "text-white/40 pl-2 hover:bg-white/10"
-                  }`}
-                >
-                  {s.source_type === "video" ? (
-                    <PlayCircle className="scale-140" size={16} />
-                  ) : (
-                    <FileText size={16} />
-                  )}
-                  <span className="truncate font-medium">{s.source_name}</span>
-                </button>
+                <div key={s.id} className="relative group/tooltip">
+                  {" "}
+                  <button
+                    onClick={() => setSelectedSourceId(s.id)}
+                    className={`w-full group hover:text-white flex cursor-pointer items-center gap-3 px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                      selectedSourceId === s.id
+                        ? "bg-rose-700 text-white pl-5"
+                        : "hover:bg-white/10 text-white/60"
+                    }`}
+                  >
+                    <div
+                      className={`transition-colors ${selectedSourceId === s.id ? "text-white" : "text-white fill-rose-600"}`}
+                    >
+                      {getSourceIcon(s)}
+                    </div>
+
+                    {getSourceLabel(s)}
+                  </button>
+                  <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20">
+                      {s.source_name}
+                      <div className="absolute top-1/2 -left-1 -translate-y-1/2 border-y-4 border-y-transparent border-r-4 border-r-white" />
+                    </div>
+                  </div>
+                </div>
               ))
             ) : (
               <SourceEmptyState onIngest={() => router.push("/ingest")} />
@@ -366,7 +397,7 @@ const MessageEmptyState = ({
         <h3 className="text-xl font-bold text-white tracking-[0.4em] uppercase">
           Basal•AI
         </h3>
-        <div className="h-1 my-1 w-full bg-rose-600/50" />
+        <div className="h-1 my-1 w-full bg-rose-700/50" />
       </div>
 
       <div className="mt-6 w-full max-w-md border border-white/10">
@@ -438,7 +469,7 @@ const MessageItem = ({
     <div
       className={`relative group text-sm leading-relaxed transition-all duration-300 overflow-hidden ${
         msg.role === "user"
-          ? "text-white p-2 pl-3 pr-10 bg-rose-600"
+          ? "text-white p-2 pl-3 pr-10 bg-rose-700"
           : "text-white bg-indigo-700 p-3 pl-5 pr-6.5 pt-4"
       } ${isCollapsed ? "h-10 opacity-80" : "h-auto"}`}
     >
@@ -506,3 +537,49 @@ const ConversationsEmptyState = () => (
     </div>
   </div>
 );
+
+const getSourceIcon = (source: any) => {
+  const name = source.source_name.toLowerCase();
+  if (
+    source.source_type === "video" ||
+    name.includes("youtube.com") ||
+    name.includes("youtu.be")
+  ) {
+    return (
+      <Link
+        target="_blank"
+        href={source.source_name}
+        className="flex items-center justify-center w-6 h-4 bg-white rounded-sm"
+      >
+        <Play
+          className="group-hover:fill-rose-600 fill-black shrink-0"
+          size={12}
+        />
+      </Link>
+    );
+  }
+  return       <div
+        className="flex items-center justify-center w-6 h-4 bg-white"
+      >
+        <Binary
+          className="text-black shrink-0"
+          size={16}
+        />
+      </div>
+};
+
+const getSourceLabel = (source: any) => {
+  const name = source.source_name.toLowerCase();
+  if (name.includes("youtube.com") || name.includes("youtu.be")) {
+    return (
+      <span className="truncate flex-1 text-left">
+        Youtube Video <span className="text-[9px] opacity-60">{name}</span>
+      </span>
+    );
+  }
+  return (
+    <span className="truncate flex-1 text-left">
+      Document <span className="text-[9px] opacity-60">{name}</span>
+    </span>
+  );
+};
