@@ -1,12 +1,12 @@
 export const devData = [
-  {
-    name: "Gungun Vyas",
-    role: "Lead ML Engineer",
-    image: "/dev1.jpeg",
-    github: "https://github.com/gungunvyas",
-    linkedin: "https://www.linkedin.com/in/gungun-vyas",
-    bio: "Specializing in NLP and document parsing logic for the Resume Matcher engine.",
-  },
+  // {
+  //   name: "Gungun Vyas",
+  //   role: "Lead ML Engineer",
+  //   image: "/dev1.jpeg",
+  //   github: "https://github.com/gungunvyas",
+  //   linkedin: "https://www.linkedin.com/in/gungun-vyas",
+  //   bio: "Specializing in NLP and document parsing logic for the Resume Matcher engine.",
+  // },
   {
     name: "Dhruv Ratan Jayaswal",
     role: "Fullstack Architect",
@@ -56,9 +56,27 @@ export const navLinks = [
   },
   {
     name: "Developers",
-    href: "/developers",
+    href: "https://github.com/drjayaswal",
     color: "hover:bg-orange-700",
-    tooltip: "Meet Team",
+    tooltip: "Meet Developer",
+  },
+  {
+    name: "API Status",
+    href: `${process.env.NEXT_PUBLIC_BACKEND_URL}/docs`,
+    color: "hover:bg-pink-700",
+    tooltip: "API Documentation",
+  },
+  {
+    name: "Contribution",
+    href: "https://github.com/drjayaswal/alluvium-docker/blob/main/README.md#contributing",
+    color: "hover:bg-white hover:text-black",
+    tooltip: "Join Us",
+  },
+  {
+    name: "Upgrade",
+    href: "/upgrade",
+    color: "hover:bg-cyan-700",
+    tooltip: "Upgrade your plan",
   },
   {
     name: "Frontend",
@@ -83,23 +101,5 @@ export const navLinks = [
     tooltip: "AI/ML Repository",
     isGrouped: true,
     position: "end",
-  },
-  {
-    name: "API Status",
-    href: `${process.env.NEXT_PUBLIC_BACKEND_URL}/docs`,
-    color: "hover:bg-pink-700",
-    tooltip: "API Documentation",
-  },
-  {
-    name: "Contribution",
-    href: "https://github.com/drjayaswal/alluvium-docker/blob/main/README.md#contributing",
-    color: "hover:bg-white hover:text-black",
-    tooltip: "Join Us",
-  },
-  {
-    name: "Upgrade",
-    href: "/upgrade",
-    color: "hover:bg-cyan-700",
-    tooltip: "Upgrade your plan",
   },
 ];

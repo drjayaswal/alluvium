@@ -23,11 +23,13 @@ import {
   ExclamationMarkIcon,
   FilePdfIcon,
   FolderOpenIcon,
-  LockSimpleIcon,
+  FileDocIcon,
+  FileTxtIcon,
   PaperclipIcon,
   TrashIcon,
   WarningOctagonIcon,
 } from "@phosphor-icons/react";
+
 export function Services({ user }: { user: UserData }) {
   const id = user;
   const router = useRouter();
@@ -48,6 +50,7 @@ export function Services({ user }: { user: UserData }) {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "text/plain",
   ];
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isProcessing) {
@@ -55,10 +58,12 @@ export function Services({ user }: { user: UserData }) {
     }
     return () => clearInterval(interval);
   }, [isProcessing, user]);
+
   useEffect(() => {
     setIsLoading(true);
     fetchHistory().finally(() => setIsLoading(false));
   }, [user]);
+
   const fetchHistory = async () => {
     setIsProcessing(true);
     const token = localStorage.getItem("token");
@@ -80,6 +85,7 @@ export function Services({ user }: { user: UserData }) {
       console.error("History fetch error:", err);
     }
   };
+
   const handleSelection = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -100,7 +106,7 @@ export function Services({ user }: { user: UserData }) {
     }
 
     if (!description) {
-      toast.error("Please provide a job description first.");
+      toast.error("Please provide description first.");
       return;
     }
 
@@ -160,6 +166,7 @@ export function Services({ user }: { user: UserData }) {
       router.push("/services");
     }
   };
+
   const exportToCSV = () => {
     const completedFiles = extractedData.filter(
       (file) => file.status === "completed",
@@ -228,10 +235,12 @@ export function Services({ user }: { user: UserData }) {
       },
     });
   };
+
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => openPicker(tokenResponse.access_token),
     scope: "https://www.googleapis.com/auth/drive.readonly",
   });
+
   const openPicker = (token: string) => {
     if (!isPickerLoaded) return toast.error("Picker API not loaded.");
     const google = (window as any).google;
@@ -301,6 +310,7 @@ export function Services({ user }: { user: UserData }) {
 
     picker.setVisible(true);
   };
+
   const resetHistory = async () => {
     const token = localStorage.getItem("token");
     if (extractedData.length < 1) {
@@ -334,6 +344,7 @@ export function Services({ user }: { user: UserData }) {
       },
     });
   };
+
   const getStatusConfig = (status: string) => {
     switch (status) {
       case "completed":
@@ -358,6 +369,7 @@ export function Services({ user }: { user: UserData }) {
         };
     }
   };
+
   const getDescription = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (user.credits == 0) {
       toast.info("Insufficient credits", {
@@ -380,7 +392,7 @@ export function Services({ user }: { user: UserData }) {
     if (!file) return;
 
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-      toast.error("Invalid file type for Job Description");
+      toast.error("Invalid file type for description");
       return;
     }
 
@@ -416,6 +428,7 @@ export function Services({ user }: { user: UserData }) {
       e.target.value = "";
     }
   };
+
   const downloadReport = async () => {
     if (reportRef.current === null) return;
 
@@ -442,7 +455,11 @@ export function Services({ user }: { user: UserData }) {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="bg-transparent selection:bg-indigo-600 selection:text-white text-white font-mono pt-15.5">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      className="text-white"
+    >
       <Script
         src="https://apis.google.com/js/api.js"
         onLoad={() =>
@@ -450,7 +467,7 @@ export function Services({ user }: { user: UserData }) {
         }
       />
 
-      <div className="max-w-full grid grid-cols-1 lg:grid-cols-10 h-full lg:h-[calc(100vh-80px)]">
+      <div className="max-w-full grid grid-cols-1 lg:grid-cols-10 h-screen">
         <div className="lg:col-span-6 p-6 lg:pt-9.25 lg:pr-7 lg:pl-18 flex flex-col space-y-7.75 border-r border-white/5">
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
@@ -464,52 +481,59 @@ export function Services({ user }: { user: UserData }) {
               )}
             </div>
             <div className="relative group">
-              <textarea
-                placeholder="Paste the requirements here..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full h-71 p-6 bg-black border-dashed border focus:border-white/40 border-white/20 text-sm leading-relaxed text-white placeholder:text-white/40 outline-none transition-all resize-none"
-              />
-              <div className="absolute top-1 right-1 flex flex-col">
-                {description && (
-                  <button
-                    onClick={() => setDescription("")}
-                    className="p-2 bg-black cursor-pointer hover:text-white text-white/30 hover:bg-red-500 transition-all"
-                  >
-                    <BackspaceIcon className="w-5 h-5" />
-                  </button>
-                )}
-                <label className="p-2 bg-black cursor-pointer hover:text-white text-white/30 hover:bg-indigo-500 transition-all">
-                  <PaperclipIcon className="w-5 h-5" />
-                  <input
-                    type="file"
-                    className="hidden"
-                    onChange={getDescription}
-                    accept=".pdf,.docx,.txt"
-                  />
-                </label>
+              <div className="relative group">
+                <textarea
+                  placeholder="Paste the requirements here..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full h-71 p-6 bg-black border-dashed border focus:border-white/40 border-white/20 text-sm leading-relaxed text-white placeholder:text-white/40 outline-none transition-all resize-none"
+                />
+
+                <div className="absolute top-3 right-3 flex flex-col gap-2">
+                  {description && (
+                    <div className="relative group/tooltip">
+                      <div className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
+                        <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap relative">
+                          Clear Description
+                          <div className="absolute top-1/2 -right-1 -translate-y-1/2 border-y-4 border-y-transparent border-l-4 border-l-white" />
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setDescription("")}
+                        className="flex items-center justify-center w-9 h-9 cursor-pointer hover:text-white text-white/50 hover:bg-red-600 transition-colors"
+                      >
+                        <BackspaceIcon className="w-5 h-5" />
+                      </button>
+                    </div>
+                  )}
+                  <div className="relative group/tooltip">
+                    <div className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
+                      <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl relative">
+                        Upload Description
+                        <div className="absolute top-1/2 -right-1 -translate-y-1/2 border-y-4 border-y-transparent border-l-4 border-l-white" />
+                      </div>
+                    </div>
+                    <label className="flex items-center justify-center w-9 h-9 cursor-pointer text-white/50 hover:bg-white hover:text-black transition-colors">
+                      <PaperclipIcon className="w-5 h-5" />
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={getDescription}
+                        accept=".pdf,.docx,.txt"
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div className="space-y-4 mb-3.75">
-            <div className="flex gap-2 items-center">
-              <h3 className="text-[12px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
-                Source Selection
-              </h3>
-              <div className="flex items-center gap-2 px-3">
-                <CurrencyCircleDollarIcon className="w-4 h-4 text-white" />
-                <span className="text-[11px] font-medium text-white tracking-widest">
-                  1/file
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 bg-black border border-white/15">
+            <div className="flex">
               {[
                 {
-                  title: "Google Drive",
-                  icon: (
-                    <CloudIcon className="w-5 h-5 text-white group-hover:text-white" />
-                  ),
+                  title: "Drive",
+                  tooltip: "Import from Drive",
+                  icon: <CloudIcon className="scale-180" />,
                   handler: () => {
                     toast.info("Upgrade to use Google Drive", {
                       action: {
@@ -523,95 +547,68 @@ export function Services({ user }: { user: UserData }) {
                         },
                       },
                     });
-                    return;
-                    description.trim()
-                      ? login()
-                      : toast.error("Description Required");
                   },
-                  color: "hover:bg-indigo-700",
                 },
                 {
-                  title: "Upload Folder",
-                  icon: (
-                    <FolderOpenIcon className="w-5 h-5 text-white group-hover:text-white" />
-                  ),
+                  title: "Folder",
+                  tooltip: "Upload Whole Folder",
+                  icon: <FolderOpenIcon className="scale-180" />,
                   handler: () =>
                     description.trim()
                       ? folderInputRef.current?.click()
                       : toast.error("Description Required"),
-                  color: "hover:bg-indigo-700",
                 },
                 {
-                  title: "Quick File",
-                  icon: (
-                    <FilePdfIcon className="w-5 h-5 text-white group-hover:text-white" />
-                  ),
+                  title: "File",
+                  tooltip: "Upload Single File",
+                  icon: <FilePdfIcon className="scale-180" />,
                   handler: () =>
                     description.trim()
                       ? fileInputRef.current?.click()
                       : toast.error("Description Required"),
-                  color: "hover:bg-indigo-700",
-                },
-                {
-                  title: "Watch Folder",
-                  icon: (
-                    <span className="text-[9px] border border-white/20 px-1">
-                      <LockSimpleIcon />
-                    </span>
-                  ),
-                  handler: () =>
-                    toast.info("Feature in Development..", {
-                      description: "",
-                      action: {
-                        label: "Notify Me",
-                        onClick: () => {
-                          toast.success("We'll Notify You..!");
-                        },
-                      },
-                    }),
-                  disabled: true,
                 },
               ].map((btn, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    if (user.credits == 0) {
-                      toast.info("Insufficient credits", {
-                        action: {
-                          label: "Upgrade",
-                          onClick: () => {
-                            const toastId = toast.loading("Redirecting...");
-                            setTimeout(() => {
-                              toast.dismiss(toastId);
-                              router.push("/upgrade");
-                            }, 1500);
-                          },
-                        },
-                      });
-                    } else btn.handler();
-                  }}
-                  className={cn(
-                    "group/btn relative flex items-center justify-between overflow-hidden px-8 py-4 font-bold text-white transition-all duration-500",
-                    btn.disabled
-                      ? "opacity-30 cursor-not-allowed"
-                      : cn("cursor-pointer hover:bg-indigo-700", btn.color),
-                  )}
-                >
-                  <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
-                    {btn.title}
-                  </span>
-                  <div className="relative flex items-center justify-center h-6 w-6 overflow-hidden">
-                    <div className="absolute transform transition-all duration-500 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
-                      {btn.icon}
-                    </div>
-                    <div className="transition-all duration-500 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
-                      {btn.icon}
+                <div key={i} className="relative group/parent">
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/parent:opacity-100 transition-opacity duration-200 hidden md:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                      {btn.tooltip}
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-white" />
                     </div>
                   </div>
-                  {!btn.disabled && (
-                    <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out group-hover/btn:translate-x-full" />
-                  )}
-                </button>
+                  <button
+                    onClick={() => {
+                      if (user.credits == 0) {
+                        toast.info("Insufficient credits", {
+                          action: {
+                            label: "Upgrade",
+                            onClick: () => {
+                              const toastId = toast.loading("Redirecting...");
+                              setTimeout(() => {
+                                toast.dismiss(toastId);
+                                router.push("/upgrade");
+                              }, 1500);
+                            },
+                          },
+                        });
+                      } else btn.handler();
+                    }}
+                    className={cn(
+                      "w-full group/btn relative flex items-center justify-between overflow-hidden px-6 py-3 font-bold text-white transition-all duration-500 cursor-pointer hover:bg-white hover:text-black",
+                    )}
+                  >
+                    <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
+                      {btn.title}
+                    </span>
+                    <div className="relative flex items-center justify-center h-8 w-8 overflow-hidden">
+                      <div className="absolute transform transition-all duration-500 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
+                        {btn.icon}
+                      </div>
+                      <div className="transition-all duration-500 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
+                        {btn.icon}
+                      </div>
+                    </div>
+                  </button>
+                </div>
               ))}
             </div>
           </div>
@@ -634,7 +631,7 @@ export function Services({ user }: { user: UserData }) {
                   user.credits < 10 && "bg-red-500/20"
                 }`}
               >
-                <CurrencyCircleDollarIcon
+                <CurrencyCircleDollarIcon weight="fill" 
                   className={`w-4 h-5 ${user.credits < 10 ? "text-red-400" : "text-white"}`}
                 />
                 <span
@@ -643,6 +640,7 @@ export function Services({ user }: { user: UserData }) {
                   {user.credits}
                 </span>
               </div>
+
               <button
                 onClick={() => {
                   toast.info("Want to Upgrade", {
@@ -658,48 +656,78 @@ export function Services({ user }: { user: UserData }) {
                     },
                   });
                 }}
-                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-cyan-700"
+                className="group px-10 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-cyan-700"
               >
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
+                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                    Upgrade your Plan
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                  </div>
+                </div>
                 <span className="text-[12px]">Upgrade</span>
               </button>
-
             </div>
 
             <div className="flex items-center border border-white/13 p-0.5">
-              <button
-                onClick={fetchHistory}
-                title="Sync History"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-indigo-700"
-              >
-                <ArrowsCounterClockwiseIcon
-                  className={cn(
-                    "text-white transition-all",
-                    isProcessing && "animate-spin",
-                  )}
-                />
-              </button>
+              <div className="relative group/action">
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
+                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                    Sync History
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                  </div>
+                </div>
+                <button
+                  onClick={fetchHistory}
+                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-white"
+                >
+                  <ArrowsCounterClockwiseIcon weight="fill"
+                    className={cn(
+                      "text-white group-hover:text-black transition-all",
+                      isProcessing && "animate-spin",
+                    )}
+                  />
+                </button>
+              </div>
               <div className="w-px h-8 bg-white/20 mx-0.5" />
-              <button
-                onClick={exportToCSV}
-                title="Export CSV"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-600"
-              >
-                <CloudArrowDownIcon className="text-white transition-all" />
-              </button>
+              <div className="relative group/action">
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
+                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                    Export CSV
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                  </div>
+                </div>
+                <button
+                  onClick={exportToCSV}
+                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-600"
+                >
+                  <CloudArrowDownIcon weight="fill" className="text-white transition-all" />
+                </button>
+              </div>
               <div className="w-px h-8 bg-white/20 mx-0.5" />
-              <button
-                onClick={resetHistory}
-                title="Clear All"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-600"
-              >
-                <TrashIcon className="text-white transition-all" />
-              </button>
+              <div className="relative group/action">
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
+                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                    Clear History
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                  </div>
+                </div>
+                <button
+                  onClick={resetHistory}
+                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-600"
+                >
+                  <TrashIcon weight="fill"  className="text-white transition-all" />
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             {extractedData.length === 0 ? (
               <div className="h-full flex flex-col items-center bg-black/10 justify-center space-y-4 opacity-50">
-                <FilePdfIcon className="w-8 h-8" />
+                <div className="flex items-center gap-2">
+                  <FilePdfIcon className="w-8 h-8" />
+                  <FileDocIcon className="w-8 h-8" />
+                  <FileTxtIcon className="w-8 h-8" />
+                </div>
                 <p className="text-[10px] uppercase tracking-widest">
                   Awaiting Uploads
                 </p>
@@ -911,7 +939,7 @@ export function Services({ user }: { user: UserData }) {
         directory=""
         onChange={handleSelection}
       />
-    </div>
+    </motion.div>
   );
 }
 

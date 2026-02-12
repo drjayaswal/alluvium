@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -10,7 +11,7 @@ import {
   PackageIcon,
   PiggyBankIcon,
   SignOutIcon,
-  UserIcon
+  UserIcon,
 } from "@phosphor-icons/react";
 
 import { ProfileProps } from "@/lib/interface";
@@ -40,13 +41,13 @@ export function Profile({ user }: ProfileProps) {
       label: "Home",
       icon: <HouseLineIcon size={20} />,
       onClick: () => router.push("/"),
-      hoverClass: "hover:bg-lime-700",
+      hoverClass: "hover:bg-white hover:text-black",
     },
     {
       label: "Services",
       icon: <PackageIcon size={20} />,
       onClick: () => router.push("/services"),
-      hoverClass: "hover:bg-lime-700",
+      hoverClass: "hover:bg-white hover:text-black",
     },
     {
       label: "Logout",
@@ -59,14 +60,18 @@ export function Profile({ user }: ProfileProps) {
   const isLowCredits = user.credits < 10;
 
   return (
-    <div className="w-full selection:bg-lime-600 selection:text-white text-white flex-col">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      className="w-full text-white flex-col"
+    >
       <div className="max-w-2xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <h1 className="text-3xl sm:text-4xl font-black text-white">
             Account Profile
           </h1>
 
-          <div className="flex items-center w-full sm:w-auto border border-white/12 px-1 py-0.5">
+          <div className="flex items-center w-full sm:w-auto px-1 py-0.5">
             {navItems.map((item, index) => (
               <div key={item.label} className="flex items-center">
                 <div className="relative group/tooltip">
@@ -84,10 +89,6 @@ export function Profile({ user }: ProfileProps) {
                     </div>
                   </div>
                 </div>
-                
-                {index < navItems.length - 1 && (
-                  <div className="h-12 bg-white/12 w-px mx-1" />
-                )}
               </div>
             ))}
           </div>
@@ -111,8 +112,8 @@ export function Profile({ user }: ProfileProps) {
               <div
                 className={`px-3 py-1 transition-all ${
                   isLowCredits
-                    ? "bg-rose-700/20 text-rose-700"
-                    : "text-white bg-lime-700"
+                    ? "bg-rose-700 text-white"
+                    : "text-black bg-white"
                 }`}
               >
                 <span className="text-sm sm:text-lg font-bold">
@@ -124,11 +125,9 @@ export function Profile({ user }: ProfileProps) {
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0 relative">
                 <BellIcon size={24} />
-                {user.total_conversations > 0 && (
-                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-lime-700 text-[10px] font-black text-white ring-2 ring-black">
-                    {user.total_conversations}
-                  </span>
-                )}
+                <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black text-black">
+                  {user.total_conversations}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-sm sm:text-lg flex items-center font-medium gap-2 text-white/30 italic">
@@ -155,6 +154,6 @@ export function Profile({ user }: ProfileProps) {
           </section>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

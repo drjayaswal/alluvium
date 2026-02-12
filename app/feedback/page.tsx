@@ -1,11 +1,20 @@
 "use client";
 
+import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
 import Image from "next/image";
-import { ArrowLeftIcon, ChatDotsIcon, CircleNotchIcon, EnvelopeSimpleIcon, PaperPlaneTiltIcon, Tag, TagIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ChatDotsIcon,
+  CircleNotchIcon,
+  EnvelopeSimpleIcon,
+  PaperPlaneTiltIcon,
+  Tag,
+  TagIcon,
+} from "@phosphor-icons/react";
 
 export default function FeedbackPage() {
   const router = useRouter();
@@ -53,7 +62,11 @@ export default function FeedbackPage() {
     }
   };
   return (
-    <div className="min-h-screen selection:bg-sky-600 selection:text-white text-white font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      className="min-h-screen text-white font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden"
+    >
       <div className="relative p-6.5 px-10 z-10 w-full max-w-160 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <button
           onClick={() => router.back()}
@@ -70,23 +83,25 @@ export default function FeedbackPage() {
 
         <div className="mb-3 text-center md:text-left">
           <h1 className="flex items-center gap-2 mb-2">
-          <Image
-            className="invert"
-            src="/logo.png"
-            alt="logo"
-            width={40}
-            height={40}
-          />
-            <span className="underline text-3xl font-bold tracking-tighter uppercase underline-offset-4 decoration-sky-600">Feedback</span><span className="text-3xl font-bold text-sky-600 -ml-3 mb-1.25 decoration-none decoration-transparent">•</span>
+            <Image
+              className="invert"
+              src="/logo.png"
+              alt="logo"
+              width={40}
+              height={40}
+            />
+            <span className="underline text-3xl font-bold tracking-tighter uppercase underline-offset-4 decoration-white/50">
+              Feedback
+            </span>
+            <span className="text-3xl font-bold text-white/50 -ml-3 mb-1.25 decoration-none decoration-transparent">
+              •
+            </span>
           </h1>
           <p className="text-white/40 text-xs font-medium uppercase tracking-widest">
             Help us bridge the gap
           </p>
         </div>
-        <form
-          onSubmit={handleFeedback}
-          className="space-y-6 -mr-1 p-8"
-        >
+        <form onSubmit={handleFeedback} className="space-y-6 -mr-1 p-8">
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
               <EnvelopeSimpleIcon size={12} /> Email Address
@@ -103,7 +118,7 @@ export default function FeedbackPage() {
                 setFormData({ ...formData, email: e.target.value })
               }
               placeholder="user@example.com"
-              className="w-full bg-black border border-white/10 px-4 py-3 text-sm focus:border-sky-700 outline-none transition-all placeholder:text-white/30"
+              className="w-full bg-black border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none transition-all placeholder:text-white/30"
             />
           </div>
           <div className="space-y-2">
@@ -116,7 +131,7 @@ export default function FeedbackPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, category: e.target.value })
                 }
-                className="w-full bg-black text-white/30 border border-white/10 px-4 py-3 text-sm focus:border-sky-700 outline-none appearance-none cursor-pointer"
+                className="w-full bg-black text-white/30 border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none appearance-none cursor-pointer"
               >
                 {Object.keys(categoryMap).map((label) => (
                   <option key={label} value={label} className="bg-neutral-900">
@@ -145,18 +160,19 @@ export default function FeedbackPage() {
                 setFormData({ ...formData, message: e.target.value })
               }
               placeholder="How can we improve the experience?"
-              className="w-full bg-black border border-white/10 px-4 py-3 text-sm focus:border-sky-700 outline-none transition-all resize-none placeholder:text-white/30"
+              className="w-full bg-black border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none transition-all resize-none placeholder:text-white/30"
             />
           </div>
           <button
             type="submit"
             disabled={isLoading}
-            className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-5 py-2 font-bold text-black transition-colors duration-500 bg-white hover:bg-sky-700 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+            className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-5 py-2 font-bold transition-colors duration-500 text-white hover:bg-white hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <span className="relative text-sm flex items-center justify-center gap-2 z-10 transition-all duration-500">
               {isLoading ? (
                 <>
-                  Submiting... <CircleNotchIcon className="animate-spin" size={16} />
+                  Submiting...{" "}
+                  <CircleNotchIcon className="animate-spin" size={16} />
                 </>
               ) : (
                 <>
@@ -164,10 +180,10 @@ export default function FeedbackPage() {
                 </>
               )}
             </span>
-            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out group-hover/btn:translate-x-full" />
+            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-black/40 to-transparent transition-transform duration-1000 ease-in-out group-hover/btn:translate-x-full" />
           </button>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }

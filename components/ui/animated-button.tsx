@@ -13,7 +13,7 @@ export const AnimatedButton = ({
   }) => (
     <button
       onClick={onClick}
-      className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-indigo-700"
+      className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-white hover:text-black"
     >
       <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
         {label}

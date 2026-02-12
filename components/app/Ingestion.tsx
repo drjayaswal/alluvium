@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { getBaseUrl } from "@/lib/utils";
@@ -154,23 +155,27 @@ export default function Ingestion({ user }: AIProps) {
   };
 
   return (
-    <div className="min-h-screen w-full selection:bg-violet-600 selection:text-white flex items-center justify-center p-4">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      className="min-h-screen w-full flex items-center justify-center p-4"
+    >
       <div className="w-full max-w-4xl">
-        <header className="border-l-2 border-violet-700 mb-10 flex items-center justify-between">
-          <div className="pl-1">
+        <header className="mb-10 flex items-center justify-between">
+          <div>
             <h1 className="text-4xl font-black tracking-tighter text-white">
               <span className="uppercase">Ingest your data</span>
             </h1>
-              <span className="underline underline-offset-5 text-white/50 decoration-violet-700">
-                Add Context
-              </span>
+            <span className="text-white/50">
+              Add Context
+            </span>
           </div>
         </header>
         <div className="grid grid-cols-1 md:grid-cols-2 border border-white/10 bg-black backdrop-blur-sm">
           <div className="p-8  space-y-6">
             <div className="flex items-center justify-between">
               <YoutubeLogoIcon
-                className={`scale-150 ${videoLoading || videoUrl ? " text-violet-700" : "text-white/30"}`}
+                className={`scale-150 ${videoLoading || videoUrl ? " text-white" : "text-white/30"}`}
               />
               <span className="text-[14px] text-white/30 font-bold uppercase">
                 Video
@@ -180,14 +185,14 @@ export default function Ingestion({ user }: AIProps) {
             <form onSubmit={handleVideoIngest} className="space-y-4">
               <input
                 disabled={videoLoading}
-                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-violet-700 transition-colors placeholder:text-zinc-700"
+                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-white transition-colors placeholder:text-white/50"
                 placeholder="https://www.youtube.com/watch?v=AKDBhBALKBAKljHBKAb"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
               />
               <button
                 disabled={videoLoading || !videoUrl}
-                className={`cursor-pointer group w-full bg-white text-black py-3 text-xs font-bold uppercase ${videoUrl && "hover:bg-violet-700 hover:text-white"} transition-all flex items-center justify-center gap-2 disabled:opacity-30`}
+                className={`cursor-pointer group w-full bg-white/80 text-black py-3 text-xs font-bold uppercase ${videoUrl && "hover:bg-white hover:text-black"} transition-all flex items-center justify-center gap-2 disabled:opacity-30`}
               >
                 {videoLoading ? (
                   <>
@@ -209,15 +214,15 @@ export default function Ingestion({ user }: AIProps) {
           <div className="p-8 space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex scale-150">
-              <FilePdfIcon
-                className={`${fileLoading ? "text-violet-700" : "text-white/50"}`}
-              />
-              <FileDocIcon
-                className={`${fileLoading ? "text-violet-700" : "text-white/50"}`}
-              />
-                            <FileTxtIcon
-                className={`${fileLoading ? "text-violet-700" : "text-white/50"}`}
-              />
+                <FilePdfIcon
+                  className={`${fileLoading ? "text-white" : "text-white/50"}`}
+                />
+                <FileDocIcon
+                  className={`${fileLoading ? "text-white" : "text-white/50"}`}
+                />
+                <FileTxtIcon
+                  className={`${fileLoading ? "text-white" : "text-white/50"}`}
+                />
               </div>
               <span className="text-[14px] text-white/30 font-bold uppercase">
                 Document
@@ -227,16 +232,16 @@ export default function Ingestion({ user }: AIProps) {
             <label
               className={`
               border border-dashed p-10 flex flex-col items-center justify-center cursor-pointer transition-all
-              ${fileLoading ? "border-violet-700 bg-violet-700/5" : "border-white/20 hover:border-white/40 hover:bg-white/5"}
+              ${fileLoading ? "border-white bg-white/10" : "border-white/50 hover:border-white/80 hover:bg-white/5"}
             `}
             >
               {fileLoading ? (
                 <div className="flex flex-col items-center gap-2 text-center">
                   <CircleNotchIcon
-                    className="animate-spin text-violet-700"
+                    className="animate-spin text-white"
                     size={24}
                   />
-                  <span className="text-[12px] uppercase text-violet-700 font-bold">
+                  <span className="text-[12px] uppercase text-white font-bold">
                     Uploading...
                   </span>
                   <span className="text-[10px] text-white/50 truncate max-w-37.5">
@@ -265,6 +270,6 @@ export default function Ingestion({ user }: AIProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
