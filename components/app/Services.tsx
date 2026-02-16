@@ -28,6 +28,9 @@ import {
   PaperclipIcon,
   TrashIcon,
   WarningOctagonIcon,
+  ImageIcon,
+  CameraIcon,
+  PlugsIcon,
 } from "@phosphor-icons/react";
 import Image from "next/image";
 
@@ -543,16 +546,108 @@ export function Services({ user }: { user: UserData }) {
               </div>
             </div>
           </div>
-          <div className="space-y-4 mb-3.75">
-            <div className="flex gap-4">
-              {" "}
-              {[
-                {
-                  title: "Drive",
-                  subtitle: "Import from Drive",
-                  icon: <CloudIcon size={24} weight="fill" />,
-                  handler: () => {
-                    toast.info("Upgrade to use Google Drive", {
+          <div className="grid grid-cols-4">
+            {" "}
+            {[
+              {
+                title: "Drive",
+                tooltip: "Import from Drive",
+                icon: <CloudIcon size={24} weight="fill" />,
+                handler: () => {
+                  toast.info("Upgrade to use Google Drive", {
+                    action: {
+                      label: "Upgrade",
+                      onClick: () => {
+                        const toastId = toast.loading("Redirecting...");
+                        setTimeout(() => {
+                          toast.dismiss(toastId);
+                          router.push("/upgrade");
+                        }, 1500);
+                      },
+                    },
+                  });
+                },
+              },
+              {
+                title: "Folder",
+                tooltip: "Upload Whole Folder",
+                icon: <FolderOpenIcon size={24} weight="fill" />,
+                handler: () =>
+                  description.trim()
+                    ? folderInputRef.current?.click()
+                    : toast.error("Description Required"),
+              },
+              {
+                title: "File",
+                tooltip: "Upload Single File",
+                icon: <FilePdfIcon size={24} weight="fill" />,
+                handler: () =>
+                  description.trim()
+                    ? fileInputRef.current?.click()
+                    : toast.error("Description Required"),
+              },
+              {
+                title: "Image",
+                tooltip: "Extract from Image",
+                icon: <ImageIcon size={24} weight="fill" />,
+                handler: () => {
+                  toast.info("Upgrade to use Image Extraction", {
+                    action: {
+                      label: "Upgrade",
+                      onClick: () => {
+                        const toastId = toast.loading("Redirecting...");
+                        setTimeout(() => {
+                          toast.dismiss(toastId);
+                          router.push("/upgrade");
+                        }, 1500);
+                      },
+                    },
+                  });
+                },
+              },{
+                title: "Camera",
+                tooltip: "Capture from Camera",
+                icon: <CameraIcon size={24} weight="fill" />,
+                handler: () => {
+                  toast.info("Upgrade to use Device Camera", {
+                    action: {
+                      label: "Upgrade",
+                      onClick: () => {
+                        const toastId = toast.loading("Redirecting...");
+                        setTimeout(() => {
+                          toast.dismiss(toastId);
+                          router.push("/upgrade");
+                        }, 1500);
+                      },
+                    },
+                  });
+                },
+              },
+              {
+                title: "Watch",
+                tooltip: "Connect & Watch Drive",
+                icon: <PlugsIcon size={24} weight="fill" />,
+                handler: () => {
+                  toast.info("Upgrade to use C&W Service", {
+                    action: {
+                      label: "Upgrade",
+                      onClick: () => {
+                        const toastId = toast.loading("Redirecting...");
+                        setTimeout(() => {
+                          toast.dismiss(toastId);
+                          router.push("/upgrade");
+                        }, 1500);
+                      },
+                    },
+                  });
+                },
+              }
+            ].map((btn, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  if (user.credits == 0) {
+                    toast.info("Insufficient credits", {
                       action: {
                         label: "Upgrade",
                         onClick: () => {
@@ -564,64 +659,27 @@ export function Services({ user }: { user: UserData }) {
                         },
                       },
                     });
-                  },
-                },
-                {
-                  title: "Folder",
-                  subtitle: "Upload Whole Folder",
-                  icon: <FolderOpenIcon size={24} weight="fill" />,
-                  handler: () =>
-                    description.trim()
-                      ? folderInputRef.current?.click()
-                      : toast.error("Description Required"),
-                },
-                {
-                  title: "File",
-                  subtitle: "Upload Single File",
-                  icon: <FilePdfIcon size={24} weight="fill" />,
-                  handler: () =>
-                    description.trim()
-                      ? fileInputRef.current?.click()
-                      : toast.error("Description Required"),
-                },
-              ].map((btn, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    if (user.credits == 0) {
-                      toast.info("Insufficient credits", {
-                        action: {
-                          label: "Upgrade",
-                          onClick: () => {
-                            const toastId = toast.loading("Redirecting...");
-                            setTimeout(() => {
-                              toast.dismiss(toastId);
-                              router.push("/upgrade");
-                            }, 1500);
-                          },
-                        },
-                      });
-                    } else btn.handler();
-                  }}
-                  className="group flex-1 p-6 flex flex-col items-start text-left gap-4 cursor-pointer relative overflow-hidden"
-                >
-                  <div className="p-2 bg-white/5 group-hover:rounded-4xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300">
-                    {btn.icon}
-                  </div>
+                  } else btn.handler();
+                }}
+                className="group flex-1 p-6 flex items-center text-left gap-4 cursor-pointer relative"
+              >
+                <div className="p-2 bg-white/5 group-hover:rounded-4xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300">
+                  {btn.icon}
+                </div>
 
-                  <div className="z-10">
-                    <h3 className="text-white font-bold uppercase text-sm tracking-widest group-hover:translate-x-1 transition-transform">
-                      {btn.title}
-                    </h3>
-                    <p className="text-[10px] text-white/40 group-hover:text-white/70 uppercase mt-1 tracking-tighter">
-                      {btn.subtitle}
-                    </p>
+                <div className="z-10">
+                  <h3 className="text-white font-bold uppercase text-sm tracking-widest group-hover:scale-110 transition-all duration-200">
+                    {btn.title}
+                  </h3>
+                </div>
+                <div className="absolute -top-3 left-11 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:block">
+                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                    {btn.tooltip}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-white" />
                   </div>
-
-                  <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                </button>
-              ))}
-            </div>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
         <div className="lg:col-span-4 flex flex-col h-full bg-black border-l border-white/13 overflow-hidden">
@@ -646,9 +704,7 @@ export function Services({ user }: { user: UserData }) {
                   weight="fill"
                   className={`w-4 h-5 text-white`}
                 />
-                <span
-                  className={`text-[11px] font-medium text-white `}
-                >
+                <span className={`text-[11px] font-medium text-white `}>
                   {user.credits}
                 </span>
               </div>
@@ -823,16 +879,14 @@ export function Services({ user }: { user: UserData }) {
       <AnimatePresence>
         {selectedFileData && (
           <>
-            {/* Backdrop: Increased opacity and used black to properly hide the description section */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedFileData(null)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-md z-100" // Higher z-index and darker bg
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-100"
             />
 
-            {/* Modal Container */}
             <div className="fixed inset-0 grid place-items-center z-102 p-4 pointer-events-none">
               <motion.div
                 layoutId={`card-${selectedFileData.id}-${id}`}
@@ -974,9 +1028,7 @@ const renderSkillSection = (
   <section>
     <div className="flex justify-between items-center mb-4">
       <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
-        <div
-          className={`w-1.5 h-1.5 flex gap-4 items-center ${dotColor}`}
-        />
+        <div className={`w-1.5 h-1.5 flex gap-4 items-center ${dotColor}`} />
         {title}
         <div>
           {skills.length}({total})

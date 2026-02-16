@@ -111,6 +111,7 @@ export default function Conversation({ user }: { user: UserData }) {
         headers: { Authorization: `Bearer ${token}` },
       });
       const history = await res.json();
+      console.log(history);
       setMessages(history);
     } catch (error) {
       toast.error("Could not load history.");
@@ -262,9 +263,7 @@ export default function Conversation({ user }: { user: UserData }) {
           </div>
           <div className="px-2 flex-1 overflow-y-auto no-scrollbar">
             <span className="text-[12px] font-bold text-white">
-              {sources.length <= 2
-                ? `Conversation (${conversations.length.toString().padStart(2, "0")})`
-                : `Conversations [${conversations.length.toString().padStart(2, "0")}]`}
+              History
             </span>
             <div className="mt-4">
               {isSidebarLoading ? (
@@ -281,7 +280,7 @@ export default function Conversation({ user }: { user: UserData }) {
                     onClick={() => loadConversation(c.id)}
                     className={`w-full group cursor-pointer flex items-center gap-3 px-3 py-2.5 text-xs transition-all relative ${
                       activeConversationId === c.id
-                        ? "text-white bg-red-800"
+                        ? "text-white bg-red-700"
                         : "text-white/40 hover:bg-white/10"
                     }`}
                   >
@@ -443,7 +442,7 @@ export default function Conversation({ user }: { user: UserData }) {
               isFocused={true}
               onFocus={() => {}}
             />
-            <p className="text-white/50 text-[10px] uppercase text-center mt-4 tracking-widest font-bold">
+            <p className="text-white/70 text-[10px] uppercase text-center mt-4 tracking-widest font-bold">
               Click background to dismiss
             </p>
           </div>
@@ -475,39 +474,45 @@ const MessageEmptyState = ({
     );
   }
   return (
-    <div className="h-full flex flex-col items-center justify-center p-8 animate-in fade-in zoom-in-95 duration-700">
-      <div className="text-center max-w-sm flex flex-col items-center">
-        <Image
-          className="mb-6 opacity-80 grayscale hover:grayscale-0 transition-all duration-500"
-          src="/logo.png"
-          alt="logo"
-          width={60}
-          height={60}
-        />
-        <h3 className="text-xl font-bold text-white tracking-[0.4em] uppercase">
-          Alluvium•AI
-        </h3>
-        <div className="h-1 my-1 w-full bg-red-700/50" />
-      </div>
-      <div className="mt-6 w-full max-w-md border border-white/10">
-        <div className="grid grid-cols-1 sm:grid-cols-2">
-          {[
-            "Summarize document",
-            "Extract key insights",
-            "Find specific mentions",
-            "Analyze sentiment",
-          ].map((suggestion) => (
-            <button
-              key={suggestion}
-              onClick={() => onSetInput(suggestion)}
-              className="group relative flex items-center justify-center border-b border-r border-white/10 py-3 px-4 text-[11px] font-bold uppercase tracking-tighter text-white/50 transition-all hover:bg-red-700 hover:text-white cursor-pointer active:bg-red-800"
-            >
-              {suggestion}
-            </button>
-          ))}
-        </div>
-      </div>
+<div className="h-full flex flex-col items-center justify-center bg-black p-6 animate-in fade-in duration-1000">
+  <div className="flex flex-col items-center gap-2">
+    <div className="flex items-center gap-3">
+      <Image
+        className="invert"
+        src="/logo.png"
+        alt="logo"
+        width={40}
+        height={40}
+      />
+      <h3 className="text-4xl font-medium tracking-tighter text-white">
+        Alluvium<span className="text-red-600">.</span>
+      </h3>
     </div>
+    <div className="h-[2.75px] w-full rounded-4xl bg-red-700" />
+  </div>
+  <div className="mt-5 w-full max-w-sm">
+    <div className="grid grid-cols-2 gap-px">
+      {[
+        "Summarize document",
+        "Extract key insights",
+        "Find specific mentions",
+        "Analyze sentiment",
+      ].map((suggestion) => (
+        <button
+          key={suggestion}
+          onClick={() => onSetInput(suggestion)}
+          className="flex cursor-pointer items-center justify-center bg-black py-4 px-3
+                     text-[10px] font-bold uppercase tracking-widest text-white/50
+                     transition-all duration-200 
+                     hover:bg-red-700 hover:text-white
+                     active:bg-red-600"
+        >
+          {suggestion}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
   );
 };
 
@@ -558,6 +563,7 @@ const MessageItem = ({
     setTimeout(() => setIsShining(false), 850);
   };
   return (
+    <div className={`${isFocused && "h-60 p-8 mx-2"} overflow-y-auto overflow-x-hidden scrollbar-thick scrollbar-thumb-red-200 scrollbar-track-transparent`}>
     <div
       onClick={(e) => {
         onFocus?.();
@@ -605,6 +611,7 @@ const MessageItem = ({
         </span>
       )}
     </div>
+    </div>
   );
 };
 
@@ -628,9 +635,9 @@ const SourceEmptyState = ({ onIngest }: { onIngest: () => void }) => (
 );
 
 const ConversationsEmptyState = () => (
-  <div className="w-full group relative flex flex-col items-center justify-center py-4 px-4 border-2 border-dashed border-white/10 gap-2">
+  <div className="w-full group relative flex flex-col items-center justify-center py-4 px-4 border-2 border-dashed border-white/20 gap-2">
     <div className="text-center">
-      <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+      <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">
         Empty History
       </p>
     </div>
@@ -650,7 +657,11 @@ const getSourceIcon = (source: any) => {
         href={source.source_name}
         className="flex items-center justify-center"
       >
-        <YoutubeLogoIcon weight="fill"  className="fill-white shrink-0" size={16} />
+        <YoutubeLogoIcon
+          weight="fill"
+          className="fill-white shrink-0"
+          size={16}
+        />
       </Link>
     );
   }
@@ -659,10 +670,28 @@ const getSourceIcon = (source: any) => {
       {(() => {
         const n = String(source.source_name).toLowerCase();
         if (n.includes(".pdf"))
-          return <FilePdfIcon weight="fill" className="text-white shrink-0" size={16} />;
+          return (
+            <FilePdfIcon
+              weight="fill"
+              className="text-white shrink-0"
+              size={16}
+            />
+          );
         if (["doc", "docs", "docx"].some((ext) => n.includes(ext)))
-          return <FileDocIcon weight="fill"  className="text-white shrink-0" size={16} />;
-        return <FileTxtIcon weight="fill"  className="text-white shrink-0" size={16} />;
+          return (
+            <FileDocIcon
+              weight="fill"
+              className="text-white shrink-0"
+              size={16}
+            />
+          );
+        return (
+          <FileTxtIcon
+            weight="fill"
+            className="text-white shrink-0"
+            size={16}
+          />
+        );
       })()}
     </div>
   );

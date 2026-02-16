@@ -30,6 +30,7 @@ export function Profile({ user }: ProfileProps) {
           localStorage.removeItem("token");
           localStorage.removeItem("user_email");
           toast.success("Logged out successfully");
+          window.dispatchEvent(new Event("storage_change"));
           router.push("/connect");
         },
       },

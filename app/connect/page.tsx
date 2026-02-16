@@ -56,7 +56,7 @@ export default function Connect() {
               height={60}
               quality={75}
             />
-            Alluvium™
+            Alluvium<span className="text-white/50">™</span>
           </h1>
           <p className="text-white/70 text-sm mt-2">connect to your account</p>
         </div>

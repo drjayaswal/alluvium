@@ -1,25 +1,33 @@
-"use client"
+"use client";
 
 import { navLinks } from "@/lib/const";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Footer = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+function Footer() {
+  const [hasToken, setHasToken] = useState(false);
 
   useEffect(() => {
-    // Check if token exists in localStorage
     const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    }
+    setHasToken(!!token);
+
+    const checkToken = () => {
+      setHasToken(!!localStorage.getItem("token"));
+    };
+
+    window.addEventListener("storage_change", checkToken);
+    window.addEventListener("storage", checkToken);
+
+    return () => {
+      window.removeEventListener("storage_change", checkToken);
+      window.removeEventListener("storage", checkToken);
+    };
   }, []);
 
-  // If not authenticated, don't render the footer
-  if (!isAuthenticated) return null;
+  if (!hasToken) return null;
   return (
-    <footer className="w-full z-10 fixed bottom-0 left-0 bg-black">
+    <footer className="w-full z-10 fixed bottom-0 left-0 bg-black border-t border-white/15">
       <div className="max-w-7xl mx-auto px-4 py-3 md:px-8">
         <div className="flex flex-col gap-y-3 md:flex-row md:justify-between md:items-center">
           <nav className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-1">
@@ -34,11 +42,11 @@ const Footer = () => {
                   target={link.href.startsWith("http") ? "_blank" : "_self"}
                   rel="noopener noreferrer"
                   className={`
-        text-[9px] p-2 md:text-[10px] ${link.color} text-white transition-colors uppercase tracking-tighter whitespace-nowrap border-[0.5px] border-transparent
-        ${link.isGrouped ? "border-white/50 hover:border-transparent" : ""}
-        ${link.position === "start" ? "-mr-[19.5px]" : ""}
-        ${link.position === "end" ? "-ml-[19.5px]" : ""}
-      `}
+                    text-[9px] p-2 md:text-[10px] ${link.color} text-white transition-colors uppercase tracking-tighter whitespace-nowrap border border-transparent
+                    ${link.isGrouped ? "border-white/15 hover:border-transparent" : ""}
+                    ${link.position === "start" ? "border-r-0 -mr-4.75" : ""}
+                    ${link.position === "end" ? "border-l-0 -ml-4.75" : ""}
+                    `}
                 >
                   {link.name}
                 </Link>
@@ -56,6 +64,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;

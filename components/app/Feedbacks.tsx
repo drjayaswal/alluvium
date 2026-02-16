@@ -128,11 +128,10 @@ export default function Feedbacks({ user }: { user: UserData }) {
       animate={{ opacity: 1, filter: "blur(0px)" }}
       className="mb-8 space-y-2 text-white font-mono relative"
     >
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-5">
+      <div className="max-w-6xl h-screen py-20 mx-auto">
+        <header className="m-5">
           <h1 className="flex items-center gap-2">
             <Image
-              className="invert"
               src="/logo.png"
               alt="logo"
               width={40}
@@ -145,13 +144,13 @@ export default function Feedbacks({ user }: { user: UserData }) {
               •
             </span>
           </h1>
-          <div className="flex flex-wrap gap-px">
+          <div className="flex flex-wrap mt-10 gap-px">
             {filteredFeedbacks.length > 0 &&
               categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`cursor-pointer px-4 text-[12px] font-bold tracking-widest transition-none uppercase ${activeCategory === cat ? "bg-white text-black py-1" : "hover:bg-white/10 text-white/40 py-1"}`}
+                  className={`cursor-pointer px-4 text-[12px] font-bold tracking-widest transition-none uppercase ${activeCategory === cat ? "bg-white/10 text-white py-1" : "text-white/50 py-1"}`}
                 >
                   {cat}
                 </button>
@@ -159,7 +158,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
           </div>
         </header>
         {loading ? (
-          <div className="border-dashed border-2 border-white/20 py-32 flex flex-col items-center justify-center">
+          <div className="border-dashed border-2 border-white/20 py-16.5 flex flex-col items-center justify-center">
             <CircleNotchIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px] animate-spin" />
             <p className="text-[14px] text-white/50">Searching Records...</p>
           </div>
@@ -196,40 +195,40 @@ export default function Feedbacks({ user }: { user: UserData }) {
         )}
       </div>
       {selectedFeedback && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/5 backdrop-blur-md">
-          <div className="bg-zinc-950 border border-white/10 w-full max-w-2xl max-h-[90vh] flex flex-col relative animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/5 backdrop-blur-sm">
+          <div className="bg-black border border-white w-full max-w-md max-h-[90vh] flex flex-col relative animate-in fade-in zoom-in duration-200">
             <button
               onClick={() => setSelectedFeedback(null)}
               className="absolute top-6 right-6 cursor-pointer z-10 text-white hover:text-rose-600 transition-colors bg-black p-1"
             >
-              <XIcon size={24} />
+              <XIcon size={24} weight="bold" />
             </button>
             <div className="p-8 pb-4">
               <div
-                className={`inline-block text-[12px] px-3 py-1 font-black mb-4 uppercase tracking-widest ${getCategoryStyles(selectedFeedback.category).color} ${getCategoryStyles(selectedFeedback.category).bg}`}
+                className={`inline-block text-[12px] px-3 py-1 font-black mb-4 uppercase tracking-widest ${getCategoryStyles(selectedFeedback.category).color}`}
               >
                 {selectedFeedback.category || "General"}
               </div>
-              <div className="text-gray-500 text-xs flex items-center gap-2">
+              <div className="text-white/50 text-xs flex items-center gap-2">
                 <UserIcon size={14} /> {selectedFeedback.email}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-8 pt-0 custom-scrollbar">
-              <div className="bg-white/5 p-4 border-l-4 border-pink-600 mb-6">
-                <p className="text-lg md:text-xl leading-relaxed font-light italic text-white/90 wrap-break-word whitespace-pre-wrap">
+              <div className="p-4 border-b-2 border-pink-600 mb-6">
+                <p className="text-sm leading-relaxed font-light italic text-white wrap-break-word whitespace-pre-wrap">
                   "{selectedFeedback.content}"
                 </p>
               </div>
-              <p className="flex gap-2 items-center text-[14px] text-white/20 uppercase tracking-tighter">
+              <p className="flex gap-2 items-center text-[14px] text-white/50 uppercase tracking-tighter">
                 <ClockAfternoonIcon size={15} />
                 {new Date(selectedFeedback.created_at).toLocaleString()}
               </p>
             </div>
-            <div className="p-4 flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <button
                 onClick={() => handleResolve(selectedFeedback.id)}
                 disabled={resolvingId === selectedFeedback.id}
-                className="flex-1 bg-white cursor-pointer text-black font-bold py-4 uppercase hover:bg-pink-600 hover:text-white transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                className="flex-1 bg-white cursor-pointer text-black font-bold py-3 uppercase hover:bg-pink-600 hover:text-white transition-all flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {resolvingId === selectedFeedback.id && (
                   <CircleNotchIcon size={18} className="animate-spin" />
