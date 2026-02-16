@@ -10,8 +10,6 @@ import { toast } from "sonner";
 import {
   CircleNotchIcon,
   ClockAfternoonIcon,
-  CurrencyCircleDollarIcon,
-  FolderMinusIcon,
   FolderOpenIcon,
   UserIcon,
   XIcon,
