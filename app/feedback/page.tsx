@@ -118,7 +118,7 @@ export default function FeedbackPage() {
                 setFormData({ ...formData, email: e.target.value })
               }
               placeholder="user@example.com"
-              className="w-full bg-black border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none transition-all placeholder:text-white/30"
+              className="w-full border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none transition-all placeholder:text-white/30"
             />
           </div>
           <div className="space-y-2">
@@ -131,7 +131,7 @@ export default function FeedbackPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, category: e.target.value })
                 }
-                className="w-full bg-black text-white/30 border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none appearance-none cursor-pointer"
+                className="w-full text-white/30 border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none appearance-none cursor-pointer"
               >
                 {Object.keys(categoryMap).map((label) => (
                   <option key={label} value={label} className="bg-neutral-900">
@@ -160,7 +160,7 @@ export default function FeedbackPage() {
                 setFormData({ ...formData, message: e.target.value })
               }
               placeholder="How can we improve the experience?"
-              className="w-full bg-black border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none transition-all resize-none placeholder:text-white/30"
+              className="w-full border border-white/10 px-4 py-3 text-sm focus:border-white/50 outline-none transition-all resize-none placeholder:text-white/30"
             />
           </div>
           <button

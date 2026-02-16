@@ -1,12 +1,21 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { UserData } from "@/lib/interface";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
 import { getBaseUrl } from "@/lib/utils";
 import Image from "next/image";
 import { toast } from "sonner";
-import { CircleNotchIcon, ClockAfternoonIcon, CurrencyCircleDollarIcon, FolderOpenIcon, UserIcon, XIcon } from "@phosphor-icons/react";
+import {
+  CircleNotchIcon,
+  ClockAfternoonIcon,
+  CurrencyCircleDollarIcon,
+  FolderMinusIcon,
+  FolderOpenIcon,
+  UserIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 
 const getCategoryStyles = (category: string) => {
   const cat = (category || "GENERAL").toUpperCase();
@@ -114,26 +123,28 @@ export default function Feedbacks({ user }: { user: UserData }) {
   if (!user || !isAdmin) return null;
 
   return (
-    <div className="text-white selection:bg-pink-600 selection:text-white font-mono relative">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      className="mb-8 space-y-2 text-white font-mono relative"
+    >
       <div className="max-w-6xl mx-auto">
-        <header className="mb-12">
-          <div className="mb-3">
-            <h1 className="flex items-center gap-2 mb-2">
-              <Image
-                className="invert"
-                src="/logo.png"
-                alt="logo"
-                width={40}
-                height={40}
-              />
-              <span className="underline text-3xl font-bold tracking-tighter uppercase underline-offset-4 decoration-pink-600">
-                Feedbacks
-              </span>
-              <span className="text-3xl font-bold text-pink-600 -ml-2 mb-1.25 decoration-none decoration-transparent">
-                •
-              </span>
-            </h1>
-          </div>
+        <header className="mb-5">
+          <h1 className="flex items-center gap-2">
+            <Image
+              className="invert"
+              src="/logo.png"
+              alt="logo"
+              width={40}
+              height={40}
+            />
+            <span className="underline text-3xl font-bold tracking-tighter uppercase underline-offset-4 decoration-pink-600">
+              Feedbacks
+            </span>
+            <span className="text-3xl font-bold text-pink-600 -ml-2 mb-1.25 decoration-none decoration-transparent">
+              •
+            </span>
+          </h1>
           <div className="flex flex-wrap gap-px">
             {filteredFeedbacks.length > 0 &&
               categories.map((cat) => (
@@ -148,8 +159,9 @@ export default function Feedbacks({ user }: { user: UserData }) {
           </div>
         </header>
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 border border-dashed border-white/10">
-            <CurrencyCircleDollarIcon className="w-6 h-6 animate-spin text-white/20 mb-4" />
+          <div className="border-dashed border-2 border-white/20 py-32 flex flex-col items-center justify-center">
+            <CircleNotchIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px] animate-spin" />
+            <p className="text-[14px] text-white/50">Searching Records...</p>
           </div>
         ) : filteredFeedbacks.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px">
@@ -177,11 +189,9 @@ export default function Feedbacks({ user }: { user: UserData }) {
             })}
           </div>
         ) : (
-          <div className="border-dashed border-2 border-white/10 bg-white/3 py-32 flex flex-col items-center justify-center">
+          <div className="border-dashed border-2 border-white/20 py-32 flex flex-col items-center justify-center">
             <FolderOpenIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px]" />
-            <p className="text-[14px] uppercase tracking-[0.5em] text-white/50">
-              Zero Records
-            </p>
+            <p className="text-[14px] text-white/50">Zero Records</p>
           </div>
         )}
       </div>
@@ -232,6 +242,6 @@ export default function Feedbacks({ user }: { user: UserData }) {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -22,7 +22,7 @@ const UpgradePage = () => {
       className="text-white min-h-screen"
     >
       <div className="max-w-full grid grid-cols-1 lg:grid-cols-10 h-full lg:h-screen">
-        <div className="lg:col-span-5 p-8 lg:p-18 flex flex-col justify-between border-r border-white/10 bg-black">
+        <div className="lg:col-span-5 p-8 lg:p-18 flex flex-col justify-between border-r border-white/10">
           <div className="space-y-8">
             <div className="flex items-center gap-3">
               <h3 className="text-[12px] font-black text-white/40 uppercase tracking-[0.2em]">
@@ -93,7 +93,7 @@ const UpgradePage = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-5 p-8 lg:p-18 flex flex-col justify-between bg-black/50 relative overflow-hidden">
+        <div className="lg:col-span-5 p-8 lg:p-18 flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 blur-[120px] rounded-full -mr-48 -mt-48 pointer-events-none" />
           <div className="space-y-8 relative z-10">
             <div className="flex items-center gap-3">
@@ -112,7 +112,7 @@ const UpgradePage = () => {
                 <div className="flex items-baseline gap-1 mb-4">
                   <span className="text-2xl font-mono text-white/40">₹</span>
                   <span className="text-5xl font-black">999</span>
-                  <span className="text-white/40 font-mono">/MO</span>
+                  <span className="text-white/40 font-mono">/month</span>
                 </div>
                 <p className="text-white/50 leading-relaxed max-w-md">
                   Unlock the full potential of AI-driven resume analysis with
@@ -148,19 +148,21 @@ const UpgradePage = () => {
           <div className="mt-12 relative z-10">
             <button
               onClick={() => toast.loading(`Redirecting to payment...`)}
-              className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-6 py-3 font-bold text-white transition-all duration-500 hover:bg-indigo-700 hover:text-white"
+              className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-6 py-3 font-bold text-white transition-all duration-500 hover:bg-white hover:text-black"
             >
               <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
                 Upgrade to Pro
               </span>
               <div className="relative flex items-center overflow-hidden h-6 w-6 px-1">
                 <CurrencyCircleDollarIcon
-                  className={cn(
-                    "transform transition-all duration-500 -translate-x-full scale-150 opacity-0 absolute",
-                    "group-hover/btn:translate-x-0 group-hover/btn:opacity-100",
-                  )}
+                weight="fill"
+                className={cn(
+                  "transform transition-all duration-500 -translate-x-full scale-150 opacity-0 absolute",
+                  "group-hover/btn:translate-x-0 group-hover/btn:opacity-100",
+                )}
                 />
                 <CurrencyCircleDollarIcon
+                weight="fill"
                   className={cn(
                     "transition-all duration-500 opacity-100  scale-150",
                     "group-hover/btn:translate-x-full group-hover/btn:opacity-0",

@@ -29,6 +29,7 @@ import {
   TrashIcon,
   WarningOctagonIcon,
 } from "@phosphor-icons/react";
+import Image from "next/image";
 
 export function Services({ user }: { user: UserData }) {
   const id = user;
@@ -360,7 +361,7 @@ export function Services({ user }: { user: UserData }) {
       case "failed":
         return {
           icon: <ExclamationMarkIcon className="w-4 h-4" />,
-          bg: "text-rose-500",
+          bg: "text-red-500",
         };
       default:
         return {
@@ -467,9 +468,24 @@ export function Services({ user }: { user: UserData }) {
         }
       />
 
-      <div className="max-w-full grid grid-cols-1 lg:grid-cols-10 h-screen">
-        <div className="lg:col-span-6 p-6 lg:pt-9.25 lg:pr-7 lg:pl-18 flex flex-col space-y-7.75 border-r border-white/5">
+      <div className="max-w-full grid grid-cols-1 x-0 lg:grid-cols-10 h-screen">
+        <div className="lg:col-span-6 p-6 lg:pt-10 lg:pr-7 lg:pl-18 flex flex-col space-y-7.75 border-r border-white/5">
           <div className="space-y-4">
+            <header className="mb-10 flex items-center gap-2">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                width={60}
+                height={60}
+                className="-mr-2"
+              />
+              <div>
+                <h1 className="text-4xl font-black tracking-tighter text-white">
+                  <span className="uppercase">Services</span>
+                </h1>
+                <span className="text-white/50">View Features</span>
+              </div>
+            </header>
             <div className="flex items-center justify-between px-1">
               <h3 className="text-[12px] font-black text-white/40 uppercase tracking-[0.2em]">
                 Description
@@ -500,7 +516,7 @@ export function Services({ user }: { user: UserData }) {
                       </div>
                       <button
                         onClick={() => setDescription("")}
-                        className="flex items-center justify-center w-9 h-9 cursor-pointer hover:text-white text-white/50 hover:bg-red-600 transition-colors"
+                        className="flex items-center justify-center w-9 h-9 cursor-pointer hover:text-white text-white/50 hover:bg-red-800 transition-colors"
                       >
                         <BackspaceIcon className="w-5 h-5" />
                       </button>
@@ -528,12 +544,13 @@ export function Services({ user }: { user: UserData }) {
             </div>
           </div>
           <div className="space-y-4 mb-3.75">
-            <div className="flex">
+            <div className="flex gap-4">
+              {" "}
               {[
                 {
                   title: "Drive",
-                  tooltip: "Import from Drive",
-                  icon: <CloudIcon className="scale-180" />,
+                  subtitle: "Import from Drive",
+                  icon: <CloudIcon size={24} weight="fill" />,
                   handler: () => {
                     toast.info("Upgrade to use Google Drive", {
                       action: {
@@ -551,8 +568,8 @@ export function Services({ user }: { user: UserData }) {
                 },
                 {
                   title: "Folder",
-                  tooltip: "Upload Whole Folder",
-                  icon: <FolderOpenIcon className="scale-180" />,
+                  subtitle: "Upload Whole Folder",
+                  icon: <FolderOpenIcon size={24} weight="fill" />,
                   handler: () =>
                     description.trim()
                       ? folderInputRef.current?.click()
@@ -560,55 +577,49 @@ export function Services({ user }: { user: UserData }) {
                 },
                 {
                   title: "File",
-                  tooltip: "Upload Single File",
-                  icon: <FilePdfIcon className="scale-180" />,
+                  subtitle: "Upload Single File",
+                  icon: <FilePdfIcon size={24} weight="fill" />,
                   handler: () =>
                     description.trim()
                       ? fileInputRef.current?.click()
                       : toast.error("Description Required"),
                 },
               ].map((btn, i) => (
-                <div key={i} className="relative group/parent">
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/parent:opacity-100 transition-opacity duration-200 hidden md:block">
-                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
-                      {btn.tooltip}
-                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-white" />
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => {
-                      if (user.credits == 0) {
-                        toast.info("Insufficient credits", {
-                          action: {
-                            label: "Upgrade",
-                            onClick: () => {
-                              const toastId = toast.loading("Redirecting...");
-                              setTimeout(() => {
-                                toast.dismiss(toastId);
-                                router.push("/upgrade");
-                              }, 1500);
-                            },
+                <button
+                  key={i}
+                  onClick={() => {
+                    if (user.credits == 0) {
+                      toast.info("Insufficient credits", {
+                        action: {
+                          label: "Upgrade",
+                          onClick: () => {
+                            const toastId = toast.loading("Redirecting...");
+                            setTimeout(() => {
+                              toast.dismiss(toastId);
+                              router.push("/upgrade");
+                            }, 1500);
                           },
-                        });
-                      } else btn.handler();
-                    }}
-                    className={cn(
-                      "w-full group/btn relative flex items-center justify-between overflow-hidden px-6 py-3 font-bold text-white transition-all duration-500 cursor-pointer hover:bg-white hover:text-black",
-                    )}
-                  >
-                    <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
+                        },
+                      });
+                    } else btn.handler();
+                  }}
+                  className="group flex-1 p-6 flex flex-col items-start text-left gap-4 cursor-pointer relative overflow-hidden"
+                >
+                  <div className="p-2 bg-white/5 group-hover:rounded-4xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300">
+                    {btn.icon}
+                  </div>
+
+                  <div className="z-10">
+                    <h3 className="text-white font-bold uppercase text-sm tracking-widest group-hover:translate-x-1 transition-transform">
                       {btn.title}
-                    </span>
-                    <div className="relative flex items-center justify-center h-8 w-8 overflow-hidden">
-                      <div className="absolute transform transition-all duration-500 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
-                        {btn.icon}
-                      </div>
-                      <div className="transition-all duration-500 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
-                        {btn.icon}
-                      </div>
-                    </div>
-                  </button>
-                </div>
+                    </h3>
+                    <p className="text-[10px] text-white/40 group-hover:text-white/70 uppercase mt-1 tracking-tighter">
+                      {btn.subtitle}
+                    </p>
+                  </div>
+
+                  <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                </button>
               ))}
             </div>
           </div>
@@ -621,21 +632,22 @@ export function Services({ user }: { user: UserData }) {
               </h2>
               <div className="flex items-center gap-1.5">
                 <span className="text-[12px] font-mono text-white/40">
-                  [{extractedData.length.toString().padStart(2, "0")}]
+                  ({extractedData.length.toString().padStart(2, "0")})
                 </span>
               </div>
             </div>
             <div className="flex items-center border border-white/13 p-0.5">
               <div
                 className={`flex items-center gap-2 px-3 py-1.5 transition-colors duration-300 ${
-                  user.credits < 10 && "bg-red-500/20"
+                  user.credits < 10 && "bg-red-800"
                 }`}
               >
-                <CurrencyCircleDollarIcon weight="fill" 
-                  className={`w-4 h-5 ${user.credits < 10 ? "text-red-400" : "text-white"}`}
+                <CurrencyCircleDollarIcon
+                  weight="fill"
+                  className={`w-4 h-5 text-white`}
                 />
                 <span
-                  className={`text-[11px] font-medium ${user.credits < 10 ? "text-red-400" : "text-white"}`}
+                  className={`text-[11px] font-medium text-white `}
                 >
                   {user.credits}
                 </span>
@@ -656,12 +668,12 @@ export function Services({ user }: { user: UserData }) {
                     },
                   });
                 }}
-                className="group px-10 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-cyan-700"
+                className="group px-10 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-white hover:text-black font-bold"
               >
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
                   <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
                     Upgrade your Plan
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
                   </div>
                 </div>
                 <span className="text-[12px]">Upgrade</span>
@@ -673,14 +685,15 @@ export function Services({ user }: { user: UserData }) {
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
                   <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
                     Sync History
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
                   </div>
                 </div>
                 <button
                   onClick={fetchHistory}
                   className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-white"
                 >
-                  <ArrowsCounterClockwiseIcon weight="fill"
+                  <ArrowsCounterClockwiseIcon
+                    weight="fill"
                     className={cn(
                       "text-white group-hover:text-black transition-all",
                       isProcessing && "animate-spin",
@@ -693,14 +706,17 @@ export function Services({ user }: { user: UserData }) {
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
                   <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
                     Export CSV
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
                   </div>
                 </div>
                 <button
                   onClick={exportToCSV}
-                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-600"
+                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-800"
                 >
-                  <CloudArrowDownIcon weight="fill" className="text-white transition-all" />
+                  <CloudArrowDownIcon
+                    weight="fill"
+                    className="text-white transition-all"
+                  />
                 </button>
               </div>
               <div className="w-px h-8 bg-white/20 mx-0.5" />
@@ -708,14 +724,17 @@ export function Services({ user }: { user: UserData }) {
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
                   <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
                     Clear History
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-t-white" />
+                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
                   </div>
                 </div>
                 <button
                   onClick={resetHistory}
-                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-600"
+                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-800"
                 >
-                  <TrashIcon weight="fill"  className="text-white transition-all" />
+                  <TrashIcon
+                    weight="fill"
+                    className="text-white transition-all"
+                  />
                 </button>
               </div>
             </div>
@@ -750,7 +769,7 @@ export function Services({ user }: { user: UserData }) {
                       className={cn(
                         "p-[10.7px] py-[14.80px] group relative overflow-hidden transition-all border-b border-white/10",
                         isInteractive
-                          ? "cursor-pointer hover:bg-indigo-700/50"
+                          ? "cursor-pointer hover:bg-white/5"
                           : "opacity-60",
                       )}
                     >
@@ -777,7 +796,7 @@ export function Services({ user }: { user: UserData }) {
                                       ? "text-amber-500/50 group-hover:text-amber-500"
                                       : isProcessing
                                         ? "text-indigo-500/50 group-hover:text-indigo-500"
-                                        : "text-rose-500/50 group-hover:text-rose-500",
+                                        : "text-red-500/50 group-hover:text-red-500",
                                 )}
                               >
                                 {Math.floor(file.match_score)}%
@@ -804,21 +823,24 @@ export function Services({ user }: { user: UserData }) {
       <AnimatePresence>
         {selectedFileData && (
           <>
+            {/* Backdrop: Increased opacity and used black to properly hide the description section */}
             <motion.div
-              exit={{ opacity: 1 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setSelectedFileData(null)}
-              className="fixed inset-0 backdrop-blur-xs bg-white/5 h-full w-full z-30"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-100" // Higher z-index and darker bg
             />
-            <div
-              className="fixed inset-0 grid place-items-center z-100 p-4"
-              onClick={() => setSelectedFileData(null)}
-            >
+
+            {/* Modal Container */}
+            <div className="fixed inset-0 grid place-items-center z-102 p-4 pointer-events-none">
               <motion.div
                 layoutId={`card-${selectedFileData.id}-${id}`}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-6xl h-fit max-h-[90vh] bg-black border border-white/20 flex flex-col overflow-hidden"
+                className="w-full max-w-6xl h-fit max-h-[90vh] bg-black border border-white/20 flex flex-col overflow-hidden pointer-events-auto"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
               >
                 <div className="py-8 px-10 overflow-y-auto no-scrollbar">
                   <div className="mb-4 pb-2 border-b border-white/20 flex gap-2 items-center text-[15px] font-mono text-white/50">
@@ -858,7 +880,7 @@ export function Services({ user }: { user: UserData }) {
                         "Critical Missing",
                         selectedFileData.details?.missing_skills ?? [],
                         selectedFileData.details?.total_missed_skills ?? 0,
-                        "bg-rose-500",
+                        "bg-red-500",
                       )}
                       {renderSkillSection(
                         "Candidate Strengths",
@@ -953,7 +975,7 @@ const renderSkillSection = (
     <div className="flex justify-between items-center mb-4">
       <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
         <div
-          className={`w-1.5 h-1.5 rounded-full flex gap-4 items-center ${dotColor}`}
+          className={`w-1.5 h-1.5 flex gap-4 items-center ${dotColor}`}
         />
         {title}
         <div>
@@ -965,7 +987,7 @@ const renderSkillSection = (
       {skills.map((kw, i) => (
         <span
           key={i}
-          className="px-2.5 py-1 bg-white/5 border border-white/10 text-white/50 text-[11px] rounded-md"
+          className="px-2.5 py-1 border border-white/15 text-white/50 text-[11px]"
         >
           {kw}
         </span>

@@ -36,8 +36,8 @@ const Footer = () => {
                   className={`
         text-[9px] p-2 md:text-[10px] ${link.color} text-white transition-colors uppercase tracking-tighter whitespace-nowrap border-[0.5px] border-transparent
         ${link.isGrouped ? "border-white/50 hover:border-transparent" : ""}
-        ${link.position === "start" ? "rounded-l-xl -mr-4.5" : ""}
-        ${link.position === "end" ? "rounded-r-xl -ml-4.5" : ""}
+        ${link.position === "start" ? "-mr-[19.5px]" : ""}
+        ${link.position === "end" ? "-ml-[19.5px]" : ""}
       `}
                 >
                   {link.name}

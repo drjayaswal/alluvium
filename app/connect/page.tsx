@@ -45,8 +45,8 @@ export default function Connect() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center shadow-xl py-24 px-4 relative overflow-hidden">
-      <div className="relative z-10 w-full max-w-md mx-auto px-6 ">
+    <div className="flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="relative z-10 w-full max-w-md mx-auto">
         <div className="text-center mb-10">
           <h1 className="flex justify-center items-center text-5xl font-bold text-white">
             <Image
@@ -98,7 +98,7 @@ export default function Connect() {
           <button
             type="submit"
             disabled={loading}
-            className="group/btn cursor-pointer relative flex w-full items-center justify-between overflow-hidden bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-indigo-700 disabled:opacity-50"
+            className="group/btn cursor-pointer relative flex w-full items-center justify-between overflow-hidden bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-green-800 disabled:opacity-50"
           >
             <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest">
               {loading ? "Connecting..." : "Continue"}

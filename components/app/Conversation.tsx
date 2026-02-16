@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import React, { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import {
@@ -14,7 +15,19 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { ChatCircleDotsIcon, CheckIcon, CircleNotchIcon, CopyIcon, EmptyIcon, FileDocIcon, FilePdfIcon, FileTxtIcon, PaperPlaneTiltIcon, PlusCircleIcon, YoutubeLogoIcon } from "@phosphor-icons/react";
+import {
+  ChatCircleDotsIcon,
+  CheckIcon,
+  CircleNotchIcon,
+  CopyIcon,
+  EmptyIcon,
+  FileDocIcon,
+  FilePdfIcon,
+  FileTxtIcon,
+  PaperPlaneTiltIcon,
+  PlusCircleIcon,
+  YoutubeLogoIcon,
+} from "@phosphor-icons/react";
 
 export default function Conversation({ user }: { user: UserData }) {
   const router = useRouter();
@@ -161,26 +174,60 @@ export default function Conversation({ user }: { user: UserData }) {
   };
 
   return (
-    <div className="relative flex h-screen w-full selection:bg-transparent font-sans overflow-hidden bg-black">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(10px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      className="relative flex h-screen w-full font-sans overflow-hidden"
+    >
       {focusedIndex !== null && (
-        <div 
+        <div
           onClick={() => setFocusedIndex(null)}
-          className="fixed inset-0 z-80 bg-white/40 backdrop-blur-md animate-in fade-in duration-300 pointer-events-auto"
+          className="fixed inset-0 z-80 bg-black/10 backdrop-blur-xs animate-in fade-in duration-300 pointer-events-auto"
         />
       )}
 
-      <div className={`flex h-full w-full transition-all duration-500 ${
-        focusedIndex !== null ? "blur-sm scale-[0.98] pointer-events-none" : ""
-      }`}>
-        <aside className="w-70 mb-12 hidden md:flex flex-col border-r border-white bg-transparent">
+      <div
+        className={`flex h-full w-full transition-all duration-500 ${
+          focusedIndex !== null
+            ? "blur-sm scale-[0.98] pointer-events-none"
+            : ""
+        }`}
+      >
+        <aside className="w-70 mb-12 hidden md:flex flex-col border-r border-white/20 bg-transparent">
+          <header className="p-6 px-3 border-b border-white/20 flex flex-col">
+            <div className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                width={50}
+                height={50}
+                className="shrink-0"
+              />
+              <div className="flex flex-col justify-center">
+                <h1 className="text-2xl font-black text-white leading-none uppercase tracking-tighter">
+                  Sources
+                </h1>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <span className="text-[12px] font-bold uppercase tracking-widest text-white/50">
+                    Available Sources
+                  </span>
+                </div>
+              </div>
+            </div>
+          </header>
           <div className="p-6 px-2">
-            <span className="text-[10px] uppercase font-bold text-white border-b border-white/60">
-              Source(s) [{sources.length.toString().padStart(2, "0")}]
-            </span>
+            <span className="text-[12px] font-bold text-white">
+              {sources.length <= 2
+                ? `Source (${sources.length.toString().padStart(2, "0")})`
+                : `Source(s) [${sources.length.toString().padStart(2, "0")}]`}
+            </span>{" "}
             <div className="mt-4">
               {isSidebarLoading ? (
                 [1, 2].map((i) => (
-                  <div key={i} className="h-9 w-full bg-white/10 animate-pulse mb-px" />
+                  <div
+                    key={i}
+                    className="h-9 w-full bg-white/10 animate-pulse mb-px"
+                  />
                 ))
               ) : sources.length > 0 ? (
                 sources.map((s) => (
@@ -189,17 +236,19 @@ export default function Conversation({ user }: { user: UserData }) {
                       onClick={() => setSelectedSourceId(s.id)}
                       className={`w-full group hover:text-white flex cursor-pointer items-center gap-3 px-3 py-2 text-sm font-medium transition-all duration-200 ${
                         selectedSourceId === s.id
-                          ? "bg-rose-700 text-white pl-4"
+                          ? "bg-red-700 text-white pl-4"
                           : "hover:bg-white/10 text-white/60"
                       }`}
                     >
-                      <div className={`transition-colors ${selectedSourceId === s.id ? "text-white" : "text-white fill-rose-600"}`}>
+                      <div
+                        className={`transition-colors ${selectedSourceId === s.id ? "text-white" : "text-white fill-red-600"}`}
+                      >
                         {getSourceIcon(s)}
                       </div>
                       {getSourceLabel(s)}
                     </button>
                     <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
-                      <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20">
+                      <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap border border-white/20">
                         {s.source_name}
                         <div className="absolute top-1/2 -left-1 -translate-y-1/2 border-y-4 border-y-transparent border-r-4 border-r-white" />
                       </div>
@@ -211,28 +260,42 @@ export default function Conversation({ user }: { user: UserData }) {
               )}
             </div>
           </div>
-          <div className="flex-1 overflow-y-auto px-2 no-scrollbar">
-            <span className="text-[10px] uppercase font-bold text-white border-b border-white/60">
-              Conversation(s) [{conversations.length.toString().padStart(2, "0")}]
+          <div className="px-2 flex-1 overflow-y-auto no-scrollbar">
+            <span className="text-[12px] font-bold text-white">
+              {sources.length <= 2
+                ? `Conversation (${conversations.length.toString().padStart(2, "0")})`
+                : `Conversations [${conversations.length.toString().padStart(2, "0")}]`}
             </span>
             <div className="mt-4">
               {isSidebarLoading ? (
                 [1, 2].map((i) => (
-                  <div key={i} className="h-9 w-full bg-white/10 animate-pulse mb-px" />
+                  <div
+                    key={i}
+                    className="h-9 w-full bg-white/10 animate-pulse mb-px"
+                  />
                 ))
               ) : conversations.length > 0 ? (
                 conversations.map((c) => (
                   <button
                     key={c.id}
                     onClick={() => loadConversation(c.id)}
-                    className={`w-full cursor-pointer flex items-center gap-3 px-3 py-2.5 text-xs transition-all ${
+                    className={`w-full group cursor-pointer flex items-center gap-3 px-3 py-2.5 text-xs transition-all relative ${
                       activeConversationId === c.id
-                        ? "text-white bg-rose-700 border-l border-white"
+                        ? "text-white bg-red-800"
                         : "text-white/40 hover:bg-white/10"
                     }`}
                   >
                     <ChatCircleDotsIcon size={14} className="shrink-0" />
-                    <span className="truncate text-left">{c.title || "Untitled Conversations"}</span>
+                    <span className="truncate text-left">
+                      {c.title || "Untitled Conversations"}
+                    </span>
+
+                    <div className="fixed translate-x-64.5 z-100 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:block">
+                      <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 flex items-center">
+                        {c.title || "Untitled Conversation"}
+                        <div className="absolute top-1/2 -left-1 -translate-y-1/2 border-y-4 border-y-transparent border-r-4 border-r-white" />
+                      </div>
+                    </div>
                   </button>
                 ))
               ) : (
@@ -240,14 +303,16 @@ export default function Conversation({ user }: { user: UserData }) {
               )}
             </div>
           </div>
-          <div className={`pt-[8.5px] pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/15"}`}>
+          <div
+            className={`pt-[8.5px] pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/20"}`}
+          >
             {sources.length > 0 && (
               <button
                 onClick={() => {
                   setActiveConversationId(null);
                   setMessages([]);
                 }}
-                className="w-full cursor-pointer py-3 text-[11px] text-white uppercase tracking-widest font-bold flex items-center justify-center gap-2 hover:bg-rose-700 transition-all duration-300"
+                className="w-full cursor-pointer py-3 text-[11px] text-white uppercase tracking-widest font-bold flex items-center justify-center gap-2 hover:bg-white hover:text-black transition-all duration-300"
               >
                 <PlusCircleIcon size={14} /> New Conversation
               </button>
@@ -256,20 +321,69 @@ export default function Conversation({ user }: { user: UserData }) {
         </aside>
 
         <main className="flex-1 flex flex-col relative">
-          <div ref={scrollRef} className="flex-1 mb-20.5 overflow-y-auto py-6 px-2 md:py-10 space-y-8 no-scrollbar scroll-smooth">
+          <header className="px-6 py-6 border-b border-white/5 flex items-center justify-between top-0 z-30">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                width={50}
+                height={50}
+                className="shrink-0"
+              />
+              <div className="flex flex-col justify-center">
+                <h1 className="text-2xl sm:text-3xl font-black text-white leading-none uppercase tracking-tighter">
+                  Conversations
+                </h1>
+                <h4 className="font-bold text-white/50 text-[10px] sm:text-xs uppercase tracking-widest mt-1">
+                  Chat with your sources
+                </h4>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:flex flex-col items-end">
+                <span
+                  className={`text-[14px] font-mono ${isLoading || isSidebarLoading ? "text-white" : "text-emerald-500"} flex items-center gap-1.5`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${isLoading || isSidebarLoading ? "bg-white" : "bg-emerald-500 animate-pulse"}`}
+                  />
+                  {isLoading || isSidebarLoading
+                    ? "Connecting..."
+                    : "Connected"}
+                </span>
+              </div>
+            </div>
+          </header>
+          <div
+            ref={scrollRef}
+            className="flex-1 mb-20.5 overflow-y-auto py-6 px-2 md:py-10 space-y-8 no-scrollbar scroll-smooth"
+          >
             {isSidebarLoading && messages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center">
-                <CircleNotchIcon className="animate-spin text-white" size={40} />
-                <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white">Searching Conversations...</p>
+                <CircleNotchIcon
+                  className="animate-spin text-white"
+                  size={40}
+                />
+                <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white">
+                  Searching Conversations...
+                </p>
               </div>
             ) : (
               <>
                 {messages.length === 0 && !isLoading && (
-                  <MessageEmptyState hasSources={sources.length > 0} onSetInput={(val) => setInput(val)} />
+                  <MessageEmptyState
+                    hasSources={sources.length > 0}
+                    onSetInput={(val) => setInput(val)}
+                  />
                 )}
                 {messages.map((msg, i) => (
-                  <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-3 duration-500`}>
-                    <div className={`flex max-w-[90%] md:max-w-[90%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                  <div
+                    key={i}
+                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-3 duration-500`}
+                  >
+                    <div
+                      className={`flex max-w-[90%] md:max-w-[90%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
+                    >
                       <MessageItem
                         msg={msg}
                         index={i}
@@ -283,15 +397,21 @@ export default function Conversation({ user }: { user: UserData }) {
                 ))}
                 {isLoading && (
                   <div className="flex justify-center p-4">
-                    <CircleNotchIcon className="animate-spin text-white" size={18} />
+                    <CircleNotchIcon
+                      className="animate-spin text-white"
+                      size={18}
+                    />
                   </div>
                 )}
               </>
             )}
           </div>
           {sources.length > 0 && (
-            <div className="absolute z-20 bottom-5 bg-black/30 backdrop-blur-xl border-t border-white/15 w-full pt-1.25 px-2 pb-5 md:pb-10">
-              <form onSubmit={handleSendMessage} className="group relative flex items-center focus-within:border-white/30 pl-6 py-0.5 pr-1.5 transition-all duration-300">
+            <div className="absolute z-20 bottom-5 bg-black border-t border-white/20 w-full pt-1.25 px-2 pb-5 md:pb-10">
+              <form
+                onSubmit={handleSendMessage}
+                className="group relative flex items-center focus-within:border-white/30 pl-6 py-0.5 pr-1.5 transition-all duration-300"
+              >
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -302,7 +422,7 @@ export default function Conversation({ user }: { user: UserData }) {
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   onClick={onFlight}
-                  className={`p-2.5 cursor-pointer bg-transparent text-white transition-all duration-500 ease-in-out transform disabled:opacity-20 ${isFlying ? "-translate-y-16 translate-x-16 opacity-0 scale-150" : "active:scale-95 hover:bg-black"}`}
+                  className={`p-2.5 cursor-pointer bg-transparent text-white hover:text-black hover:bg-white hover:rounded-4xl transition-all duration-500 ease-in-out transform disabled:opacity-20 ${isFlying ? "-translate-y-16 translate-x-16 opacity-0 scale-150" : "active:scale-95 hover:bg-black"}`}
                 >
                   <PaperPlaneTiltIcon size={18} />
                 </button>
@@ -323,23 +443,33 @@ export default function Conversation({ user }: { user: UserData }) {
               isFocused={true}
               onFocus={() => {}}
             />
-            <p className="text-white/20 text-[10px] uppercase text-center mt-4 tracking-widest font-bold">
+            <p className="text-white/50 text-[10px] uppercase text-center mt-4 tracking-widest font-bold">
               Click background to dismiss
             </p>
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 
-const MessageEmptyState = ({ hasSources, onSetInput }: { hasSources: boolean; onSetInput: (val: string) => void }) => {
+const MessageEmptyState = ({
+  hasSources,
+  onSetInput,
+}: {
+  hasSources: boolean;
+  onSetInput: (val: string) => void;
+}) => {
   if (!hasSources) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 animate-in fade-in zoom-in-95 duration-700">
-        <div className="relative group"><EmptyIcon className="text-rose-600" size={40} /></div>
+        <div className="relative group">
+          <EmptyIcon className="text-red-600" size={40} />
+        </div>
         <div className="mt-2 text-center max-w-xs">
-          <h3 className="inline-flex items-center justify-center gap-2 text-xl font-bold text-white/40 uppercase">No Source Available</h3>
+          <h3 className="inline-flex items-center justify-center gap-2 text-xl font-bold text-white/40 uppercase">
+            No Source Available
+          </h3>
         </div>
       </div>
     );
@@ -347,17 +477,30 @@ const MessageEmptyState = ({ hasSources, onSetInput }: { hasSources: boolean; on
   return (
     <div className="h-full flex flex-col items-center justify-center p-8 animate-in fade-in zoom-in-95 duration-700">
       <div className="text-center max-w-sm flex flex-col items-center">
-        <Image className="mb-6 opacity-80 grayscale hover:grayscale-0 transition-all duration-500" src="/logo.png" alt="logo" width={60} height={60} />
-        <h3 className="text-xl font-bold text-white tracking-[0.4em] uppercase">Alluvium•AI</h3>
-        <div className="h-1 my-1 w-full bg-rose-700/50" />
+        <Image
+          className="mb-6 opacity-80 grayscale hover:grayscale-0 transition-all duration-500"
+          src="/logo.png"
+          alt="logo"
+          width={60}
+          height={60}
+        />
+        <h3 className="text-xl font-bold text-white tracking-[0.4em] uppercase">
+          Alluvium•AI
+        </h3>
+        <div className="h-1 my-1 w-full bg-red-700/50" />
       </div>
       <div className="mt-6 w-full max-w-md border border-white/10">
         <div className="grid grid-cols-1 sm:grid-cols-2">
-          {["Summarize document", "Extract key insights", "Find specific mentions", "Analyze sentiment"].map((suggestion) => (
+          {[
+            "Summarize document",
+            "Extract key insights",
+            "Find specific mentions",
+            "Analyze sentiment",
+          ].map((suggestion) => (
             <button
               key={suggestion}
               onClick={() => onSetInput(suggestion)}
-              className="group relative flex items-center justify-center border-b border-r border-white/10 py-3 px-4 text-[11px] font-bold uppercase tracking-tighter text-white/50 transition-all hover:bg-rose-700 hover:text-white cursor-pointer active:bg-rose-800"
+              className="group relative flex items-center justify-center border-b border-r border-white/10 py-3 px-4 text-[11px] font-bold uppercase tracking-tighter text-white/50 transition-all hover:bg-red-700 hover:text-white cursor-pointer active:bg-red-800"
             >
               {suggestion}
             </button>
@@ -368,10 +511,16 @@ const MessageEmptyState = ({ hasSources, onSetInput }: { hasSources: boolean; on
   );
 };
 
-const CopyButton = ({ content, onCopy }: { content: string; onCopy: () => void }) => {
+const CopyButton = ({
+  content,
+  onCopy,
+}: {
+  content: string;
+  onCopy: () => void;
+}) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Stops parent MessageItem from being focused
+    e.stopPropagation();
     await navigator.clipboard.writeText(content);
     setCopied(true);
     onCopy();
@@ -379,13 +528,30 @@ const CopyButton = ({ content, onCopy }: { content: string; onCopy: () => void }
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <button onClick={handleCopy} className="absolute top-0 right-0 cursor-pointer p-1.5 bg-transparent text-white hover:bg-white/20 transition-all duration-200 z-30">
+    <button
+      onClick={handleCopy}
+      className="absolute top-0 right-0 cursor-pointer p-1.5 bg-transparent text-white hover:bg-white/20 transition-all duration-200 z-30"
+    >
       {copied ? <CheckIcon size={16} /> : <CopyIcon size={16} />}
     </button>
   );
 };
 
-const MessageItem = ({ msg, index, isCollapsed, toggleCollapse, isFocused, onFocus }: { msg: any; index: number; isCollapsed: boolean; toggleCollapse: (id: number) => void; isFocused?: boolean; onFocus?: () => void }) => {
+const MessageItem = ({
+  msg,
+  index,
+  isCollapsed,
+  toggleCollapse,
+  isFocused,
+  onFocus,
+}: {
+  msg: any;
+  index: number;
+  isCollapsed: boolean;
+  toggleCollapse: (id: number) => void;
+  isFocused?: boolean;
+  onFocus?: () => void;
+}) => {
   const [isShining, setIsShining] = useState(false);
   const triggerShine = () => {
     setIsShining(true);
@@ -393,10 +559,14 @@ const MessageItem = ({ msg, index, isCollapsed, toggleCollapse, isFocused, onFoc
   };
   return (
     <div
-      onClick={(e) => { onFocus?.(); }}
-      className={`relative group text-sm leading-relaxed transition-all duration-500 cursor-pointer ${
-        msg.role === "user" ? "text-white p-2 pl-3 pr-10 bg-rose-700" : "text-white bg-indigo-700 p-3 pl-5 pr-6.5 pt-4"
-      } ${isCollapsed ? "h-10 opacity-80" : "h-auto"} ${isFocused ? "shadow-[0_0_80px_rgba(0,0,0,1)] border border-white/20 scale-105" : "z-10"}`}
+      onClick={(e) => {
+        onFocus?.();
+      }}
+      className={`relative group text-sm leading-relaxed font-medium transition-all duration-500 cursor-pointer ${
+        msg.role === "user"
+          ? "bg-white text-black p-2 pl-3 pr-10"
+          : "text-white bg-red-700 p-3 pl-5 pr-6.5 pt-4"
+      } ${isCollapsed ? "h-10 opacity-80" : "h-auto"} ${isFocused ? " border border-white scale-105" : "z-10"}`}
     >
       {isShining && (
         <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
@@ -404,47 +574,95 @@ const MessageItem = ({ msg, index, isCollapsed, toggleCollapse, isFocused, onFoc
         </div>
       )}
       <button
-        onClick={(e) => { e.stopPropagation(); isFocused ? toggleCollapse(-1) : toggleCollapse(index); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          isFocused ? toggleCollapse(-1) : toggleCollapse(index);
+        }}
         className={`absolute top-0 z-20 bg-white w-4 h-4 cursor-pointer flex items-center justify-center ${msg.role === "user" ? "right-0" : "left-0"}`}
       >
-        <div className={`w-2 h-0.5 bg-black transition-transform ${isCollapsed ? "rotate-90" : ""}`} />
+        <div
+          className={`w-2 h-0.5 bg-black transition-transform ${isCollapsed ? "rotate-90" : ""}`}
+        />
       </button>
       <div className={isCollapsed ? "invisible" : "visible"}>
-        {msg.role === "assistant" && <CopyButton content={msg.content} onCopy={triggerShine} />}
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ p: ({ node, ...props }) => <p className="mb-3 last:mb-0" {...props} /> }}>
+        {msg.role === "assistant" && (
+          <CopyButton content={msg.content} onCopy={triggerShine} />
+        )}
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            p: ({ node, ...props }) => (
+              <p className="mb-3 last:mb-0" {...props} />
+            ),
+          }}
+        >
           {msg.content}
         </ReactMarkdown>
       </div>
-      {isCollapsed && <span className="text-[14px] absolute left-6 text-white top-2 truncate max-w-[70%]">message is collapsed</span>}
+      {isCollapsed && (
+        <span className="text-[14px] absolute left-6 text-black top-2 truncate max-w-[70%]">
+          message is collapsed
+        </span>
+      )}
     </div>
   );
 };
 
 const SourceEmptyState = ({ onIngest }: { onIngest: () => void }) => (
-  <button onClick={onIngest} className="w-full cursor-pointer group relative flex items-center justify-center py-5 px-4 border-2 border-dashed border-white/10 hover:border-teal-700/50 hover:bg-teal-700/15 transition-all duration-300 gap-3">
-    <div className="p-2 bg-white/5 group-hover:bg-teal-700/60 transition-colors"><PlusCircleIcon size={16} className="text-white/40 group-hover:text-white" /></div>
-    <div className="text-center"><p className="text-[10px] font-bold text-white/30 uppercase tracking-widest group-hover:text-white/60">No Sources Found</p></div>
+  <button
+    onClick={onIngest}
+    className="w-full cursor-pointer group relative flex items-center justify-center py-5 px-4 border-2 border-dashed border-white/10 hover:border-teal-700/50 hover:bg-teal-700/15 transition-all duration-300 gap-3"
+  >
+    <div className="p-2 bg-white/5 group-hover:bg-teal-700/60 transition-colors">
+      <PlusCircleIcon
+        size={16}
+        className="text-white/40 group-hover:text-white"
+      />
+    </div>
+    <div className="text-center">
+      <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest group-hover:text-white/60">
+        No Sources Found
+      </p>
+    </div>
   </button>
 );
 
 const ConversationsEmptyState = () => (
   <div className="w-full group relative flex flex-col items-center justify-center py-4 px-4 border-2 border-dashed border-white/10 gap-2">
-    <div className="text-center"><p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Empty History</p></div>
+    <div className="text-center">
+      <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+        Empty History
+      </p>
+    </div>
   </div>
 );
 
 const getSourceIcon = (source: any) => {
   const name = source.source_name.toLowerCase();
-  if (source.source_type === "video" || name.includes("youtube.com") || name.includes("youtu.be")) {
-    return <Link target="_blank" href={source.source_name} className="flex items-center justify-center"><YoutubeLogoIcon className="fill-white shrink-0" size={16} /></Link>;
+  if (
+    source.source_type === "video" ||
+    name.includes("youtube.com") ||
+    name.includes("youtu.be")
+  ) {
+    return (
+      <Link
+        target="_blank"
+        href={source.source_name}
+        className="flex items-center justify-center"
+      >
+        <YoutubeLogoIcon weight="fill"  className="fill-white shrink-0" size={16} />
+      </Link>
+    );
   }
   return (
     <div className="flex items-center justify-center">
       {(() => {
         const n = String(source.source_name).toLowerCase();
-        if (n.includes(".pdf")) return <FilePdfIcon className="text-white shrink-0" size={16} />;
-        if (["doc", "docs", "docx"].some(ext => n.includes(ext))) return <FileDocIcon className="text-white shrink-0" size={16} />;
-        return <FileTxtIcon className="text-white shrink-0" size={16} />;
+        if (n.includes(".pdf"))
+          return <FilePdfIcon weight="fill" className="text-white shrink-0" size={16} />;
+        if (["doc", "docs", "docx"].some((ext) => n.includes(ext)))
+          return <FileDocIcon weight="fill"  className="text-white shrink-0" size={16} />;
+        return <FileTxtIcon weight="fill"  className="text-white shrink-0" size={16} />;
       })()}
     </div>
   );
@@ -452,6 +670,13 @@ const getSourceIcon = (source: any) => {
 
 const getSourceLabel = (source: any) => {
   const name = source.source_name.toLowerCase();
-  const label = (name.includes("youtube.com") || name.includes("youtu.be")) ? "Video" : "Document";
-  return <span className="truncate flex-1 text-left">{label} <span className="text-[9px] opacity-60">{name}</span></span>;
+  const label =
+    name.includes("youtube.com") || name.includes("youtu.be")
+      ? "Video"
+      : "Document";
+  return (
+    <span className="truncate flex-1 text-left">
+      {label} <span className="text-[9px] opacity-60">{name}</span>
+    </span>
+  );
 };

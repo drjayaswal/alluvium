@@ -81,7 +81,7 @@ export const navLinks = [
   {
     name: "Frontend",
     href: "https://github.com/drjayaswal/alluvium-frontend/blob/main/README.md",
-    color: "hover:bg-teal-700",
+    color: "hover:bg-white hover:text-black",
     tooltip: "Client Repository",
     isGrouped: true,
     position: "start",
@@ -89,7 +89,7 @@ export const navLinks = [
   {
     name: "Backend",
     href: "https://github.com/drjayaswal/alluvium-backend/blob/main/README.md",
-    color: "hover:bg-teal-700",
+    color: "hover:bg-white hover:text-black",
     tooltip: "Server Repository",
     isGrouped: true,
     position: "middle",
@@ -97,7 +97,7 @@ export const navLinks = [
   {
     name: "ML Server",
     href: "https://github.com/drjayaswal/alluvium-ml-server/blob/main/README.md",
-    color: "hover:bg-teal-700",
+    color: "hover:bg-white hover:text-black",
     tooltip: "AI/ML Repository",
     isGrouped: true,
     position: "end",

@@ -15,6 +15,7 @@ import {
   FileTxtIcon,
   YoutubeLogoIcon,
 } from "@phosphor-icons/react";
+import Image from "next/image";
 
 interface AIProps {
   user: UserData;
@@ -161,14 +162,19 @@ export default function Ingestion({ user }: AIProps) {
       className="min-h-screen w-full flex items-center justify-center p-4"
     >
       <div className="w-full max-w-4xl">
-        <header className="mb-10 flex items-center justify-between">
+        <header className="mb-10 flex items-center">
+          <Image
+            src="/logo.png"
+            alt="logo"
+            width={60}
+            height={60}
+            className="-mr-2"
+          />
           <div>
             <h1 className="text-4xl font-black tracking-tighter text-white">
-              <span className="uppercase">Ingest your data</span>
+              <span className="uppercase">Ingest</span>
             </h1>
-            <span className="text-white/50">
-              Add Context
-            </span>
+            <span className="text-white/50">Add Context</span>
           </div>
         </header>
         <div className="grid grid-cols-1 md:grid-cols-2 border border-white/10 bg-black backdrop-blur-sm">
@@ -185,8 +191,8 @@ export default function Ingestion({ user }: AIProps) {
             <form onSubmit={handleVideoIngest} className="space-y-4">
               <input
                 disabled={videoLoading}
-                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-white transition-colors placeholder:text-white/50"
-                placeholder="https://www.youtube.com/watch?v=AKDBhBALKBAKljHBKAb"
+                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-white transition-colors placeholder:text-white/20"
+                placeholder="https://www.youtube.com/YOUTUEVIDEOURL"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
               />
