@@ -471,30 +471,30 @@ export function Services({ user }: { user: UserData }) {
         }
       />
 
-      <div className="max-w-full grid grid-cols-1 x-0 lg:grid-cols-10 h-screen">
-        <div className="lg:col-span-6 p-6 lg:pt-10 lg:pr-7 lg:pl-18 flex flex-col space-y-7.75 border-r border-white/5">
-          <div className="space-y-4">
-            <header className="mb-10 flex items-center gap-2">
+      <div className="max-w-full grid grid-cols-1 lg:grid-cols-10 min-h-screen lg:h-screen">
+        <div className="lg:col-span-6 p-4 sm:p-6 lg:pt-10 lg:pr-7 lg:pl-18 flex flex-col space-y-4 sm:space-y-6 lg:space-y-7.75 border-r border-white/5">
+          <div className="space-y-3 sm:space-y-4">
+            <header className="mb-6 sm:mb-8 lg:mb-10 flex items-center gap-2">
               <Image
                 src="/logo.png"
                 alt="logo"
                 width={60}
                 height={60}
-                className="-mr-2"
+                className="-mr-2 w-12 h-12 sm:w-14 sm:h-14 lg:w-[60px] lg:h-[60px]"
               />
               <div>
-                <h1 className="text-4xl font-black tracking-tighter text-white">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tighter text-white">
                   <span className="uppercase">Services</span>
                 </h1>
-                <span className="text-white/50">View Features</span>
+                <span className="text-white/50 text-xs sm:text-sm">View Features</span>
               </div>
             </header>
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-[12px] font-black text-white/40 uppercase tracking-[0.2em]">
+              <h3 className="text-[10px] sm:text-[12px] font-black text-white/40 uppercase tracking-[0.2em]">
                 Description
               </h3>
               {description.length > 100 && (
-                <span className="text-[10px] text-indigo-400">
+                <span className="text-[9px] sm:text-[10px] text-indigo-400">
                   Ready for Analysis
                 </span>
               )}
@@ -505,13 +505,13 @@ export function Services({ user }: { user: UserData }) {
                   placeholder="Paste the requirements here..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full h-71 p-6 bg-black border-dashed border focus:border-white/40 border-white/20 text-sm leading-relaxed text-white placeholder:text-white/40 outline-none transition-all resize-none"
+                  className="w-full h-48 sm:h-56 lg:h-71 p-4 sm:p-5 lg:p-6 bg-black border-dashed border focus:border-white/40 border-white/20 text-xs sm:text-sm leading-relaxed text-white placeholder:text-white/40 outline-none transition-all resize-none"
                 />
 
-                <div className="absolute top-3 right-3 flex flex-col gap-2">
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2">
                   {description && (
                     <div className="relative group/tooltip">
-                      <div className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
+                      <div className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden sm:block">
                         <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap relative">
                           Clear Description
                           <div className="absolute top-1/2 -right-1 -translate-y-1/2 border-y-4 border-y-transparent border-l-4 border-l-white" />
@@ -519,21 +519,21 @@ export function Services({ user }: { user: UserData }) {
                       </div>
                       <button
                         onClick={() => setDescription("")}
-                        className="flex items-center justify-center w-9 h-9 cursor-pointer hover:text-white text-white/50 hover:bg-red-800 transition-colors"
+                        className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 cursor-pointer hover:text-white text-white/50 hover:bg-red-600 transition-colors"
                       >
-                        <BackspaceIcon className="w-5 h-5" weight="fill" />
+                        <BackspaceIcon className="w-4 h-4 sm:w-5 sm:h-5" weight="bold" />
                       </button>
                     </div>
                   )}
                   <div className="relative group/tooltip">
-                    <div className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
+                    <div className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden sm:block">
                       <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl relative">
                         Upload Description
                         <div className="absolute top-1/2 -right-1 -translate-y-1/2 border-y-4 border-y-transparent border-l-4 border-l-white" />
                       </div>
                     </div>
-                    <label className="flex items-center justify-center w-9 h-9 cursor-pointer text-white/50 hover:bg-white hover:text-black transition-colors">
-                      <PaperclipIcon className="w-5 h-5" weight="fill" />
+                    <label className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 cursor-pointer text-white/50 hover:bg-white hover:text-black transition-colors">
+                      <PaperclipIcon className="w-4 h-4 sm:w-5 sm:h-5" weight="bold" />
                       <input
                         type="file"
                         className="hidden"
@@ -546,13 +546,12 @@ export function Services({ user }: { user: UserData }) {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-4">
-            {" "}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-0">
             {[
               {
                 title: "Drive",
                 tooltip: "Import from Drive",
-                icon: <CloudIcon size={24} weight="fill" />,
+                icon: <CloudIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () => {
                   toast.info("Upgrade to use Google Drive", {
                     action: {
@@ -571,7 +570,7 @@ export function Services({ user }: { user: UserData }) {
               {
                 title: "Folder",
                 tooltip: "Upload Whole Folder",
-                icon: <FolderOpenIcon size={24} weight="fill" />,
+                icon: <FolderOpenIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () =>
                   description.trim()
                     ? folderInputRef.current?.click()
@@ -580,7 +579,7 @@ export function Services({ user }: { user: UserData }) {
               {
                 title: "File",
                 tooltip: "Upload Single File",
-                icon: <FilePdfIcon size={24} weight="fill" />,
+                icon: <FilePdfIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () =>
                   description.trim()
                     ? fileInputRef.current?.click()
@@ -589,7 +588,7 @@ export function Services({ user }: { user: UserData }) {
               {
                 title: "Image",
                 tooltip: "Extract from Image",
-                icon: <ImageIcon size={24} weight="fill" />,
+                icon: <ImageIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () => {
                   toast.info("Upgrade to use Image Extraction", {
                     action: {
@@ -607,7 +606,7 @@ export function Services({ user }: { user: UserData }) {
               },{
                 title: "Camera",
                 tooltip: "Capture from Camera",
-                icon: <CameraIcon size={24} weight="fill" />,
+                icon: <CameraIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () => {
                   toast.info("Upgrade to use Device Camera", {
                     action: {
@@ -626,7 +625,7 @@ export function Services({ user }: { user: UserData }) {
               {
                 title: "Watch",
                 tooltip: "Connect & Watch Drive",
-                icon: <PlugsIcon size={24} weight="fill" />,
+                icon: <PlugsIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () => {
                   toast.info("Upgrade to use C&W Service", {
                     action: {
@@ -661,18 +660,18 @@ export function Services({ user }: { user: UserData }) {
                     });
                   } else btn.handler();
                 }}
-                className="group flex-1 p-6 flex items-center text-left gap-4 cursor-pointer relative"
+                className="group flex-1 p-3 sm:p-4 lg:p-6 flex flex-col sm:flex-row items-center sm:items-center sm:text-left gap-2 sm:gap-3 lg:gap-4 cursor-pointer relative"
               >
-                <div className="p-2 bg-white/5 group-hover:rounded-4xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300">
+                <div className="p-1.5 sm:p-2 bg-white/5 group-hover:rounded-4xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300">
                   {btn.icon}
                 </div>
 
                 <div className="z-10">
-                  <h3 className="text-white font-bold uppercase text-sm tracking-widest group-hover:scale-110 transition-all duration-200">
+                  <h3 className="text-white font-bold uppercase text-[10px] sm:text-xs lg:text-sm tracking-widest group-hover:scale-110 transition-all duration-200 text-center sm:text-left">
                     {btn.title}
                   </h3>
                 </div>
-                <div className="absolute -top-3 left-11 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:block">
+                <div className="absolute -top-3 left-1/2 sm:-left-7 sm:translate-x-0 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden sm:block">
                   <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
                     {btn.tooltip}
                     <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-white" />
@@ -682,116 +681,118 @@ export function Services({ user }: { user: UserData }) {
             ))}
           </div>
         </div>
-        <div className="lg:col-span-4 flex flex-col h-full bg-black border-l border-white/13 overflow-hidden">
-          <div className="px-6 py-[16.1px] flex items-center justify-between z-20 border-y border-white/13 shrink-0">
-            <div className="flex items-baseline gap-3">
-              <h2 className="text-[11px] font-black tracking-[0.2em] uppercase text-white/40">
+        <div className="lg:col-span-4 flex flex-col h-full lg:h-screen bg-black border-t lg:border-t-0 lg:border-l border-white/13 overflow-hidden">
+          <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-[16.1px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2 z-20 border-y border-white/13 shrink-0">
+            <div className="flex items-baseline gap-2 sm:gap-3">
+              <h2 className="text-[10px] sm:text-[11px] font-black tracking-[0.2em] uppercase text-white/40">
                 Analysis
               </h2>
               <div className="flex items-center gap-1.5">
-                <span className="text-[12px] font-mono text-white/40">
+                <span className="text-[11px] sm:text-[12px] font-mono text-white/40">
                   ({extractedData.length.toString().padStart(2, "0")})
                 </span>
               </div>
             </div>
-            <div className="flex items-center border border-white/13 p-0.5">
-              <div
-                className={`flex items-center gap-2 px-3 py-1.5 transition-colors duration-300 ${
-                  user.credits < 10 && "bg-red-800"
-                }`}
-              >
-                <CurrencyCircleDollarIcon
-                  weight="fill"
-                  className={`w-4 h-5 text-white`}
-                />
-                <span className={`text-[11px] font-medium text-white `}>
-                  {user.credits}
-                </span>
-              </div>
+            <div className="flex items-center gap-2 sm:gap-0 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center border border-white/13 p-0.5">
+                <div
+                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 transition-colors duration-300 ${
+                    user.credits < 10 && "bg-red-700"
+                  }`}
+                >
+                  <CurrencyCircleDollarIcon
+                    weight="fill"
+                    className={`w-3 h-4 sm:w-4 sm:h-5 text-white`}
+                  />
+                  <span className={`text-[10px] sm:text-[11px] font-medium text-white `}>
+                    {user.credits}
+                  </span>
+                </div>
 
-              <button
-                onClick={() => {
-                  toast.info("Want to Upgrade", {
-                    action: {
-                      label: "Upgrade",
-                      onClick: () => {
-                        const toastId = toast.loading("Redirecting...");
-                        setTimeout(() => {
-                          toast.dismiss(toastId);
-                          router.push("/upgrade");
-                        }, 1500);
+                <button
+                  onClick={() => {
+                    toast.info("Want to Upgrade", {
+                      action: {
+                        label: "Upgrade",
+                        onClick: () => {
+                          const toastId = toast.loading("Redirecting...");
+                          setTimeout(() => {
+                            toast.dismiss(toastId);
+                            router.push("/upgrade");
+                          }, 1500);
+                        },
                       },
-                    },
-                  });
-                }}
-                className="group px-10 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-white hover:text-black font-bold"
-              >
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
-                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
-                    Upgrade your Plan
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                    });
+                  }}
+                  className="group px-4 sm:px-6 lg:px-10 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 transition-colors duration-300 hover:bg-white hover:text-black font-bold"
+                >
+                  <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden sm:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                      Upgrade your Plan
+                      <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                    </div>
                   </div>
-                </div>
-                <span className="text-[12px]">Upgrade</span>
-              </button>
-            </div>
+                  <span className="text-[10px] sm:text-[12px]">Upgrade</span>
+                </button>
+              </div>
 
-            <div className="flex items-center border border-white/13 p-0.5">
-              <div className="relative group/action">
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
-                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
-                    Sync History
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+              <div className="flex items-center border border-white/13 p-0.5">
+                <div className="relative group/action">
+                  <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden sm:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                      Sync History
+                      <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                    </div>
                   </div>
+                  <button
+                    onClick={fetchHistory}
+                    className="group cursor-pointer flex items-center justify-center h-8 w-8 sm:w-9 transition-all hover:bg-white"
+                  >
+                    <ArrowsCounterClockwiseIcon
+                      weight="fill"
+                      className={cn(
+                        "text-white group-hover:text-black transition-all w-4 h-4",
+                        isProcessing && "animate-spin",
+                      )}
+                    />
+                  </button>
                 </div>
-                <button
-                  onClick={fetchHistory}
-                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-white"
-                >
-                  <ArrowsCounterClockwiseIcon
-                    weight="fill"
-                    className={cn(
-                      "text-white group-hover:text-black transition-all",
-                      isProcessing && "animate-spin",
-                    )}
-                  />
-                </button>
-              </div>
-              <div className="w-px h-8 bg-white/20 mx-0.5" />
-              <div className="relative group/action">
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
-                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
-                    Export CSV
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                <div className="w-px h-8 bg-white/20 mx-0.5" />
+                <div className="relative group/action">
+                  <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden sm:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                      Export CSV
+                      <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                    </div>
                   </div>
+                  <button
+                    onClick={exportToCSV}
+                    className="group cursor-pointer flex items-center justify-center h-8 w-8 sm:w-9 transition-all hover:bg-green-600"
+                  >
+                    <CloudArrowDownIcon
+                      weight="fill"
+                      className="text-white transition-all w-4 h-4"
+                    />
+                  </button>
                 </div>
-                <button
-                  onClick={exportToCSV}
-                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-800"
-                >
-                  <CloudArrowDownIcon
-                    weight="fill"
-                    className="text-white transition-all"
-                  />
-                </button>
-              </div>
-              <div className="w-px h-8 bg-white/20 mx-0.5" />
-              <div className="relative group/action">
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden md:block">
-                  <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
-                    Clear History
-                    <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                <div className="w-px h-8 bg-white/20 mx-0.5" />
+                <div className="relative group/action">
+                  <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden sm:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                      Clear History
+                      <div className="absolute -top-1.25 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-b-4 border-white" />
+                    </div>
                   </div>
+                  <button
+                    onClick={resetHistory}
+                    className="group cursor-pointer flex items-center justify-center h-8 w-8 sm:w-9 transition-all hover:bg-red-600"
+                  >
+                    <TrashIcon
+                      weight="fill"
+                      className="text-white transition-all w-4 h-4"
+                    />
+                  </button>
                 </div>
-                <button
-                  onClick={resetHistory}
-                  className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-800"
-                >
-                  <TrashIcon
-                    weight="fill"
-                    className="text-white transition-all"
-                  />
-                </button>
               </div>
             </div>
           </div>
@@ -823,20 +824,20 @@ export function Services({ user }: { user: UserData }) {
                       transition={{ delay: idx * 0.05 }}
                       onClick={() => isInteractive && setSelectedFileData(file)}
                       className={cn(
-                        "p-[10.7px] py-[14.80px] group relative overflow-hidden transition-all border-b border-white/10",
+                        "p-2 sm:p-[10.7px] py-3 sm:py-[14.80px] group relative overflow-hidden transition-all border-b border-white/10",
                         isInteractive
                           ? "cursor-pointer hover:bg-white/5"
                           : "opacity-60",
                       )}
                     >
-                      <div className="flex px-2 items-center justify-between relative z-10">
-                        <div className="flex items-center gap-4 min-w-0">
-                          <FilePdfIcon className="w-8 h-6 text-white/50 group-hover:text-white transition-colors duration-500" weight="fill" />
-                          <div className="min-w-0 flex items-center">
-                            <h4 className="text-sm text-white/50 group-hover:text-white font-bold transition-colors duration-500 truncate pr-4">
+                      <div className="flex px-1 sm:px-2 items-center justify-between relative z-10 gap-2">
+                        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                          <FilePdfIcon className="w-6 h-5 sm:w-8 sm:h-6 text-white/50 group-hover:text-white transition-colors duration-500 shrink-0" weight="fill" />
+                          <div className="min-w-0 flex items-center gap-2 flex-1">
+                            <h4 className="text-xs sm:text-sm text-white/50 group-hover:text-white font-bold transition-colors duration-500 truncate">
                               {file.filename.split("/").pop()}
                             </h4>
-                            <div className={cn(config.bg)}> {config.icon} </div>
+                            <div className={cn(config.bg, "shrink-0")}> {config.icon} </div>
                           </div>
                         </div>
 
@@ -845,7 +846,7 @@ export function Services({ user }: { user: UserData }) {
                             <div className="text-right shrink-0">
                               <div
                                 className={cn(
-                                  "text-xl font-black transition-colors duration-500",
+                                  "text-lg sm:text-xl font-black transition-colors duration-500",
                                   file.match_score >= 0.8
                                     ? "text-emerald-500/50 group-hover:text-emerald-500"
                                     : file.match_score >= 0.5
@@ -857,7 +858,7 @@ export function Services({ user }: { user: UserData }) {
                               >
                                 {Math.floor(file.match_score)}%
                               </div>
-                              <div className="text-[8px] text-white/30 group-hover:text-white/70 transition-colors duration-500 uppercase tracking-tighter font-bold">
+                              <div className="text-[7px] sm:text-[8px] text-white/30 group-hover:text-white/70 transition-colors duration-500 uppercase tracking-tighter font-bold">
                                 Match
                               </div>
                             </div>
@@ -887,21 +888,21 @@ export function Services({ user }: { user: UserData }) {
               className="fixed inset-0 bg-black/10 backdrop-blur-md z-100"
             />
 
-            <div className="fixed inset-0 grid place-items-center z-102 p-4 pointer-events-none">
+            <div className="fixed inset-0 grid place-items-center z-102 p-2 sm:p-4 pointer-events-none">
               <motion.div
                 layoutId={`card-${selectedFileData.id}-${id}`}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-6xl h-fit max-h-[90vh] bg-black border border-white/20 flex flex-col overflow-hidden pointer-events-auto"
+                className="w-full max-w-6xl h-fit max-h-[95vh] sm:max-h-[90vh] bg-black border border-white/20 flex flex-col overflow-hidden pointer-events-auto"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
               >
-                <div className="py-8 px-10 overflow-y-auto no-scrollbar">
-                  <div className="mb-4 pb-2 border-b border-white/20 flex gap-2 items-center text-[15px] font-mono text-white/50">
-                    <span className="text-white/20 text-sm">Success on</span>
-                    {selectedFileData.filename}
-                    <span className="text-white/20 text-sm">with</span>
-                    <div className="text-xl font-black text-white leading-none">
+                <div className="py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-10 overflow-y-auto no-scrollbar">
+                  <div className="mb-3 sm:mb-4 pb-2 border-b border-white/20 flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center text-xs sm:text-sm lg:text-[15px] font-mono text-white/50">
+                    <span className="text-white/20 text-xs sm:text-sm">Success on</span>
+                    <span className="truncate max-w-full sm:max-w-none">{selectedFileData.filename}</span>
+                    <span className="text-white/20 text-xs sm:text-sm">with</span>
+                    <div className="text-lg sm:text-xl font-black text-white leading-none">
                       {selectedFileData.match_score !== null && (
                         <div className="text-right shrink-0">
                           <div className={cn("text-white/50")}>
@@ -910,7 +911,7 @@ export function Services({ user }: { user: UserData }) {
                             ) : (
                               <>
                                 {Math.floor(selectedFileData.match_score)}
-                                <span className="text-sm">
+                                <span className="text-xs sm:text-sm">
                                   .
                                   {
                                     (selectedFileData.match_score % 1)
@@ -921,15 +922,15 @@ export function Services({ user }: { user: UserData }) {
                                 </span>
                               </>
                             )}{" "}
-                            <span className="text-white/20 text-sm">match</span>
+                            <span className="text-white/20 text-xs sm:text-sm">match</span>
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                    <div className="lg:col-span-7 space-y-10">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
+                    <div className="lg:col-span-7 space-y-6 sm:space-y-8 lg:space-y-10">
                       {renderSkillSection(
                         "Critical Missing",
                         selectedFileData.details?.missing_skills ?? [],
@@ -962,7 +963,7 @@ export function Services({ user }: { user: UserData }) {
                       )} */}
                     </div>
                     <div className="lg:col-span-5">
-                      <div ref={reportRef} className="h-64">
+                      <div ref={reportRef} className="h-48 sm:h-56 lg:h-64">
                         <AnalysisChart
                           data={selectedFileData.details?.radar_data ?? []}
                           color="white"
@@ -971,22 +972,22 @@ export function Services({ user }: { user: UserData }) {
 
                       <button
                         onClick={downloadReport}
-                        className="group/btn border-b-4 border-indigo-700 border-x-4 w-full cursor-pointer relative flex items-center justify-between overflow-hidden px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-indigo-700"
+                        className="group/btn mt-5 sm:mt-0 w-full cursor-pointer relative flex items-center justify-center sm:justify-between gap-3 sm:gap-0 overflow-hidden px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 lg:py-4.5 font-bold text-white bg-black sm:bg-black hover:bg-indigo-700 active:bg-indigo-700 transition-all duration-500 text-xs sm:text-sm lg:text-base"
                       >
-                        <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
+                        <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-wider sm:group-hover/btn:tracking-widest whitespace-nowrap">
                           Download Chart
                         </span>
-                        <div className="relative flex items-center overflow-hidden h-6 w-10 px-2">
+                        <div className="relative flex items-center justify-center overflow-hidden h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 shrink-0">
                           <DownloadIcon
                             weight="fill"
                             className={cn(
-                              "transform transition-all duration-500 -translate-y-full opacity-0 scale-150 absolute group-hover/btn:translate-y-0 group-hover/btn:opacity-100",
+                              "transform transition-all duration-500 -translate-y-full opacity-0 scale-110 absolute group-hover/btn:translate-y-0 group-hover/btn:opacity-100 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6",
                             )}
                           />
                           <CloudArrowDownIcon
                             weight="fill"
                             className={cn(
-                              "transition-all duration-500 opacity-100 scale-150 group-hover/btn:translate-y-full group-hover/btn:opacity-0",
+                              "transition-all duration-500 opacity-100 scale-110 group-hover/btn:translate-y-full group-hover/btn:opacity-0 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6",
                             )}
                           />
                         </div>
@@ -1028,31 +1029,31 @@ const renderSkillSection = (
   dotColor: string,
 ) => (
   <section>
-    <div className="flex justify-between items-center mb-4">
-      <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
+    <div className="flex justify-between items-center mb-3 sm:mb-4">
+      <h4 className="text-[9px] sm:text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-1.5 sm:gap-2 flex-wrap">
         <div className={`w-1.5 h-1.5 flex gap-4 items-center ${dotColor}`} />
-        {title}
-        <div>
+        <span className="wrap-break-word">{title}</span>
+        <div className="whitespace-nowrap">
           {skills.length}({total})
         </div>
       </h4>
     </div>
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-1 sm:gap-1.5">
       {skills.map((kw, i) => (
         <span
           key={i}
-          className="px-2.5 py-1 border border-white/15 text-white/50 text-[11px]"
+          className="px-2 sm:px-2.5 py-0.5 sm:py-1 border border-white/15 text-white/50 text-[10px] sm:text-[11px]"
         >
           {kw}
         </span>
       ))}
       {total > skills.length && (
-        <span className="px-2.5 py-1 text-white/30 text-[11px] tracking-tighter">
+        <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-white/30 text-[10px] sm:text-[11px] tracking-tighter">
           + {total - skills.length} more
         </span>
       )}
       {total === 0 && (
-        <span className="text-[11px] text-white/20">No skills</span>
+        <span className="text-[10px] sm:text-[11px] text-white/20">No skills</span>
       )}
     </div>
   </section>

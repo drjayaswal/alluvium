@@ -160,114 +160,112 @@ export default function Ingestion({ user }: AIProps) {
     <motion.div
       initial={{ opacity: 0, filter: "blur(10px)" }}
       animate={{ opacity: 1, filter: "blur(0px)" }}
-      className="min-h-screen w-full flex items-center justify-center p-4"
+      className="min-h-screen w-full flex items-center justify-center p-2 min-[375px]:p-3 sm:p-4 md:p-6 lg:p-8 xl:p-10"
     >
-      <div className="w-full max-w-4xl">
-        <header className="mb-10 flex items-center">
+      <div className="w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl">
+        <header className="mb-6 min-[375px]:mb-7 sm:mb-8 md:mb-10 lg:mb-12 flex items-center gap-2 min-[375px]:gap-2.5 sm:gap-3">
           <Image
             src="/logo.png"
             alt="logo"
             width={60}
             height={60}
-            className="-mr-2"
+            className="w-10 h-10 min-[375px]:w-12 min-[375px]:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-[60px] lg:h-[60px] -mr-1 min-[375px]:-mr-1.5 sm:-mr-2 shrink-0"
           />
           <div>
-            <h1 className="text-4xl font-black tracking-tighter text-white">
+            <h1 className="text-2xl min-[375px]:text-3xl min-[400px]:text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter text-white">
               <span className="uppercase">Ingest</span>
             </h1>
-            <span className="text-white/50">Add Context</span>
+            <span className="text-xs min-[375px]:text-sm sm:text-sm md:text-base text-white/50">Add Context</span>
           </div>
         </header>
-        <div className="grid grid-cols-1 md:grid-cols-2 border border-white/20">
-          <div className="p-8  space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-white/20 gap-0.5 md:gap-0">
+          <div className="p-4 min-[375px]:p-5 sm:p-6 md:p-7 lg:p-8 xl:p-10 space-y-4 min-[375px]:space-y-5 sm:space-y-6 md:space-y-6 lg:space-y-7">
             <div className="flex items-center justify-between">
               <YoutubeLogoIcon
                 weight="fill"
-                className={`scale-150 ${videoLoading || videoUrl ? " text-white" : "text-white/30"}`}
+                className={`w-6 h-6 min-[375px]:w-7 min-[375px]:h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 ${videoLoading || videoUrl ? " text-white" : "text-white/30"}`}
               />
-              <span className="text-[14px] text-white/30 font-bold uppercase">
+              <span className="text-xs min-[375px]:text-xs sm:text-sm md:text-sm lg:text-base text-white/30 font-bold uppercase">
                 Video
               </span>
             </div>
 
-            <form onSubmit={handleVideoIngest} className="space-y-4">
+            <form onSubmit={handleVideoIngest} className="space-y-3 min-[375px]:space-y-3.5 sm:space-y-4 md:space-y-4 lg:space-y-5">
               <input
                 disabled={videoLoading}
-                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-white transition-colors placeholder:text-white/20"
+                className="w-full bg-transparent border-b border-white/20 py-2 min-[375px]:py-2.5 sm:py-3 md:py-3 text-sm min-[375px]:text-sm sm:text-base md:text-base text-white outline-none focus:border-white transition-colors placeholder:text-white/20"
                 placeholder="https://www.youtube.com/YOUTUEVIDEOURL"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
               />
               <button
                 disabled={videoLoading || !videoUrl}
-                className={`cursor-pointer group w-full bg-white/80 text-black py-3 text-xs font-bold uppercase ${videoUrl && "hover:bg-white hover:text-black"} transition-all flex items-center justify-center gap-2 disabled:opacity-30`}
+                className={`cursor-pointer group w-full bg-white/80 text-black py-2.5 min-[375px]:py-3 sm:py-3 md:py-3.5 lg:py-4 text-xs min-[375px]:text-xs sm:text-sm md:text-sm font-bold uppercase ${videoUrl && "hover:bg-white hover:text-black"} transition-all flex items-center justify-center gap-2 disabled:opacity-30`}
               >
                 {videoLoading ? (
                   <>
-                    <CircleNotchIcon className="animate-spin" size={14} weight="bold" />
+                    <CircleNotchIcon className="animate-spin w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 sm:w-4 sm:h-4" weight="bold" />
                     Processing...
                   </>
                 ) : (
                   <>
                     Process
                     <ArrowRightIcon
-                      size={14}
+                      className={`w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 sm:w-4 sm:h-4 ${videoUrl && "group-hover:translate-x-1 transition-transform"}`}
                       weight="fill"
-                      className={`${videoUrl && "group-hover:translate-x-1 transition-transform"}`}
                     />
                   </>
                 )}
               </button>
             </form>
           </div>
-          <div className="p-8 space-y-6">
+          <div className="p-4 min-[375px]:p-5 sm:p-6 md:p-7 lg:p-8 xl:p-10 space-y-4 min-[375px]:space-y-5 sm:space-y-6 md:space-y-6 lg:space-y-7">
             <div className="flex items-center justify-between">
-              <div className="flex scale-150">
+              <div className="flex gap-1 min-[375px]:gap-1.5 sm:gap-2">
                 <FilePdfIcon
                   weight="fill"
-                  className={`${fileLoading ? "text-white" : "text-white/50"}`}
+                  className={`w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 ${fileLoading ? "text-white" : "text-white/50"}`}
                 />
                 <FileDocIcon
                   weight="fill"
-                  className={`${fileLoading ? "text-white" : "text-white/50"}`}
+                  className={`w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 ${fileLoading ? "text-white" : "text-white/50"}`}
                 />
                 <FileTxtIcon
                   weight="fill"
-                  className={`${fileLoading ? "text-white" : "text-white/50"}`}
+                  className={`w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 ${fileLoading ? "text-white" : "text-white/50"}`}
                 />
               </div>
-              <span className="text-[14px] text-white/30 font-bold uppercase">
+              <span className="text-xs min-[375px]:text-xs sm:text-sm md:text-sm lg:text-base text-white/30 font-bold uppercase">
                 Document
               </span>
             </div>
 
             <label
               className={`
-              border border-dashed p-10 flex flex-col items-center justify-center cursor-pointer transition-all
+              border border-dashed p-6 min-[375px]:p-7 sm:p-8 md:p-9 lg:p-10 xl:p-12 flex flex-col items-center justify-center cursor-pointer transition-all
               ${fileLoading ? "border-white bg-white/10" : "border-white/50 hover:border-white/80 hover:bg-white/5"}
             `}
             >
               {fileLoading ? (
                 <div className="flex flex-col items-center gap-2 text-center">
                   <CircleNotchIcon
-                    className="animate-spin text-white"
-                    size={24}
+                    className="animate-spin text-white w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
                     weight="bold"
                   />
-                  <span className="text-[12px] uppercase text-white font-bold">
+                  <span className="text-xs min-[375px]:text-xs sm:text-sm md:text-sm uppercase text-white font-bold">
                     Uploading...
                   </span>
-                  <span className="text-[10px] text-white/50 truncate max-w-37.5">
+                  <span className="text-[9px] min-[375px]:text-[10px] sm:text-xs text-white/50 truncate max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
                     {fileName}
                   </span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <CloudArrowUpIcon size={20} className="mb-1 text-white" weight="fill" />
-                  <span className="text-[12px] text-white uppercase font-bold tracking-widest">
+                  <CloudArrowUpIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mb-1 text-white" weight="fill" />
+                  <span className="text-xs min-[375px]:text-xs sm:text-sm md:text-sm text-white uppercase font-bold tracking-widest">
                     Upload
                   </span>
-                  <span className="text-[10px] text-white/40 italic">
+                  <span className="text-[9px] min-[375px]:text-[10px] sm:text-xs text-white/40 italic">
                     Max size: 10MB
                   </span>
                 </div>

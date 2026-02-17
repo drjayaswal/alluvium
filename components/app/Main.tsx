@@ -38,7 +38,7 @@ export default function Main({ user }: { user: UserData }) {
       tooltip: "Add Context",
     },
     {
-      label: "Conversations",
+      label: "Conversation",
       path: "/conversations",
       icon: ChatCircleDotsIcon,
       desc: "Talk to AI",
@@ -59,7 +59,7 @@ export default function Main({ user }: { user: UserData }) {
       tooltip: "User Profile",
     },
     {
-      label: "Developers",
+      label: "Developer",
       path: "https://github.com/drjayaswal",
       icon: UserGearIcon,
       desc: "Creators",
@@ -82,7 +82,7 @@ export default function Main({ user }: { user: UserData }) {
       external: true,
     },
     {
-      label: "Contribution",
+      label: "Contribute",
       path: "https://github.com/drjayaswal/alluvium-docker.git",
       icon: GithubLogoIcon,
       external: true,
@@ -103,28 +103,28 @@ export default function Main({ user }: { user: UserData }) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-5 md:p-6 lg:p-8 font-mono w-full overflow-x-hidden">
-      <section className="relative z-10 w-full max-w-5xl mx-auto px-0 sm:px-1">
+    <div className="min-h-screen flex flex-col items-center justify-center p-2 min-[375px]:p-3 sm:p-4 md:p-6 lg:p-8 xl:p-10 font-mono w-full overflow-x-hidden">
+      <section className="relative z-10 w-full max-w-7xl mx-auto px-1 min-[375px]:px-2 sm:px-3 md:px-4">
         <motion.div
           initial={{ opacity: 0, filter: "blur(10px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
-          className="mb-6 sm:mb-8 space-y-2 flex flex-col items-center justify-center"
+          className="mb-4 min-[375px]:mb-5 sm:mb-6 md:mb-8 lg:mb-10 space-y-1 min-[375px]:space-y-2 sm:space-y-3 flex flex-col items-center justify-center"
         >
-          <div className="w-full flex flex-col items-center justify-center gap-2 sm:gap-4">
-            <div className="flex flex-row items-center gap-3 sm:gap-4 justify-center w-full py-2">
-              <div className="flex items-center gap-3 shrink-0 bg-white/10 px-4 py-2 sm:px-5 sm:py-3 shadow-md">
+          <div className="w-full flex flex-col items-center justify-center gap-1.5 min-[375px]:gap-2 sm:gap-3 md:gap-4">
+            <div className="flex flex-row items-center gap-2 min-[375px]:gap-2.5 sm:gap-3 md:gap-4 justify-center w-full py-1 min-[375px]:py-1.5 sm:py-2">
+              <div className="flex items-center gap-2 min-[375px]:gap-2.5 sm:gap-3 md:gap-4 shrink-0 bg-white/10 px-2 min-[375px]:px-3 sm:px-4 md:px-5 lg:px-6 py-1.5 min-[375px]:py-2 sm:py-2.5 md:py-3 lg:py-4 shadow-md rounded-lg">
                 <Image
                   src="/logo.png"
                   alt="logo"
                   width={80}
                   height={80}
-                  className="w-14 h-14 min-[400px]:w-16 min-[400px]:h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0"
+                  className="w-10 h-10 min-[375px]:w-12 min-[375px]:h-12 min-[400px]:w-14 min-[400px]:h-14 sm:w-16 sm:h-16 md:w-[72px] md:h-[72px] lg:w-20 lg:h-20 xl:w-24 xl:h-24 shrink-0"
                   priority
                 />
                 <span
                   className="
-                    text-3xl min-[380px]:text-4xl min-[440px]:text-5xl
-                    sm:text-5xl md:text-6xl
+                    text-2xl min-[375px]:text-3xl min-[400px]:text-3xl min-[440px]:text-4xl
+                    sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl
                     font-black uppercase tracking-tighter text-white whitespace-nowrap leading-none drop-shadow
                   "
                   style={{
@@ -135,15 +135,6 @@ export default function Main({ user }: { user: UserData }) {
                 </span>
               </div>
             </div>
-            <div className="w-full flex flex-col items-center mt-1">
-              <span className="
-                text-lg min-[380px]:text-xl min-[440px]:text-2xl
-                sm:text-2xl md:text-3xl lg:text-4xl
-                font-bold text-white/80 text-center leading-tight truncate max-w-[95vw]
-              ">
-                Hello <span className="text-white">{user.email.split("@")[0]}</span> !
-              </span>
-            </div>
           </div>
         </motion.div>
 
@@ -151,7 +142,7 @@ export default function Main({ user }: { user: UserData }) {
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4"
+          className="grid grid-cols-2 min-[375px]:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-1.5 min-[375px]:gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 xl:gap-5"
         >
           {menuItems.map((menu) => (
             <motion.div
@@ -167,24 +158,24 @@ export default function Main({ user }: { user: UserData }) {
                     ? window.open(menu.path, "_blank")
                     : router.push(menu.path);
                 }}
-                className="w-full min-h-[88px] sm:min-h-[100px] p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col items-start text-left gap-2 sm:gap-3 md:gap-4 cursor-pointer relative overflow-hidden touch-manipulation active:scale-[0.98] transition-transform"
+                className="w-full min-h-[75px] min-[375px]:min-h-[80px] sm:min-h-[90px] md:min-h-[100px] lg:min-h-[110px] xl:min-h-[120px] p-2 min-[375px]:p-2.5 sm:p-3 md:p-4 lg:p-5 xl:p-6 flex flex-col items-start text-left gap-1.5 min-[375px]:gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 cursor-pointer relative overflow-hidden touch-manipulation active:scale-[0.98] transition-transform"
               >
-                <div className="p-1.5 sm:p-2 bg-white/5 group-hover:rounded-2xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300 shrink-0">
-                  <menu.icon className="w-6 h-6 sm:w-7 sm:h-7 shrink-0" size={28} weight="fill" />
+                <div className="p-1 min-[375px]:p-1.5 sm:p-1.5 md:p-2 lg:p-2.5 bg-white/5 group-hover:rounded-4xl text-white/70 group-hover:text-black group-hover:bg-white transition-all duration-300 shrink-0">
+                  <menu.icon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 shrink-0" weight="fill" />
                 </div>
 
                 <div className="z-10 min-w-0 w-full">
-                  <h3 className="text-white font-bold uppercase text-sm min-[400px]:text-base sm:text-base tracking-widest group-hover:scale-105 sm:group-hover:scale-110 transition-transform truncate">
+                  <h3 className="text-white font-bold uppercase text-xs min-[375px]:text-sm min-[400px]:text-sm sm:text-base md:text-base lg:text-md tracking-widest group-hover:scale-105 sm:group-hover:scale-110 transition-transform truncate">
                     {menu.label}
                   </h3>
-                  <p className="text-[10px] min-[380px]:text-[11px] sm:text-[12px] group-hover:text-white/50 uppercase mt-0.5 sm:mt-1 tracking-tighter truncate">
+                  <p className="text-[9px] min-[375px]:text-[10px] min-[400px]:text-[11px] sm:text-xs md:text-sm group-hover:text-white/50 uppercase mt-0.5 min-[375px]:mt-0.5 sm:mt-1 tracking-tighter truncate">
                     {menu.desc}
                   </p>
                 </div>
               </button>
 
-              <div className="absolute -top-3 left-8 sm:left-11 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:block">
-                <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+              <div className="absolute -top-2 min-[375px]:-top-2.5 sm:-top-3 left-6 min-[375px]:left-7 sm:left-8 md:left-10 lg:left-12 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:block">
+                <div className="bg-white text-black text-[9px] min-[375px]:text-[10px] sm:text-xs font-bold uppercase tracking-wider py-1 min-[375px]:py-1.5 px-2 min-[375px]:px-2.5 sm:px-3 whitespace-nowrap shadow-xl border border-white/20 relative rounded">
                   {menu.tooltip}
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-white" />
                 </div>
