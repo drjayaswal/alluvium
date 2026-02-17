@@ -29,7 +29,7 @@ const Loading = () => {
           transition={{ duration: 0.5 }}
           className="relative"
         >
-          <CircleNotchIcon className="w-8 h-8 text-white animate-spin" strokeWidth={1.5} />
+          <CircleNotchIcon className="w-8 h-8 text-white animate-spin" strokeWidth={1.5} weight="bold" />
         </motion.div>
       </div>
     </div>

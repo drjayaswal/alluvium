@@ -157,7 +157,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
         </header>
         {loading ? (
           <div className="border-dashed border-2 border-white/20 py-16.5 flex flex-col items-center justify-center">
-            <CircleNotchIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px] animate-spin" />
+            <CircleNotchIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px] animate-spin" weight="bold" />
             <p className="text-[14px] text-white/50">Searching Records...</p>
           </div>
         ) : filteredFeedbacks.length > 0 ? (
@@ -179,7 +179,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                     "{fb.content}"
                   </p>
                   <div className="mt-auto flex items-center gap-2 text-[11px] text-gray-500">
-                    <UserIcon size={14} /> {fb.email}
+                    <UserIcon size={14} weight="fill" /> {fb.email}
                   </div>
                 </div>
               );
@@ -187,19 +187,19 @@ export default function Feedbacks({ user }: { user: UserData }) {
           </div>
         ) : (
           <div className="border-dashed border-2 border-white/20 py-32 flex flex-col items-center justify-center">
-            <FolderOpenIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px]" />
+            <FolderOpenIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px]" weight="fill" />
             <p className="text-[14px] text-white/50">Zero Records</p>
           </div>
         )}
       </div>
       {selectedFeedback && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/5 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/10 backdrop-blur-sm">
           <div className="bg-black border border-white w-full max-w-md max-h-[90vh] flex flex-col relative animate-in fade-in zoom-in duration-200">
             <button
               onClick={() => setSelectedFeedback(null)}
               className="absolute top-6 right-6 cursor-pointer z-10 text-white hover:text-rose-600 transition-colors bg-black p-1"
             >
-              <XIcon size={24} weight="bold" />
+              <XIcon size={24} weight="fill" />
             </button>
             <div className="p-8 pb-4">
               <div
@@ -208,7 +208,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 {selectedFeedback.category || "General"}
               </div>
               <div className="text-white/50 text-xs flex items-center gap-2">
-                <UserIcon size={14} /> {selectedFeedback.email}
+                <UserIcon size={14} weight="fill" /> {selectedFeedback.email}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-8 pt-0 custom-scrollbar">
@@ -218,7 +218,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 </p>
               </div>
               <p className="flex gap-2 items-center text-[14px] text-white/50 uppercase tracking-tighter">
-                <ClockAfternoonIcon size={15} />
+                <ClockAfternoonIcon size={15} weight="fill" />
                 {new Date(selectedFeedback.created_at).toLocaleString()}
               </p>
             </div>
@@ -229,7 +229,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 className="flex-1 bg-white cursor-pointer text-black font-bold py-3 uppercase hover:bg-pink-600 hover:text-white transition-all flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {resolvingId === selectedFeedback.id && (
-                  <CircleNotchIcon size={18} className="animate-spin" />
+                  <CircleNotchIcon size={18} className="animate-spin" weight="bold" />
                 )}
                 {resolvingId === selectedFeedback.id
                   ? "Resolving..."

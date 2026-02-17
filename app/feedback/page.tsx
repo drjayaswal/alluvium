@@ -74,6 +74,7 @@ export default function FeedbackPage() {
         >
           <ArrowLeftIcon
             size={16}
+            weight="fill"
             className="group-hover:-translate-x-1 transition-transform"
           />
           <span className="text-[10px] uppercase font-bold tracking-[0.2em]">
@@ -104,7 +105,7 @@ export default function FeedbackPage() {
         <form onSubmit={handleFeedback} className="space-y-6 -mr-1 p-8">
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
-              <EnvelopeSimpleIcon size={12} /> Email Address
+              <EnvelopeSimpleIcon size={12} weight="fill" /> Email Address
             </label>
             <input
               autoComplete="off"
@@ -123,7 +124,7 @@ export default function FeedbackPage() {
           </div>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
-              <TagIcon size={12} /> Category
+              <TagIcon size={12} weight="fill" /> Category
             </label>
             <div className="relative">
               <select
@@ -146,7 +147,7 @@ export default function FeedbackPage() {
           </div>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
-              <ChatDotsIcon size={12} /> Your Thoughts
+              <ChatDotsIcon size={12} weight="fill" /> Your Thoughts
             </label>
             <textarea
               required
@@ -172,11 +173,11 @@ export default function FeedbackPage() {
               {isLoading ? (
                 <>
                   Submiting...{" "}
-                  <CircleNotchIcon className="animate-spin" size={16} />
+                  <CircleNotchIcon className="animate-spin" size={16} weight="bold" />
                 </>
               ) : (
                 <>
-                  Submit <PaperPlaneTiltIcon size={14} />
+                  Submit <PaperPlaneTiltIcon size={14} weight="fill" />
                 </>
               )}
             </span>

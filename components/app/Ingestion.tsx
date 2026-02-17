@@ -31,8 +31,9 @@ export default function Ingestion({ user }: AIProps) {
   const handleVideoIngest = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!videoUrl) return toast.error("Paste Video URL");
+    const youtubeRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((?:\w|-){11})(?:\S+)?$/;
+    if (!youtubeRegex.test(videoUrl)) return toast.error("Invalid YouTube URL");
     const token = localStorage.getItem("token");
-
     setVideoLoading(true);
     try {
       const res = await fetch(`${getBaseUrl()}/ingest-video`, {
@@ -177,10 +178,11 @@ export default function Ingestion({ user }: AIProps) {
             <span className="text-white/50">Add Context</span>
           </div>
         </header>
-        <div className="grid grid-cols-1 md:grid-cols-2 border border-white/10 bg-black backdrop-blur-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-white/20">
           <div className="p-8  space-y-6">
             <div className="flex items-center justify-between">
               <YoutubeLogoIcon
+                weight="fill"
                 className={`scale-150 ${videoLoading || videoUrl ? " text-white" : "text-white/30"}`}
               />
               <span className="text-[14px] text-white/30 font-bold uppercase">
@@ -202,7 +204,7 @@ export default function Ingestion({ user }: AIProps) {
               >
                 {videoLoading ? (
                   <>
-                    <CircleNotchIcon className="animate-spin" size={14} />
+                    <CircleNotchIcon className="animate-spin" size={14} weight="bold" />
                     Processing...
                   </>
                 ) : (
@@ -210,6 +212,7 @@ export default function Ingestion({ user }: AIProps) {
                     Process
                     <ArrowRightIcon
                       size={14}
+                      weight="fill"
                       className={`${videoUrl && "group-hover:translate-x-1 transition-transform"}`}
                     />
                   </>
@@ -221,12 +224,15 @@ export default function Ingestion({ user }: AIProps) {
             <div className="flex items-center justify-between">
               <div className="flex scale-150">
                 <FilePdfIcon
+                  weight="fill"
                   className={`${fileLoading ? "text-white" : "text-white/50"}`}
                 />
                 <FileDocIcon
+                  weight="fill"
                   className={`${fileLoading ? "text-white" : "text-white/50"}`}
                 />
                 <FileTxtIcon
+                  weight="fill"
                   className={`${fileLoading ? "text-white" : "text-white/50"}`}
                 />
               </div>
@@ -246,6 +252,7 @@ export default function Ingestion({ user }: AIProps) {
                   <CircleNotchIcon
                     className="animate-spin text-white"
                     size={24}
+                    weight="bold"
                   />
                   <span className="text-[12px] uppercase text-white font-bold">
                     Uploading...
@@ -256,7 +263,7 @@ export default function Ingestion({ user }: AIProps) {
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <CloudArrowUpIcon size={20} className="mb-1 text-white" />
+                  <CloudArrowUpIcon size={20} className="mb-1 text-white" weight="fill" />
                   <span className="text-[12px] text-white uppercase font-bold tracking-widest">
                     Upload
                   </span>

@@ -72,7 +72,7 @@ export function Profile({ user }: ProfileProps) {
               className="group cursor-pointer flex flex-col items-center gap-1.5 transition-all"
             >
               <div className="p-2.5 bg-white/5 rounded-xl group-hover:rounded-2xl text-white/70 group-hover:text-white group-hover:bg-red-800 transition-all duration-300">
-                <SignOutIcon size={22} weight="bold" />
+                <SignOutIcon size={22} weight="fill" />
               </div>
               <span className="text-[10px] font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100 transition-opacity">
                 Sign Out
@@ -86,6 +86,7 @@ export function Profile({ user }: ProfileProps) {
               <div className="h-12 w-12 bg-white/5 rounded-xl flex items-center justify-center shrink-0">
                 <UserIcon
                   size={24}
+                  weight="fill"
                   className="text-white/30 transition-colors"
                 />
               </div>
@@ -96,7 +97,7 @@ export function Profile({ user }: ProfileProps) {
             </div>
             <div className="flex items-center gap-4 group">
               <div className="h-12 w-12 bg-white/5 rounded-xl flex items-center justify-center shrink-0">
-                <PiggyBankIcon size={24} className="text-white/30" />
+                <PiggyBankIcon size={24} className="text-white/30" weight="fill" />
               </div>
               <div
                 className={`px-4 py-1 text-white transition-all ${
@@ -110,7 +111,7 @@ export function Profile({ user }: ProfileProps) {
             </div>
             <div className="flex items-center gap-4 group">
               <div className="h-12 w-12 bg-white/5 rounded-xl flex items-center justify-center shrink-0 relative">
-                <BellIcon size={24} className="text-white/30" />
+                <BellIcon size={24} className="text-white/30" weight="fill" />
                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] font-black text-black">
                   {user.total_conversations}
                 </span>
@@ -123,7 +124,7 @@ export function Profile({ user }: ProfileProps) {
                   onClick={() => router.push("/conversations")}
                   className="text-white/50 cursor-pointer hover:text-white hover:scale-110 transition-all p-1"
                 >
-                  <ArrowBendRightUpIcon size={20} />
+                  <ArrowBendRightUpIcon size={20} weight="fill" />
                 </button>
               </div>
             </div>
@@ -168,7 +169,7 @@ const CopyButton = ({
       onClick={handleCopy}
       className=" cursor-pointer p-1.5 bg-transparent text-white/50 hover:bg-white/20 hover:text-white transition-all duration-200 z-30"
     >
-      {copied ? <CheckIcon size={16} /> : <CopyIcon size={16} />}
+      {copied ? <CheckIcon size={16} weight="fill" /> : <CopyIcon size={16} weight="fill" />}
     </button>
   );
 };

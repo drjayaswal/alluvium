@@ -89,9 +89,9 @@ export default function Connect() {
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
-                <EyeIcon className="scale-130" strokeWidth={2.5} />
+                <EyeIcon className="scale-130" strokeWidth={2.5} weight="fill" />
               ) : (
-                <EyeClosedIcon className="fill-white scale-130" strokeWidth={2.5} />
+                <EyeClosedIcon className="fill-white scale-130" strokeWidth={2.5} weight="fill" />
               )}
             </button>
           </div>
@@ -105,10 +105,12 @@ export default function Connect() {
             </span>
             <div className="relative flex items-center overflow-hidden">
               <ArrowRightIcon
+                weight="fill"
                 className="transform transition-all duration-500 -translate-x-full opacity-0 
                  group-hover/btn:translate-x-0 group-hover/btn:opacity-100"
               />
               <ArrowRightIcon
+                weight="fill"
                 className="absolute transition-all duration-500 opacity-100 
                  group-hover/btn:translate-x-full group-hover/btn:opacity-0"
               />

@@ -54,7 +54,7 @@ const UpgradePage = () => {
                     className="flex items-center gap-3 text-white/70"
                   >
                     <CoffeeIcon
-                      weight="duotone"
+                      weight="fill"
                       className="w-5 h-5 text-amber-500"
                     />
                     <span className="text-sm font-mono uppercase tracking-wider">
@@ -76,12 +76,14 @@ const UpgradePage = () => {
               </span>
               <div className="relative flex items-center overflow-hidden h-6 w-6 px-1">
                 <CoffeeIcon
+                  weight="fill"
                   className={cn(
                     "transform transition-all duration-500 -translate-x-full scale-150 opacity-0 absolute",
                     "group-hover/btn:translate-x-0 group-hover/btn:opacity-100",
                   )}
                 />
                 <CoffeeIcon
+                  weight="fill"
                   className={cn(
                     "transition-all duration-500 opacity-100  scale-150",
                     "group-hover/btn:translate-x-full group-hover/btn:opacity-0",
@@ -132,7 +134,7 @@ const UpgradePage = () => {
                   <div key={feature} className="flex items-center gap-3 group">
                     <div className="w-6 h-6 border border-white/10 flex items-center justify-center group-hover:border-indigo-500/50 transition-colors">
                       <CheckIcon
-                        weight="bold"
+                        weight="fill"
                         className="w-3 h-3 text-indigo-400"
                       />
                     </div>

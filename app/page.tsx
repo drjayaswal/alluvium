@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import Loading from "@/components/ui/loading";
 import Main from "@/components/app/Main";
 
-export default function FeedbacksPage() {
+export default function HomePage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();

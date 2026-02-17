@@ -353,22 +353,22 @@ export function Services({ user }: { user: UserData }) {
     switch (status) {
       case "completed":
         return {
-          icon: <CheckCircleIcon className="w-4 h-4" />,
+          icon: <CheckCircleIcon className="w-4 h-4" weight="fill" />,
           bg: "text-emerald-500",
         };
       case "processing":
         return {
-          icon: <CircleNotchIcon className="w-4 h-4 animate-spin" />,
+          icon: <CircleNotchIcon className="w-4 h-4 animate-spin" weight="bold" />,
           bg: "text-indigo-500",
         };
       case "failed":
         return {
-          icon: <ExclamationMarkIcon className="w-4 h-4" />,
+          icon: <ExclamationMarkIcon className="w-4 h-4" weight="fill" />,
           bg: "text-red-500",
         };
       default:
         return {
-          icon: <WarningOctagonIcon className="w-4 h-4" />,
+          icon: <WarningOctagonIcon className="w-4 h-4" weight="fill" />,
           bg: "text-slate-500",
         };
     }
@@ -521,7 +521,7 @@ export function Services({ user }: { user: UserData }) {
                         onClick={() => setDescription("")}
                         className="flex items-center justify-center w-9 h-9 cursor-pointer hover:text-white text-white/50 hover:bg-red-800 transition-colors"
                       >
-                        <BackspaceIcon className="w-5 h-5" />
+                        <BackspaceIcon className="w-5 h-5" weight="fill" />
                       </button>
                     </div>
                   )}
@@ -533,7 +533,7 @@ export function Services({ user }: { user: UserData }) {
                       </div>
                     </div>
                     <label className="flex items-center justify-center w-9 h-9 cursor-pointer text-white/50 hover:bg-white hover:text-black transition-colors">
-                      <PaperclipIcon className="w-5 h-5" />
+                      <PaperclipIcon className="w-5 h-5" weight="fill" />
                       <input
                         type="file"
                         className="hidden"
@@ -799,9 +799,9 @@ export function Services({ user }: { user: UserData }) {
             {extractedData.length === 0 ? (
               <div className="h-full flex flex-col items-center bg-black/10 justify-center space-y-4 opacity-50">
                 <div className="flex items-center gap-2">
-                  <FilePdfIcon className="w-8 h-8" />
-                  <FileDocIcon className="w-8 h-8" />
-                  <FileTxtIcon className="w-8 h-8" />
+                  <FilePdfIcon className="w-8 h-8" weight="fill" />
+                  <FileDocIcon className="w-8 h-8" weight="fill" />
+                  <FileTxtIcon className="w-8 h-8" weight="fill" />
                 </div>
                 <p className="text-[10px] uppercase tracking-widest">
                   Awaiting Uploads
@@ -831,7 +831,7 @@ export function Services({ user }: { user: UserData }) {
                     >
                       <div className="flex px-2 items-center justify-between relative z-10">
                         <div className="flex items-center gap-4 min-w-0">
-                          <FilePdfIcon className="w-8 h-6 text-white/50 group-hover:text-white transition-colors duration-500" />
+                          <FilePdfIcon className="w-8 h-6 text-white/50 group-hover:text-white transition-colors duration-500" weight="fill" />
                           <div className="min-w-0 flex items-center">
                             <h4 className="text-sm text-white/50 group-hover:text-white font-bold transition-colors duration-500 truncate pr-4">
                               {file.filename.split("/").pop()}
@@ -884,7 +884,7 @@ export function Services({ user }: { user: UserData }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedFileData(null)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-md z-100"
+              className="fixed inset-0 bg-black/10 backdrop-blur-md z-100"
             />
 
             <div className="fixed inset-0 grid place-items-center z-102 p-4 pointer-events-none">
@@ -978,11 +978,13 @@ export function Services({ user }: { user: UserData }) {
                         </span>
                         <div className="relative flex items-center overflow-hidden h-6 w-10 px-2">
                           <DownloadIcon
+                            weight="fill"
                             className={cn(
                               "transform transition-all duration-500 -translate-y-full opacity-0 scale-150 absolute group-hover/btn:translate-y-0 group-hover/btn:opacity-100",
                             )}
                           />
                           <CloudArrowDownIcon
+                            weight="fill"
                             className={cn(
                               "transition-all duration-500 opacity-100 scale-150 group-hover/btn:translate-y-full group-hover/btn:opacity-0",
                             )}
@@ -1011,7 +1013,7 @@ export function Services({ user }: { user: UserData }) {
         ref={folderInputRef}
         className="hidden"
         /* @ts-ignore */
-        webkitdirectory=""
+        webkitdirectory="webkitdirectory"
         directory=""
         onChange={handleSelection}
       />

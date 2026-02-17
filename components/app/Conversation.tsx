@@ -284,7 +284,7 @@ export default function Conversation({ user }: { user: UserData }) {
                         : "text-white/40 hover:bg-white/10"
                     }`}
                   >
-                    <ChatCircleDotsIcon size={14} className="shrink-0" />
+                    <ChatCircleDotsIcon size={14} className="shrink-0" weight="fill" />
                     <span className="truncate text-left">
                       {c.title || "Untitled Conversations"}
                     </span>
@@ -313,7 +313,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 }}
                 className="w-full cursor-pointer py-3 text-[11px] text-white uppercase tracking-widest font-bold flex items-center justify-center gap-2 hover:bg-white hover:text-black transition-all duration-300"
               >
-                <PlusCircleIcon size={14} /> New Conversation
+                <PlusCircleIcon size={14} weight="fill" /> New Conversation
               </button>
             )}
           </div>
@@ -362,6 +362,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 <CircleNotchIcon
                   className="animate-spin text-white"
                   size={40}
+                  weight="bold"
                 />
                 <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white">
                   Searching Conversations...
@@ -399,6 +400,7 @@ export default function Conversation({ user }: { user: UserData }) {
                     <CircleNotchIcon
                       className="animate-spin text-white"
                       size={18}
+                      weight="bold"
                     />
                   </div>
                 )}
@@ -423,7 +425,7 @@ export default function Conversation({ user }: { user: UserData }) {
                   onClick={onFlight}
                   className={`p-2.5 cursor-pointer bg-transparent text-white hover:text-black hover:bg-white hover:rounded-4xl transition-all duration-500 ease-in-out transform disabled:opacity-20 ${isFlying ? "-translate-y-16 translate-x-16 opacity-0 scale-150" : "active:scale-95 hover:bg-black"}`}
                 >
-                  <PaperPlaneTiltIcon size={18} />
+                  <PaperPlaneTiltIcon size={18} weight="fill" />
                 </button>
               </form>
             </div>
@@ -463,7 +465,7 @@ const MessageEmptyState = ({
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 animate-in fade-in zoom-in-95 duration-700">
         <div className="relative group">
-          <EmptyIcon className="text-red-600" size={40} />
+          <EmptyIcon className="text-white/40" size={40} weight="fill" />
         </div>
         <div className="mt-2 text-center max-w-xs">
           <h3 className="inline-flex items-center justify-center gap-2 text-xl font-bold text-white/40 uppercase">
@@ -537,7 +539,7 @@ const CopyButton = ({
       onClick={handleCopy}
       className="absolute top-0 right-0 cursor-pointer p-1.5 bg-transparent text-white hover:bg-white/20 transition-all duration-200 z-30"
     >
-      {copied ? <CheckIcon size={16} /> : <CopyIcon size={16} />}
+      {copied ? <CheckIcon size={16} weight="fill" /> : <CopyIcon size={16} weight="fill" />}
     </button>
   );
 };
@@ -618,9 +620,9 @@ const MessageItem = ({
 const SourceEmptyState = ({ onIngest }: { onIngest: () => void }) => (
   <button
     onClick={onIngest}
-    className="w-full cursor-pointer group relative flex items-center justify-center py-5 px-4 border-2 border-dashed border-white/10 hover:border-teal-700/50 hover:bg-teal-700/15 transition-all duration-300 gap-3"
+    className="w-full cursor-pointer group relative flex items-center justify-center py-5 px-4 border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 gap-3"
   >
-    <div className="p-2 bg-white/5 group-hover:bg-teal-700/60 transition-colors">
+    <div className="p-2 bg-white/5 group-hover:bg-white/20 transition-colors">
       <PlusCircleIcon
         size={16}
         className="text-white/40 group-hover:text-white"

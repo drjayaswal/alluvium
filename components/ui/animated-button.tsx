@@ -20,6 +20,7 @@ export const AnimatedButton = ({
       </span>
       <div className="relative flex items-center overflow-hidden h-6 w-6 px-1">
         <Icon
+          weight="fill"
           className={cn(
             "transform transition-all duration-500 -translate-x-full scale-150 opacity-0 absolute",
             "group-hover/btn:translate-x-0 group-hover/btn:opacity-100",
@@ -27,6 +28,7 @@ export const AnimatedButton = ({
           )}
         />
         <Icon
+          weight="fill"
           className={cn(
             "transition-all duration-500 opacity-100  scale-150",
             "group-hover/btn:translate-x-full group-hover/btn:opacity-0"
