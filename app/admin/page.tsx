@@ -25,6 +25,7 @@ type AdminData = {
     id: string;
     email: string;
     credits: number;
+    role: string;
     updated_at: string | null;
     linked_folder_ids: string[];
     processed_filenames: string[];
@@ -172,7 +173,8 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!user) return;
-    if (user.email !== "dhruv@gmail.com") {
+    const userRole = user.role || "user";
+    if (userRole !== "admin") {
       router.push("/");
       return;
     }
@@ -202,7 +204,8 @@ export default function AdminPage() {
     router.push("/connect");
     return null;
   }
-  if (user.email !== "dhruv@gmail.com") return null;
+  const userRole = user.role || "user";
+  if (userRole !== "admin") return null;
   if (dataLoading || !data) return <Loading />;
 
   return (
@@ -269,6 +272,7 @@ export default function AdminPage() {
               <thead className="sticky top-0 bg-[#0a0a0f] border-b border-white/10 z-10">
                 <tr className="text-left text-white/60 uppercase tracking-wider">
                   <th className="p-2 sm:p-3">Email</th>
+                  <th className="p-2 sm:p-3">Role</th>
                   <th className="p-2 sm:p-3 hidden md:table-cell">ID</th>
                   <th className="p-2 sm:p-3">Credits</th>
                   <th className="p-2 sm:p-3 hidden sm:table-cell">Updated</th>
@@ -281,6 +285,11 @@ export default function AdminPage() {
                     className="border-b border-white/10 hover:bg-white/10 transition-colors duration-150"
                   >
                     <td className="p-2 sm:p-3 font-medium text-white truncate max-w-[150px] sm:max-w-none" title={u.email}>{u.email}</td>
+                    <td className="p-2 sm:p-3">
+                      <span className={`px-1.5 py-0.5 text-xs font-medium ${u.role === "admin" ? "bg-amber-500/20 text-amber-400" : "bg-white/10 text-white/70"}`}>
+                        {u.role}
+                      </span>
+                    </td>
                     <td className="p-2 sm:p-3 text-white/60 text-xs truncate max-w-[120px] hidden md:table-cell" title={u.id}>{u.id}</td>
                     <td className="p-2 sm:p-3 text-white whitespace-nowrap">{u.credits}</td>
                     <td className="p-2 sm:p-3 text-white/50 text-xs hidden sm:table-cell whitespace-nowrap">

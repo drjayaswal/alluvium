@@ -54,13 +54,14 @@ export default function Ingestion({ user }: AIProps) {
       if (res.ok) {
         if (response.status !== "ready") {
           toast.info("Resource will be ready soon", {
+            id: "ingest-status",
             action: {
-              label: "Chat with 2BAI",
+              label: "Continue to Conversation",
               onClick: () => {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/ingestion/chat");
+                  router.push("/conversations");
                 }, 1500);
               },
             },
@@ -68,13 +69,14 @@ export default function Ingestion({ user }: AIProps) {
         } else {
           setVideoUrl("");
           toast.info("Resource is Ready", {
+            id: "ingest-status",
             action: {
-              label: "Chat with 2BAI",
+              label: "Continue to Conversation",
               onClick: () => {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/ingestion/chat");
+                  router.push("/conversations");
                 }, 1500);
               },
             },
@@ -120,13 +122,14 @@ export default function Ingestion({ user }: AIProps) {
       if (res.ok) {
         if (response.status !== "ready") {
           toast.info("Resource will be ready soon", {
+            id: "ingest-status",
             action: {
-              label: "Chat with 2BAI",
+              label: "Continue to Conversation",
               onClick: () => {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/ingestion/chat");
+                  router.push("/conversations");
                 }, 1500);
               },
             },
@@ -134,13 +137,14 @@ export default function Ingestion({ user }: AIProps) {
         } else {
           setVideoUrl("");
           toast.info("Resource is Ready", {
+            id: "ingest-status",
             action: {
-              label: "Chat with 2BAI",
+              label: "Continue to Conversation",
               onClick: () => {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/ingestion/chat");
+                  router.push("/conversations");
                 }, 1500);
               },
             },

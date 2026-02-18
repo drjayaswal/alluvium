@@ -93,7 +93,8 @@ export function Services({ user }: { user: UserData }) {
   const handleSelection = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    if (files?.length >= 2 || user.credits == 0) {
+
+    if (files?.length >= 2 && user.credits < 3) {
       toast.info("Only 1 file is allowed with free tier", {
         action: {
           label: "Upgrade",
@@ -253,11 +254,16 @@ export function Services({ user }: { user: UserData }) {
       .setIncludeFolders(true)
       .setSelectFolderEnabled(true);
 
+    const developerKey = process.env.NEXT_PUBLIC_PICKER_KEY;
+    if (!developerKey) {
+      toast.error("Google Picker is not configured. Add NEXT_PUBLIC_PICKER_KEY to .env.");
+      return;
+    }
     const picker = new google.picker.PickerBuilder()
       .addView(view)
       .setOAuthToken(token)
-      .setDeveloperKey(process.env.PICKER_KEY)
-      .setAppId(process.env.NEXT_PUBLIC_APP_ID)
+      .setDeveloperKey(developerKey)
+      .setAppId(process.env.NEXT_PUBLIC_APP_ID || "")
       .setTitle("Select Google Drive Folder")
       .setCallback(async (data: any) => {
         if (data.action === google.picker.Action.PICKED) {
@@ -493,11 +499,6 @@ export function Services({ user }: { user: UserData }) {
               <h3 className="text-[10px] sm:text-[12px] font-black text-white/40 uppercase tracking-[0.2em]">
                 Description
               </h3>
-              {description.length > 100 && (
-                <span className="text-[9px] sm:text-[10px] text-indigo-400">
-                  Ready for Analysis
-                </span>
-              )}
             </div>
             <div className="relative group">
               <div className="relative group">
@@ -553,18 +554,23 @@ export function Services({ user }: { user: UserData }) {
                 tooltip: "Import from Drive",
                 icon: <CloudIcon className="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />,
                 handler: () => {
-                  toast.info("Upgrade to use Google Drive", {
-                    action: {
-                      label: "Upgrade",
-                      onClick: () => {
-                        const toastId = toast.loading("Redirecting...");
-                        setTimeout(() => {
-                          toast.dismiss(toastId);
-                          router.push("/upgrade");
-                        }, 1500);
+
+                  if (user.credits == 0) {
+                    toast.info("Insufficient credits", {
+                      action: {
+                        label: "Upgrade",
+                        onClick: () => {
+                          const toastId = toast.loading("Redirecting...");
+                          setTimeout(() => {
+                            toast.dismiss(toastId);
+                            router.push("/upgrade");
+                          }, 1500);
+                        },
                       },
-                    },
-                  });
+                    });
+                  } else {
+                    login();
+                  }
                 },
               },
               {
@@ -841,8 +847,7 @@ export function Services({ user }: { user: UserData }) {
                           </div>
                         </div>
 
-                        {isProcessing ||
-                          (file.match_score !== null && (
+                          {file.match_score !== null && (
                             <div className="text-right shrink-0">
                               <div
                                 className={cn(
@@ -862,7 +867,7 @@ export function Services({ user }: { user: UserData }) {
                                 Match
                               </div>
                             </div>
-                          ))}
+                          )}
                       </div>
                       <div
                         className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full"
@@ -1053,7 +1058,7 @@ const renderSkillSection = (
         </span>
       )}
       {total === 0 && (
-        <span className="text-[10px] sm:text-[11px] text-white/20">No skills</span>
+        <span className="text-[10px] sm:text-[11px] text-white/70">No skills</span>
       )}
     </div>
   </section>

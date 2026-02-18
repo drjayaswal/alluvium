@@ -19,15 +19,23 @@
     }
   }
 }
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+
+/* Hide scrollbar for all browsers */
+html, body, * {
+  /* For IE, Edge */
+  -ms-overflow-style: none !important;
+  /* For Firefox */
+  scrollbar-width: none !important;
 }
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar, 
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
 @theme {
 
   --color-dark: #4c51bf;

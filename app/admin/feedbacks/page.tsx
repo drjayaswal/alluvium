@@ -49,9 +49,19 @@ export default function FeedbacksPage() {
     }
   }, [loading, user, router]);
 
-  if (loading) return <Loading />;
+  useEffect(() => {
+    if (user) {
+      const userRole = user.role || "user";
+      if (userRole !== "admin") {
+        router.push("/");
+      }
+    }
+  }, [user, router]);
 
+  if (loading) return <Loading />;
   if (!user) return null;
+  const userRole = user.role || "user";
+  if (userRole !== "admin") return null;
 
   return (
     <div>

@@ -14,13 +14,19 @@ export interface CandidateInfo {
   contact: CandidateContact;
 }
 
+export enum UserRole {
+  USER = "user",
+  ADMIN = "admin",
+}
+
 export interface UserData {
   email: string;
   id: string;
   updated_at: string;
-  total_conversations: number
+  total_conversations: number;
   authenticated?: boolean;
   credits: number | 0;
+  role?: UserRole | "user" | "admin";
 }
 
 export interface Message {

@@ -14,9 +14,12 @@ import {
   CodesandboxLogoIcon,
 } from "@phosphor-icons/react";
 import Image from "next/image";
-import { UserData } from "@/lib/interface";
+import { UserData, UserRole } from "@/lib/interface";
 
 export default function Main({ user }: { user: UserData }) {
+  // Ensure role defaults to "user" if missing, normalize to string
+  const roleStr = String(user.role || UserRole.USER);
+  const userRole: "user" | "admin" = roleStr === "admin" ? "admin" : "user";
   const router = useRouter();
   const container = {
     hidden: { opacity: 0 },
@@ -89,7 +92,7 @@ export default function Main({ user }: { user: UserData }) {
       desc: "Open Source",
       tooltip: "Contribute",
     },
-    ...(user.email == "dhruv@gmail.com"
+    ...(userRole === "admin"
       ? [
           {
             label: "Admin",

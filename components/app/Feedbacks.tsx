@@ -49,7 +49,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
   const [resolvingId, setResolvingId] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState("ALL");
   const [selectedFeedback, setSelectedFeedback] = useState<any | null>(null);
-  const isAdmin = user?.email === "dhruv@gmail.com";
+  const isAdmin = (user?.role || "user") === "admin";
 
   useEffect(() => {
     if (!user) return;
