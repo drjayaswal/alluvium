@@ -486,7 +486,7 @@ export function Services({ user }: { user: UserData }) {
                 alt="logo"
                 width={60}
                 height={60}
-                className="-mr-2 w-12 h-12 sm:w-14 sm:h-14 lg:w-[60px] lg:h-[60px]"
+                className="-mr-2 w-12 h-12 sm:w-14 sm:h-14 lg:h-15"
               />
               <div>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tighter text-white">

@@ -23,7 +23,7 @@ export function Profile({ user }: ProfileProps) {
 
   const handleLogout = () => {
     toast.info("Logout?", {
-      description: "You will be logged out of your account",
+      description: "You will be logged out",
       action: {
         label: "Logout",
         onClick: () => {
@@ -47,7 +47,7 @@ export function Profile({ user }: ProfileProps) {
       animate={{ opacity: 1, filter: "blur(0px)" }}
       className="w-full text-white flex-col py-6 min-[375px]:py-7 sm:py-8 md:py-10 lg:py-12"
     >
-      <div className="max-w-2xl xl:max-w-3xl 2xl:max-w-4xl mx-auto w-full px-3 min-[375px]:px-4 sm:px-5 md:px-6 lg:px-8">
+      <div className="max-w-2xl xl:max-w-3xl 2xl:max-w-4xl mx-auto w-full px-5 min-[375px]:px-8 sm:px-5 md:px-6 lg:px-8">
         <div className="flex flex-col gap-6 min-[375px]:gap-7 sm:gap-8 md:gap-8 lg:gap-10">
           <div className="flex justify-between items-center gap-3 min-[375px]:gap-4">
             <div className="flex items-center gap-2 min-[375px]:gap-2.5 sm:gap-3">
@@ -56,7 +56,7 @@ export function Profile({ user }: ProfileProps) {
                 alt="logo"
                 width={60}
                 height={60}
-                className="w-10 h-10 min-[375px]:w-12 min-[375px]:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-[60px] lg:h-[60px] shrink-0"
+                className="w-10 h-10 min-[375px]:w-12 min-[375px]:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-15 shrink-0"
               />
               <div className="flex flex-col justify-center">
                 <h1 className="text-2xl min-[375px]:text-3xl min-[400px]:text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-none">
@@ -71,8 +71,8 @@ export function Profile({ user }: ProfileProps) {
               onClick={handleLogout}
               className="group cursor-pointer flex flex-col items-center gap-1 min-[375px]:gap-1.5 sm:gap-2 transition-all shrink-0"
             >
-              <div className="p-2 min-[375px]:p-2.5 sm:p-2.5 md:p-3 bg-white/5 rounded-xl group-hover:rounded-2xl text-white/70 group-hover:text-white group-hover:bg-red-800 transition-all duration-300">
-                <SignOutIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-[22px] md:h-[22px]" weight="fill" />
+              <div className="p-2 min-[375px]:p-2.5 sm:p-2.5 md:p-3 group-hover:rounded-2xl text-white/70 group-hover:text-white group-hover:bg-red-800 transition-all duration-300">
+                <SignOutIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-5.5" weight="fill" />
               </div>
               <span className="text-[9px] min-[375px]:text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100 transition-opacity">
                 Sign Out
@@ -83,7 +83,7 @@ export function Profile({ user }: ProfileProps) {
         <div className="space-y-4 min-[375px]:space-y-5 sm:space-y-6 md:space-y-6 lg:space-y-8 pt-8 min-[375px]:pt-9 sm:pt-10 md:pt-12 lg:pt-14">
           <section className="grid grid-cols-1 gap-3 min-[375px]:gap-4 sm:gap-4 md:gap-5">
             <div className="flex items-center gap-3 min-[375px]:gap-4 sm:gap-4 md:gap-4 lg:gap-5 group">
-              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 bg-white/5 rounded-xl flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 flex items-center justify-center shrink-0">
                 <UserIcon
                   className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white/30 transition-colors"
                   weight="fill"
@@ -95,7 +95,7 @@ export function Profile({ user }: ProfileProps) {
               <CopyButton onCopy={() => {}} content={user.email} />
             </div>
             <div className="flex items-center gap-3 min-[375px]:gap-4 sm:gap-4 md:gap-4 lg:gap-5 group">
-              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 bg-white/5 rounded-xl flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 flex items-center justify-center shrink-0">
                 <PiggyBankIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white/30" weight="fill" />
               </div>
               <div
@@ -109,7 +109,7 @@ export function Profile({ user }: ProfileProps) {
               </div>
             </div>
             <div className="flex items-center gap-3 min-[375px]:gap-4 sm:gap-4 md:gap-4 lg:gap-5 group">
-              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 bg-white/5 rounded-xl flex items-center justify-center shrink-0 relative">
+              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 flex items-center justify-center shrink-0 relative">
                 <BellIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white/30" weight="fill" />
                 <span className="absolute -top-0.5 min-[375px]:-top-1 -right-0.5 min-[375px]:-right-1 flex h-4 w-4 min-[375px]:h-5 min-[375px]:w-5 sm:h-5 sm:w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-white text-[8px] min-[375px]:text-[9px] sm:text-[10px] md:text-xs font-black text-black">
                   {user.total_conversations}
@@ -128,7 +128,7 @@ export function Profile({ user }: ProfileProps) {
               </div>
             </div>
             <div className="flex items-center gap-3 min-[375px]:gap-4 sm:gap-4 md:gap-4 lg:gap-5 group">
-              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 bg-white/5 rounded-xl flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 min-[375px]:h-11 min-[375px]:w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 flex items-center justify-center shrink-0">
                 <ClockCounterClockwiseIcon
                   className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white/30"
                 />

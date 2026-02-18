@@ -101,7 +101,18 @@ export default function Conversation({ user }: { user: UserData }) {
             loadConversation(convData[0].id);
           }
         } else {
-          toast.info("No Source Available");
+          toast.info("No Source Available", {
+                  action: {
+                    label: "Ingest",
+                    onClick: () => {
+                      const toastId = toast.loading("Redirecting...");
+                      setTimeout(() => {
+                        toast.dismiss(toastId);
+                        router.push("/ingest");
+                      }, 1500);
+                    },
+                  },
+                });
         }
       } catch (error) {
         toast.error("Failed to sync library.");
@@ -212,7 +223,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 alt="logo"
                 width={50}
                 height={50}
-                className="shrink-0 w-8 h-8 md:w-[50px] md:h-[50px]"
+                className="shrink-0 w-8 h-8 md:w-12.5"
               />
               <div className="flex flex-col justify-center">
                 <h1 className="text-xl md:text-2xl font-black text-white leading-none uppercase tracking-tighter">
@@ -290,7 +301,7 @@ export default function Conversation({ user }: { user: UserData }) {
                         : "text-white/40 hover:bg-white/10"
                     }`}
                   >
-                    <ChatCircleDotsIcon size={12} className="md:w-[14px] md:h-[14px] shrink-0" weight="fill" />
+                    <ChatCircleDotsIcon size={12} className="md:h-3.5 shrink-0" weight="fill" />
                     <span className="truncate text-left">
                       {c.title || "Untitled Conversations"}
                     </span>
@@ -309,7 +320,7 @@ export default function Conversation({ user }: { user: UserData }) {
             </div>
           </div>
           <div
-            className={`pt-[6px] md:pt-[8.5px] pb-3 md:pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/20"}`}
+            className={`pt-1.5 md:pt-[8.5px] pb-3 md:pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/20"}`}
           >
             {sources.length > 0 && (
               <button
@@ -319,7 +330,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 }}
                 className="w-full cursor-pointer py-2 md:py-3 text-[10px] md:text-[11px] text-white uppercase tracking-widest font-bold flex items-center justify-center gap-1.5 md:gap-2 hover:bg-white hover:text-black transition-all duration-300"
               >
-                <PlusCircleIcon size={12} className="md:w-[14px] md:h-[14px]" weight="fill" /> New Conversation
+                <PlusCircleIcon size={12} className="md:h-3.5" weight="fill" /> New Conversation
               </button>
             )}
           </div>
@@ -333,7 +344,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 alt="logo"
                 width={50}
                 height={50}
-                className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 md:w-[50px] md:h-[50px]"
+                className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 md:h-12.5"
               />
               <div className="flex flex-col justify-center">
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-none uppercase tracking-tighter">
@@ -404,7 +415,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 {isLoading && (
                   <div className="flex justify-center p-3 sm:p-4">
                     <CircleNotchIcon
-                      className="animate-spin text-white w-4 h-4 sm:w-[18px] sm:h-[18px]"
+                      className="animate-spin text-white w-4 h-4 sm:h-4.5"
                       size={18}
                       weight="bold"
                     />
@@ -431,7 +442,7 @@ export default function Conversation({ user }: { user: UserData }) {
                   onClick={onFlight}
                   className={`p-2 sm:p-2.5 cursor-pointer bg-transparent text-white hover:text-black hover:bg-white hover:rounded-4xl transition-all duration-500 ease-in-out transform disabled:opacity-20 ${isFlying ? "-translate-y-16 translate-x-16 opacity-0 scale-150" : "active:scale-95 hover:bg-black"}`}
                 >
-                  <PaperPlaneTiltIcon size={16} className="sm:w-[18px] sm:h-[18px]" weight="fill" />
+                  <PaperPlaneTiltIcon size={16} className="sm:h-4.5" weight="fill" />
                 </button>
               </form>
             </div>
@@ -491,7 +502,7 @@ const MessageEmptyState = ({
   <div className="flex flex-col items-center gap-1.5 sm:gap-2">
     <div className="flex items-center gap-2 sm:gap-3">
       <Image
-        className="invert w-8 h-8 sm:w-10 sm:h-10 md:w-[40px] md:h-[40px]"
+        className="invert w-8 h-8 sm:w-10 sm:h-10 md:h-10"
         src="/logo.png"
         alt="logo"
         width={40}
@@ -501,7 +512,7 @@ const MessageEmptyState = ({
         Alluvium<span className="text-red-600">.</span>
       </h3>
     </div>
-    <div className="h-[2px] sm:h-[2.5px] md:h-[2.75px] w-full rounded-4xl bg-red-700" />
+    <div className="h-0.5 sm:h-[2.5px] md:h-[2.75px] w-full rounded-4xl bg-red-700" />
   </div>
   <div className="mt-4 sm:mt-5 w-full max-w-xs sm:max-w-sm">
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-px">
