@@ -21,40 +21,61 @@ function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isOpen]);
+
   if (!hasToken) return null;
 
   return (
-    <nav className="fixed top-4.5 right-0 z-100 px-6 flex items-center justify-end pointer-events-none">
-      <div 
-        className={`flex items-center transition-all duration-700 ease-in-out overflow-hidden pointer-events-auto
-          ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}
-        `}
-      >
-        <nav className="flex items-center gap-2 bg-black p-1 border border-r-0 overflow-x-auto no-scrollbar max-w-[calc(100vw-100px)]">
-          {navLinks.map((link, index) => (
-            <Link
-              key={index}
-              href={link.href}
-              className="text-[10px] uppercase tracking-widest text-white/50 hover:text-black hover:bg-white px-4 py-3 transition-all duration-300 whitespace-nowrap"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-      </div>
+    <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`group shrink-0 pointer-events-auto flex cursor-pointer items-center justify-center w-12.25 h-12.25 transition-all duration-200
-          ${isOpen ? "hover:bg-white border border-white border-l-0 bg-black" : "bg-black"}
+        className={`fixed top-4.5 right-6 z-110 flex items-center justify-center w-12 h-12 cursor-pointer transition-all ${
+          isOpen ? "text-rose-500" : "text-black bg-white"
+        } active:scale-95`}
+      >
+        {isOpen ? <XIcon size={24} weight="bold" /> : <ListIcon size={24} weight="bold" />}
+      </button>
+
+      <div 
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-100 transition-opacity duration-500 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsOpen(false)}
+      />
+
+      <div 
+        className={`fixed top-0 right-0 h-full w-[70%] sm:w-70 bg-black border-l border-white/20 z-105
+          shadow-2xl transition-transform duration-500 ease-in-out flex flex-col
+          ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        {isOpen ? (
-          <XIcon size={20} weight="bold" className="text-white group-hover:text-red-600 transition-colors" />
-        ) : (
-          <ListIcon size={20} weight="bold" className="text-white group-hover:text-white transition-colors" />
-        )}
-      </button>
-    </nav>
+        <div className="flex-1 overflow-y-auto no-scrollbar p-8 pt-9.5">
+          <nav className="flex flex-col gap-6">
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-white/30 mb-2">
+              Navigation
+            </p>
+            
+            {navLinks.map((link, index) => (
+              <Link
+                key={index}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="group flex items-center justify-between text-xs sm:text-sm uppercase tracking-widest text-white/60 hover:text-white transition-colors"
+              >
+                <span className="shrink-0">{link.name}</span>
+                <span className="ml-4 h-px w-0 bg-white transition-all duration-700 group-hover:w-full opacity-0 group-hover:opacity-100" />
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </>
   );
 }
 

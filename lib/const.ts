@@ -53,7 +53,7 @@ export const navLinks = [
     tooltip: "Meet Developer",
   },
   {
-    name: "API Status",
+    name: "API",
     href: `${process.env.NEXT_PUBLIC_BACKEND_URL}/docs`,
     color: "hover:bg-pink-700",
     tooltip: "API Documentation",

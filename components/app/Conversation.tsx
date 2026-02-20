@@ -247,7 +247,7 @@ export default function Conversation({ user }: { user: UserData }) {
             </div>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="md:hidden cursor-pointer  text-white/50"
+              className="md:hidden cursor-pointer text-rose-500"
             >
               <XIcon size={20} />
             </button>
