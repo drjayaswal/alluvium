@@ -18,7 +18,7 @@ import {
   CircleNotchIcon,
   CloudArrowDownIcon,
   CloudIcon,
-  CurrencyCircleDollarIcon,
+  CoinIcon,
   DownloadIcon,
   ExclamationMarkIcon,
   FilePdfIcon,
@@ -706,7 +706,7 @@ export function Services({ user }: { user: UserData }) {
                     user.credits < 10 && "bg-red-700"
                   }`}
                 >
-                  <CurrencyCircleDollarIcon
+                  <CoinIcon
                     weight="fill"
                     className={`w-3 h-4 sm:w-4 sm:h-5 text-white`}
                   />
@@ -730,7 +730,7 @@ export function Services({ user }: { user: UserData }) {
                       },
                     });
                   }}
-                  className="group px-4 sm:px-6 lg:px-10 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 transition-colors duration-300 hover:bg-white hover:text-black font-bold"
+                  className="group px-4 ml-0.5 relative group/action cursor-pointer flex items-center justify-center h-8 transition-colors duration-300 hover:bg-white hover:text-black font-bold"
                 >
                   <div className="absolute top-10 left-1/2 -translate-x-1/2 mb-2 z-50 pointer-events-none opacity-0 group-hover/action:opacity-100 transition-opacity duration-200 hidden sm:block">
                     <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">

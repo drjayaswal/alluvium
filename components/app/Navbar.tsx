@@ -24,7 +24,7 @@ function Navbar() {
   if (!hasToken) return null;
 
   return (
-    <nav className="fixed top-6 right-0 z-100 px-6 flex items-center justify-end pointer-events-none">
+    <nav className="fixed top-4.5 right-0 z-100 px-6 flex items-center justify-end pointer-events-none">
       <div 
         className={`flex items-center transition-all duration-700 ease-in-out overflow-hidden pointer-events-auto
           ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}

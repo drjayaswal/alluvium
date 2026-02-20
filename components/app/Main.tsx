@@ -12,12 +12,12 @@ import {
   UserGearIcon,
   UserIcon,
   CodesandboxLogoIcon,
+  CoinIcon,
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import { UserData, UserRole } from "@/lib/interface";
 
 export default function Main({ user }: { user: UserData }) {
-  // Ensure role defaults to "user" if missing, normalize to string
   const roleStr = String(user.role || UserRole.USER);
   const userRole: "user" | "admin" = roleStr === "admin" ? "admin" : "user";
   const router = useRouter();
@@ -92,6 +92,15 @@ export default function Main({ user }: { user: UserData }) {
       desc: "Open Source",
       tooltip: "Contribute",
     },
+        {
+      label: "Upgrade",
+      path: "/upgrade",
+      icon: CoinIcon,
+      external: false,
+      desc: "Upgrade Account",
+      tooltip: "Upgrade to Pro",
+
+    },
     ...(userRole === "admin"
       ? [
           {
@@ -143,7 +152,6 @@ export default function Main({ user }: { user: UserData }) {
             </div>
           </div>
         </motion.div>
-
         <motion.div
           variants={container}
           initial="hidden"
