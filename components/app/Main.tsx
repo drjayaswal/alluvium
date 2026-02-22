@@ -13,6 +13,7 @@ import {
   UserIcon,
   CodesandboxLogoIcon,
   CoinIcon,
+  ToolboxIcon,
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import { UserData, UserRole } from "@/lib/interface";
@@ -61,6 +62,14 @@ export default function Main({ user }: { user: UserData }) {
       desc: "Settings",
       tooltip: "User Profile",
     },
+    {
+      label: "Tools",
+      path: "/tools",
+      icon: ToolboxIcon,
+      desc: "Utilities",
+      tooltip: "Explore Tools",
+    },
+
     {
       label: "Developer",
       path: "https://github.com/drjayaswal",

@@ -35,11 +35,11 @@ function Navbar() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed top-4.5 right-6 z-110 flex items-center justify-center w-12 h-12 cursor-pointer transition-all ${
-          isOpen ? "text-rose-500" : "text-black bg-white"
+        className={`fixed sm:top-2 top-1 right-2 z-110 flex items-center justify-center w-10 h-10 cursor-pointer transition-all ${
+          isOpen ? "text-rose-500" : "text-white bg-black/30 backdrop-blur-sm"
         } active:scale-95`}
       >
-        {isOpen ? <XIcon size={24} weight="bold" /> : <ListIcon size={24} weight="bold" />}
+        {isOpen ? <XIcon size={25} weight="bold" /> : <ListIcon size={25} weight="bold" />}
       </button>
 
       <div 

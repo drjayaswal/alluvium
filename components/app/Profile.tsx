@@ -22,10 +22,10 @@ export function Profile({ user }: ProfileProps) {
   const router = useRouter();
 
   const handleLogout = () => {
-    toast.info("Logout?", {
-      description: "You will be logged out",
+    toast.info("Disconnect?", {
+      description: "You will be disconnected!",
       action: {
-        label: "Logout",
+        label: "Disconnect",
         onClick: () => {
           localStorage.removeItem("token");
           localStorage.removeItem("user_email");
@@ -71,11 +71,11 @@ export function Profile({ user }: ProfileProps) {
               onClick={handleLogout}
               className="group cursor-pointer flex flex-col items-center gap-1 min-[375px]:gap-1.5 sm:gap-2 transition-all shrink-0"
             >
-              <div className="p-2 min-[375px]:p-2.5 sm:p-2.5 md:p-3 group-hover:rounded-2xl text-white/70 group-hover:text-white group-hover:bg-red-800 transition-all duration-300">
+              <div className="p-2 min-[375px]:p-2.5 sm:p-2.5 md:p-3 group-hover:rounded-2xl text-white/70 group-hover:text-white group-hover:bg-red-700 transition-all duration-300">
                 <SignOutIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-6 sm:h-6 md:w-5.5" weight="fill" />
               </div>
               <span className="text-[9px] min-[375px]:text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100 transition-opacity">
-                Sign Out
+                Disconnect
               </span>
             </button>
           </div>

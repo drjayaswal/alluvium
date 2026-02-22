@@ -28,7 +28,9 @@ const UpgradePage = () => {
   const openPayment = (plan: any) => {
     setSelectedPlan(plan);
     setShowPayment(true);
-    toast.success(`Opening secure gateway...`);
+    toast.success(`Thank you for supporting us!`, {
+      description: "Your support means a lot to us.",
+    });
   };
 
   const PLANS = [

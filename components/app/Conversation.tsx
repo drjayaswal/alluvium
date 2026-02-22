@@ -230,9 +230,9 @@ export default function Conversation({ user }: { user: UserData }) {
         className={`flex h-full w-full transition-all duration-500 ${focusedIndex !== null ? "blur-sm scale-[0.98] pointer-events-none" : ""}`}
       >
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-70 bg-black border-r border-white/20 transition-transform duration-300 md:relative md:translate-x-0 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} flex flex-col`}
+          className={`fixed inset-y-0 left-0 z-50 w-70 bg-black border-r border-white/10 transition-transform duration-300 md:relative md:translate-x-0 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} flex flex-col`}
         >
-          <header className="p-4 md:p-6 border-b border-white/20 flex items-center justify-between">
+          <header className="p-[7.5px] border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
                 src="/logo.png"
@@ -292,7 +292,7 @@ export default function Conversation({ user }: { user: UserData }) {
             </div>
           </div>
 
-          <div className="p-2 border-t border-white/20">
+          <div className="p-2 border-t border-white/10">
             <button
               onClick={() => {
                 setActiveConversationId(null);
@@ -307,7 +307,7 @@ export default function Conversation({ user }: { user: UserData }) {
         </aside>
 
         <main className="flex-1 flex flex-col relative min-w-0">
-          <header className="px-4 py-4 md:px-6 md:py-6 border-b border-white/5 flex items-center gap-4">
+          <header className="p-[7.5px] border-b border-white/10 flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="md:hidden  cursor-pointer text-white"
@@ -326,9 +326,6 @@ export default function Conversation({ user }: { user: UserData }) {
                 <h1 className="text-xl md:text-2xl font-black text-white uppercase tracking-tighter">
                   Conversations
                 </h1>
-                <h4 className="text-[9px] font-bold text-white/50 uppercase tracking-widest">
-                  Chat with your sources
-                </h4>
               </div>
             </div>
           </header>
@@ -388,7 +385,7 @@ export default function Conversation({ user }: { user: UserData }) {
           </div>
 
           {sources.length > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 bg-black border-t border-white/20 p-[5.5px]">
+            <div className="absolute bottom-0 left-0 right-0 bg-black border-t border-white/10 p-[5.5px]">
               <form
                 onSubmit={handleSendMessage}
                 className="w-full mx-auto flex items-center pl-4 py-1 pr-1"
@@ -496,7 +493,7 @@ const MessageItem = ({
                     part === "Document" ? (
                       <span
                         key={i}
-                        className="inline-flex items-center px-1.5 py-0.5 m-1 bg-white text-black text-[9px] font-black uppercase tracking-tighter rounded-sm border border-white/20"
+                        className="inline-flex items-center px-1.5 py-0.5 m-1 bg-white text-black text-[9px] font-black uppercase tracking-tighter rounded-sm border border-white/10"
                       >
                         Source: {part}
                       </span>
