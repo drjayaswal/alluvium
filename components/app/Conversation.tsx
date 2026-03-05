@@ -14,7 +14,6 @@ import { formatDateTime, getBaseUrl } from "@/lib/utils";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import Link from "next/link";
 import {
   ChatCircleDotsIcon,
   CheckIcon,
@@ -24,13 +23,12 @@ import {
   FileDocIcon,
   FilePdfIcon,
   FileTxtIcon,
-  ListIcon,
   PaperPlaneTiltIcon,
-  PenNibIcon,
   PlusCircleIcon,
   XIcon,
   YoutubeLogoIcon,
 } from "@phosphor-icons/react";
+import { GlobeIcon } from "lucide-react";
 
 export default function Conversation({ user }: { user: UserData }) {
   const router = useRouter();
@@ -267,8 +265,12 @@ export default function Conversation({ user }: { user: UserData }) {
                   }}
                   className="w-full group text-white flex items-center gap-3 px-3 py-2 text-xs font-medium transition-all"
                 >
-                  {getSourceIcon(s)}
-                  <span className="truncate">{s.source_name}</span>
+                  <div className="shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
+                    {getSourceIcon(s)}
+                  </div>
+                  <span className="truncate text-left">
+                    {s.source_name}
+                  </span>{" "}
                 </button>
               ))}
             </div>
@@ -634,21 +636,25 @@ const MessageEmptyState = ({ hasSources, onSetInput }: any) => (
 
 const getSourceIcon = (source: any) => {
   const name = source.source_name.toLowerCase();
-  if (name.includes("youtube") || name.includes("youtu.be"))
-    return (
-      <YoutubeLogoIcon
-        weight="fill"
-        className="text-white scale-180"
-        size={25}
-      />
-    );
-  if (name.includes(".pdf"))
-    return (
-      <FilePdfIcon weight="fill" className="text-white scale-180" size={25} />
-    );
-  if (name.includes(".doc"))
-    return (
-      <FileDocIcon weight="fill" className="text-white scale-180" size={25} />
-    );
-  return <FileTxtIcon weight="fill" className="text-white" size={16} />;
+
+  const iconProps = {
+    size: 20,
+    weight: "fill" as const,
+    className: "text-inherit",
+  };
+
+  if (name.includes("youtube") || name.includes("youtu.be")) {
+    return <YoutubeLogoIcon {...iconProps} />;
+  }
+  if (name.includes(".pdf")) {
+    return <FilePdfIcon {...iconProps} />;
+  }
+  if (name.includes(".doc") || name.includes(".docx")) {
+    return <FileDocIcon {...iconProps} />;
+  }
+  if (name.includes(".txt")) {
+    return <FileTxtIcon {...iconProps} />;
+  }
+
+  return <GlobeIcon {...iconProps} />;
 };

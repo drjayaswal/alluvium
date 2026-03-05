@@ -30,8 +30,15 @@ export default function Ingestion({ user }: AIProps) {
 
   const handleVideoIngest = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (user.credits <= 0) {
+      toast.info("Insufficient credits", {
+        action: { label: "Upgrade", onClick: () => router.push("/upgrade") },
+      });
+      return;
+    }
     if (!videoUrl) return toast.error("Paste Video URL");
-    const youtubeRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((?:\w|-){11})(?:\S+)?$/;
+    const youtubeRegex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))((?:\w|-){11})(?:\S+)?$/;
     if (!youtubeRegex.test(videoUrl)) return toast.error("Invalid YouTube URL");
     const token = localStorage.getItem("token");
     setVideoLoading(true);
@@ -94,6 +101,13 @@ export default function Ingestion({ user }: AIProps) {
   const handleFileIngest = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return toast.error("Upload Document");
+
+        if (user.credits <= 0) {
+      toast.info("Insufficient credits", {
+        action: { label: "Upgrade", onClick: () => router.push("/upgrade") },
+      });
+      return;
+    }
 
     setFileName(file.name);
     setFileLoading(true);
@@ -179,7 +193,9 @@ export default function Ingestion({ user }: AIProps) {
             <h1 className="text-2xl min-[375px]:text-3xl min-[400px]:text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter text-white">
               <span className="uppercase">Ingest</span>
             </h1>
-            <span className="text-xs min-[375px]:text-sm sm:text-sm md:text-base text-white/50">Add Context</span>
+            <span className="text-xs min-[375px]:text-sm sm:text-sm md:text-base text-white/50">
+              Add Context
+            </span>
           </div>
         </header>
         <div className="grid grid-cols-1 md:grid-cols-2 border border-white/20 gap-0.5 md:gap-0">
@@ -194,7 +210,10 @@ export default function Ingestion({ user }: AIProps) {
               </span>
             </div>
 
-            <form onSubmit={handleVideoIngest} className="space-y-3 min-[375px]:space-y-3.5 sm:space-y-4 md:space-y-4 lg:space-y-5">
+            <form
+              onSubmit={handleVideoIngest}
+              className="space-y-3 min-[375px]:space-y-3.5 sm:space-y-4 md:space-y-4 lg:space-y-5"
+            >
               <input
                 disabled={videoLoading}
                 className="w-full bg-transparent border-b border-white/20 py-2 min-[375px]:py-2.5 sm:py-3 md:py-3 text-sm min-[375px]:text-sm sm:text-base md:text-base text-white outline-none focus:border-white transition-colors placeholder:text-white/20"
@@ -208,7 +227,10 @@ export default function Ingestion({ user }: AIProps) {
               >
                 {videoLoading ? (
                   <>
-                    <CircleNotchIcon className="animate-spin w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 sm:w-4 sm:h-4" weight="bold" />
+                    <CircleNotchIcon
+                      className="animate-spin w-3.5 h-3.5 min-[375px]:w-4 min-[375px]:h-4 sm:w-4 sm:h-4"
+                      weight="bold"
+                    />
                     Processing...
                   </>
                 ) : (
@@ -265,7 +287,10 @@ export default function Ingestion({ user }: AIProps) {
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <CloudArrowUpIcon className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mb-1 text-white" weight="fill" />
+                  <CloudArrowUpIcon
+                    className="w-5 h-5 min-[375px]:w-6 min-[375px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mb-1 text-white"
+                    weight="fill"
+                  />
                   <span className="text-xs min-[375px]:text-xs sm:text-sm md:text-sm text-white uppercase font-bold tracking-widest">
                     Upload
                   </span>
